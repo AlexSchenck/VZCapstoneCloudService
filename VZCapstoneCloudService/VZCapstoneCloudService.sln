@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "VZCapstoneCloudService", "VZCapstoneCloudService\VZCapstoneCloudService.ccproj", "{119DC417-B07D-4375-92DD-27B0D31D1199}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRole1", "WebRole1\WebRole1.csproj", "{712AE816-5854-4011-8565-8BB3399EEDDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerRole1", "WorkerRole1\WorkerRole1.csproj", "{D8593B64-6537-437B-A530-9D58D93ED96A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{119DC417-B07D-4375-92DD-27B0D31D1199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119DC417-B07D-4375-92DD-27B0D31D1199}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119DC417-B07D-4375-92DD-27B0D31D1199}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119DC417-B07D-4375-92DD-27B0D31D1199}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712AE816-5854-4011-8565-8BB3399EEDDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712AE816-5854-4011-8565-8BB3399EEDDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712AE816-5854-4011-8565-8BB3399EEDDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712AE816-5854-4011-8565-8BB3399EEDDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8593B64-6537-437B-A530-9D58D93ED96A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8593B64-6537-437B-A530-9D58D93ED96A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8593B64-6537-437B-A530-9D58D93ED96A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8593B64-6537-437B-A530-9D58D93ED96A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
