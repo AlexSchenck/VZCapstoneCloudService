@@ -10,9 +10,19 @@
 		<link rel="stylesheet" type="text/css" href="Styles/contributingFactors.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/dashboard.css"/>
 		<script src="Scripts/bullet.js"></script>
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' 
+			type='text/css'>
 	</head>
 	<body>
 		<iframe id="header" src="Views/header.html" frameBorder="0"></iframe>
+
+		<div class="topSection">
+			<h1>Vision Zero Progress</h1>
+			<div id="progress"></div>
+		</div>
+
+
 		<div class="section">
 			<h1>Collisions by Age</h1>
 			<div id="age"></div>
@@ -27,11 +37,12 @@
 				<h1>Serious Injury and Fatal Collisions</h1>
 				<div id="stackedBarChart"></div>
 		</div>
-
+ 
 		
 
 		<script src="Scripts/stackedBarChart.js"></script>
 		<script src="Scripts/age.js"></script>
+		<script src="Scripts/progress.js"></script>
 		<!--<script src="Scripts/contributingFactors.js"></script>-->
 		<script src="Scripts/bullet.js"></script>
 	</body>

@@ -2,11 +2,12 @@ html, body {
 	height: 100%;
 	margin: 0px;
 	width: 100%;
-	font-family: Helvetica, sans-serif;
+	font-family: Lato, sans-serif;
 }
 
 #header {
 	width: 100%;
+	height:100px;
 }
 
 .section {
@@ -19,14 +20,29 @@ body {
 }
 
 .section {
-	background-color: #ffffff;
-	border-radius: 2px;
-	width: 440px;
-	padding: 10px;
-	height: 280px;
-	margin: 15px;
+	width: 30%;
+	height: 28%;
 	float: left;
 	
+}
+/*
+#progress svg {
+	width: 120%;
+}
+*/
+.topSection {
+	width: 65%;
+	height: 25%;
+	float: left;
+	
+}
+
+.section, .topSection {
+	padding: 10px;
+	margin: 10px;
+	background-color: #ffffff;
+	border-radius: 2px;
+
 	-moz-box-shadow: 0 0 3px #ccc;
 	-webkit-box-shadow: 0 0 3px #ccc;
 	box-shadow: 0 0 3px #ccc;
@@ -34,5 +50,10 @@ body {
 
 h1 {
 	font-size: 20px;
-	margin: 15px;
+	margin: 5px;
+	font-family: "Open Sans Condensed", sans-serif;
+}
+
+.axis text, text {
+    font-family: Lato, sans-serif;
 }
