@@ -1,0 +1,38 @@
+html, body {
+	height: 100%;
+	margin: 0px;
+	width: 100%;
+	font-family: Helvetica, sans-serif;
+}
+
+#header {
+	width: 100%;
+}
+
+.section {
+	display: inline-block;
+	width: 400px;
+}
+
+body {
+	background-color: rgba(99, 102, 106, .05);
+}
+
+.section {
+	background-color: #ffffff;
+	border-radius: 2px;
+	width: 440px;
+	padding: 10px;
+	height: 280px;
+	margin: 15px;
+	float: left;
+	
+	-moz-box-shadow: 0 0 3px #ccc;
+	-webkit-box-shadow: 0 0 3px #ccc;
+	box-shadow: 0 0 3px #ccc;
+}
+
+h1 {
+	font-size: 20px;
+	margin: 15px;
+}
