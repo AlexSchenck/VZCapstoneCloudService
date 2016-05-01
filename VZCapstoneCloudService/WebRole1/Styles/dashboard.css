@@ -21,7 +21,7 @@ body {
 
 .section {
 	width: 30%;
-	height: 28%;
+	height: 30%;
 	float: left;
 	
 }
@@ -30,15 +30,21 @@ body {
 	width: 120%;
 }
 */
-.topSection {
-	width: 65%;
+.progressSection {
+	width: 55%;
 	height: 25%;
 	float: left;
 	
 }
 
-.section, .topSection {
-	padding: 10px;
+.currentYear {
+	width: 18%;
+	height: 25%;
+	float: left;
+}
+
+.section, .progressSection, .currentYear {
+	padding: 12px;
 	margin: 10px;
 	background-color: #ffffff;
 	border-radius: 2px;

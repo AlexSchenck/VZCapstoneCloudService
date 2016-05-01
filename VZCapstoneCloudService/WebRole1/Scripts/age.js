@@ -107,7 +107,7 @@ d3.json("/Data/" + name + "Spark.json", function(error, data) {
     // the data associated with that index
     for (var i = 0; i < containers.length; i++) {
         var svgContainer = containers[i];
-        console.log(lineFunction(data[i]).split(","));
+        //console.log(lineFunction(data[i]).split(","));
         var endingPoint = lineFunction(data[i]).split(",");        
         var xCircle = endingPoint[endingPoint.length - 2].split("L")[1];
         var yCircle = endingPoint[endingPoint.length - 1];
