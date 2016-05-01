@@ -1,13 +1,12 @@
 #contributingFactors {
  	position: relative;
  	width:260px;
-  	/*margin:30px;*/
 	float:left;
 }
 
 /* makes the ticks go away so they're not on 
    bullet chart*/
-#contributingFactors.tick, .axis path, #contributingFactors .bullet .tick {
+#contributingFactors.tick, .section .axis path, #contributingFactors .bullet .tick {
 	display: none;
 }
 

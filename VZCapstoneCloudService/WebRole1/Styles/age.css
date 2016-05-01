@@ -7,7 +7,7 @@
 
 /* makes the ticks go away so they're not on 
    bullet chart*/
-#age.tick, .axis path, #age .bullet .tick {
+#age.tick, .section .axis path, #age .bullet .tick {
 	display: none;
 }
 

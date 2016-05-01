@@ -1,3 +1,14 @@
+var mouseOver = function() {
+	var curr = d3.select(this).attr("stroke", "blue");
+	console.log(d3.select(this));
+}
+
+var mouseOut = function() {
+	var curr = d3.select(this).attr("stroke", "#00A3E0");
+	console.log(curr);
+}
+
+
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
@@ -77,7 +88,9 @@ d3.json("./Data/progress.json", function(error, result) {
 		.attr('d', line(data))
 	  	.attr('stroke', "#00A3E0")
 	  	.attr('stroke-width', 3)
-	  	.attr('fill', 'none');
+	  	.attr('fill', 'none')
+	  	.on('mouseover', mouseOver)
+	  	.on('mouseout', mouseOut);
 
 
 	//draws target line based off of starting value 
