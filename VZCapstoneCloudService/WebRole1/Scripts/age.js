@@ -26,25 +26,27 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 	.enter().append("svg")
 	  	.attr("class", "bullet")
 	  	.attr("width", width + margin.left + margin.right)
-	  	.attr("height", height + margin.top + margin.bottom)
-	.append("g")
-	  	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-	  	.call(chart);
-
+	  	.attr("height", height + margin.top + margin.bottom);
+	
 	// adds the title to the left side of each bullet chart
   	var titles = svg.append("g")
-      	.style("text-anchor", "end")
-      	.attr("transform", "translate(-10," + ((height / 2) + 7) + ")")
+      	.style("text-anchor", "start")
+      	.attr("transform", "translate(0," + ((height / 2) + 7) + ")")
   	.append("text")
       	.attr("class", "title")
       	.text(function(d) { return d.title; });
+
+    svg.append("g")
+        .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
+        .call(chart);
+
 
     // domain that the bullet charts are all scaled to
     var x = d3.scale.linear()
     	.domain([0, 10])
     	.range([0, width]);
 
-    // adds the scale at the bottom with ticks 
+ //    // adds the scale at the bottom with ticks 
 	d3.select("#" + name).append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
