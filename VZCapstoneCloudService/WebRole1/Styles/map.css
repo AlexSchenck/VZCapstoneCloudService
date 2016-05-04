@@ -16,6 +16,6 @@ html, body {
     width: 100%; 
 } 
 
-.leaflet-popup {
-    z-index: 100000;
+.leaflet-popup, .marker-cluster {
+    z-index: 100000 !important;
 }
