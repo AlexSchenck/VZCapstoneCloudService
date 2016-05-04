@@ -75,3 +75,7 @@ h3 {
 .currentYear text {
 	font-size: 60px;
 }
+
+#currentFatal {
+	text-align: center;
+}

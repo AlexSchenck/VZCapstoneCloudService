@@ -163,4 +163,20 @@ d3.json("/Data/" + name + "Spark.json", function(error, data) {
             .style("font-size", "10px") 
             .text(currentValue[i]);
     }
+
+    // var years = d3.scale.linear()
+    //     .domain([2012, 2016])
+    //     .range([0, width]);
+
+    // var svgContainer = d3.select("#ageSparkKey").append("svg")
+    //         .attr("width", (widthOfSpark - 10))
+    //         .attr("height", heightOfSpark)
+    //   .append("g")
+    //     // .attr("transform", "translate(" + 0 + "," + 75 + ")")
+    //     .attr("class", "axis")
+    //     .call(d3.svg.axis()
+    //       .scale(years)
+    //       .orient("bottom")
+    //       .ticks(3)
+    //       .tickFormat(d3.format("d")));
 })
