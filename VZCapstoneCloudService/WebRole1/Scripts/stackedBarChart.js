@@ -11,7 +11,7 @@ var dataset;
 //Set up stack method
 var stack = d3.layout.stack();
 
-d3.json("./Data/mperday.json", function(error, result){
+d3.json("./Data/stackedBar.json", function(error, result){
 	console.log(error);
 	dataset = result;
 
@@ -79,11 +79,13 @@ d3.json("./Data/mperday.json", function(error, result){
 		.style("fill-opacity",1e-6);
 
 
-	rects.transition()
-	     .duration(function(d,i){
-	    	 return 300;
-	     })
-	     .ease("linear")
+	rects
+	// took out transition
+		// .transition()
+	 //     .duration(function(d,i){
+	 //    	 return 300;
+	 //     })
+	 //     .ease("linear")
 	    .attr("x", function(d) {
 			return xScale(new Date(d.year));
 		})
@@ -95,7 +97,9 @@ d3.json("./Data/mperday.json", function(error, result){
 		})
 		// width of bars
 		.attr("width", 10)
-		.style("fill-opacity", 0.9);
+		.style("fill-opacity", 0.9)
+		.on('mouseover', mouseOverStackedBar)
+	  	.on('mouseout', mouseOutStackedBar);
 
 	svg.append("g")
 		.attr("class","x axis")
@@ -167,3 +171,18 @@ d3.json("./Data/mperday.json", function(error, result){
 	//     .text("Serious Injury and Fatal Collisions");
 
 });
+
+var previousBarColor;
+
+var mouseOverStackedBar = function() {
+	// gets the color of the bar that was already there
+	// because of the way stacked bars are set up
+	previousBarColor = d3.select(this.parentNode).attr("style");
+	var curr = d3.select(this).attr("fill", 'lightsteelblue');
+	console.log(previousBarColor);
+}
+
+var mouseOutStackedBar = function() {
+	var curr = d3.select(this).attr("fill", previousBarColor.substring(6));
+	console.log(curr);
+}
