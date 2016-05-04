@@ -9,43 +9,44 @@ html, body {
 	width: 100%;
 	height:100px;
 }
-
+/*
 .section {
 	display: inline-block;
 	width: 400px;
-}
+}*/
 
 body {
 	background-color: rgba(99, 102, 106, .05);
 }
 
+
 .section {
-	width: 30%;
-	height: 30%;
+	width: 30.2%;
+	height: 35%;
 	float: left;
-	
 }
+
 /*
 #progress svg {
 	width: 120%;
 }
 */
 .progressSection {
-	width: 55%;
-	height: 25%;
+	width: 54.6%;
+	height: 41.25%;
 	float: left;
 	
 }
 
 .currentYear {
 	width: 18%;
-	height: 25%;
+	height: 18%;
 	float: left;
 }
 
 .section, .progressSection, .currentYear {
 	padding: 12px;
-	margin: 10px;
+	margin: 11px;
 	background-color: #ffffff;
 	border-radius: 2px;
 
@@ -56,6 +57,13 @@ body {
 
 h1 {
 	font-size: 20px;
+	margin: 5px;
+	font-family: "Open Sans Condensed", sans-serif;
+}
+
+h3 {
+	text-align: center;
+	font-size: 12px;
 	margin: 5px;
 	font-family: "Open Sans Condensed", sans-serif;
 }

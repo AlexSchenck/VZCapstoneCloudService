@@ -31,13 +31,13 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 	// adds the title to the left side of each bullet chart
   	var titles = svg.append("g")
       	.style("text-anchor", "start")
-      	.attr("transform", "translate(0," + ((height / 2) + 7) + ")")
+      	.attr("transform", "translate(15," + ((height / 2) + 7) + ")")
   	.append("text")
       	.attr("class", "title")
       	.text(function(d) { return d.title; });
 
     svg.append("g")
-        .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
+        .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
         .call(chart);
 
 
@@ -46,18 +46,50 @@ d3.json("./Data/" + name + ".json", function(error, data) {
     	.domain([0, 10])
     	.range([0, width]);
 
- //    // adds the scale at the bottom with ticks 
+    // adds the scale at the bottom with ticks 
 	d3.select("#" + name).append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 	  .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+	    .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
 	    .attr("class", "axis")
 	    .call(d3.svg.axis()
 	      .scale(x)
 	      .orient("bottom")
 	      .ticks(3)
 	      .tickFormat(d3.format("s")));
+
+    var heightOfKey = 10;
+    var shift = 40;
+    var key = d3.select("#" + name).append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+    key.append("text")
+        .attr("transform", "translate(" + (shift + margin.left - 15) + "," + margin.top + ")")
+        .attr("y", heightOfKey)
+        .text("2015");
+
+    key.append("rect")
+        .attr("transform", "translate(" + (shift + margin.left + margin.right - 15) + "," + margin.top + ")")
+        .attr("width", 50)
+        .attr("height", heightOfKey)
+        .style("fill", "#00A3E0")
+        .attr("opacity", 0.7);
+
+    key.append("text")
+        .attr("transform", "translate(" + (shift + margin.left + margin.right + 65) + "," + margin.top + ")")
+        .attr("y", heightOfKey)
+        .text("2014");
+
+    key.append("line")
+        .attr("transform", "translate(" + (shift + margin.left + margin.right + 105) + "," + margin.top + ")")
+        .attr("x1", 0)
+        .attr("y1", -5)
+        .attr("x2", 0)
+        .attr("y2", 15)
+        .attr("stroke-width", 2)
+        .attr("stroke", "black");
 });
 
 
@@ -67,9 +99,9 @@ var heightOfSpark = 40;
 
 var containers = [];
 var currentValue = [];
-var title = d3.select("#" + name + "SparkTitle")
-    .style("font-size", "8px") 
-    .text("Last 5 Years");
+// var title = d3.select("#" + name + "SparkTitle")
+//     .style("font-size", "8px") 
+//     .text("Last 5 Years");
 
 d3.json("/Data/" + name + "Spark.json", function(error, data) {
     if (error) throw error;
@@ -81,7 +113,7 @@ d3.json("/Data/" + name + "Spark.json", function(error, data) {
     // and an integer for the y value
     for (var i = 0; i < data.length; i++) {
         data[i].forEach(function(d) {
-            d.date = (widthOfSpark / 8) * (+d.date - 2010);
+            d.date = (widthOfSpark / 8) * (+d.date - 2012);
             currentValue[i] = d.yValue;            
             d.yValue = 13 - +d.yValue;  
         });

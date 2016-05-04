@@ -1,5 +1,6 @@
 [
-  {"title":"1) Texting","ranges":[0, 10],"measures":[5],"markers":[2]},
-  {"title":"2) Weather","ranges":[0, 10],"measures":[4],"markers":[5]},
-  {"title":"3) Inattention","ranges":[0, 10],"measures":[2],"markers":[1]}
+  {"title":"Texting","ranges":[0, 10],"measures":[5],"markers":[2]},
+  {"title":"Weather","ranges":[0, 10],"measures":[4],"markers":[5]},
+  {"title":"Inattention","ranges":[0, 10],"measures":[2],"markers":[1]},
+  {"title":"Speeding","ranges":[0, 10],"measures":[1],"markers":[1]}
 ]
