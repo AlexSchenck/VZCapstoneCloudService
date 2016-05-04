@@ -17,33 +17,135 @@
 	<body>
 		<iframe id="header" src="Views/header.html" frameBorder="0"></iframe>
 
-		<div class="topSection">
+		<div class="progressSection">
 			<h1>Vision Zero Progress</h1>
 			<div id="progress"></div>
 		</div>
 
-
-		<div class="section">
-			<h1>Collisions by Age</h1>
-			<div id="age"></div>
-	        <div id="ageSparkId">
-				<div id="ageSpark1"></div>
-				<div id="ageSpark2"></div>
-				<div id="ageSpark3"></div>
+		<div class="currentYear">
+			<h1>Fatal Collisions in 2016</h1>
+			<div id="currentFatal">
 			</div>
 		</div>
+		<div class="currentYear">
+			<h1>Vision Zero's Goal to Reach by 2030	</h1>
+			<div id="goal"></div>
+		</div>
 
-		<div class="section">
-				<h1>Serious Injury and Fatal Collisions</h1>
-				<div id="stackedBarChart"></div>
+		<div id="middle">
+			<div class="section">
+				<h1>Collisions by Age</h1>
+				<div id="age"></div>
+		        <div id="ageSparkId">
+					<div id="ageSpark1"></div>
+					<div id="ageSpark2"></div>
+					<div id="ageSpark3"></div>
+				</div>
+			</div>
+
+			<div class="section">
+					<h1>Serious Injury and Fatal Collisions</h1>
+					<div id="stackedBarChart"></div>
+			</div>
+
+			<div class="section">
+			</div>
 		</div>
  
 		
 
 		<script src="Scripts/stackedBarChart.js"></script>
+		<script src="Scripts/stats.js"></script>
 		<script src="Scripts/age.js"></script>
 		<script src="Scripts/progress.js"></script>
 		<!--<script src="Scripts/contributingFactors.js"></script>-->
 		<script src="Scripts/bullet.js"></script>
 	</body>
 </html>
+<!-- 
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+</style>
+<svg class="chart"></svg>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var data = {
+  labels: [
+    'resilience', 'maintainability', 'accessibility',
+    'uptime', 'functionality', 'impact'
+  ],
+  series: [
+    {
+      label: '2012',
+      values: [4, 8, 15, 16, 23, 42]
+    },
+    {
+      label: '2013',
+      values: [12, 43, 22, 11, 73, 25]
+    },
+    {
+      label: '2014',
+      values: [31, 28, 14, 8, 15, 21]
+    },]
+};
+
+var chartWidth       = 300,
+    barHeight        = 20,
+    groupHeight      = barHeight * data.series.length,
+    gapBetweenGroups = 10,
+    spaceForLabels   = 150,
+    spaceForLegend   = 150;
+
+// Zip the series data together (first values, second values, etc.)
+var zippedData = [];
+for (var i=0; i<data.labels.length; i++) {
+  for (var j=0; j<data.series.length; j++) {
+    zippedData.push(data.series[j].values[i]);
+  }
+}
+
+// Color scale
+var color = d3.scale.category20();
+var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
+
+var x = d3.scale.linear()
+    .domain([0, d3.max(zippedData)])
+    .range([0, chartWidth]);
+
+var y = d3.scale.linear()
+    .range([chartHeight + gapBetweenGroups, 0]);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .tickFormat('')
+    .tickSize(0)
+    .orient("left");
+
+// Specify the chart area and dimensions
+var chart = d3.select(".chart")
+    .attr("width", spaceForLabels + chartWidth + spaceForLegend)
+    .attr("height", chartHeight);
+
+
+
+chart.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups/2 + ")")
+      .call(yAxis);
+
+// Draw legend
+var legendRectSize = 18,
+    legendSpacing  = 4;
+
+</script>	 -->
