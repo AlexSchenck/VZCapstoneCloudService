@@ -15,7 +15,7 @@ var outerH = window.outerHeight;
 
 var paddingProgress = {top: 40, right: 40, bottom: 60, left:40};
 var widthProgress = outerW * .55;
-var heightProgress = outerH * .25 - 20;
+var heightProgress = outerH * .35;
 
 var xScale = d3.scale.linear()
 	.domain([2004, 2030])
