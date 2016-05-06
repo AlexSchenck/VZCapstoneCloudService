@@ -1,7 +1,5 @@
 // draws the bullet charts
 
-var name = "contributingFactors";
-
 var margin = {top: 5, right: 40, bottom: 5, left: 80};
 var width = 300 - margin.left - margin.right;
 var height = 30 + (((width + margin.left + margin.right) - 250) / 5) - margin.top - margin.bottom;
@@ -11,8 +9,9 @@ var chart = d3.bullet()
     .height(height);
 
 // draws bullet charts
-d3.json("./Data/" + name + ".json", function(error, data) {
+d3.json("./Data/contributingFactors.json", function(error, data) {
   if (error) throw error;
+  var dat = data;
 
   	// // adds the title of the graph to the top 
   	// var titleGraph = d3.select("#age")
@@ -22,22 +21,25 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 
     // establishes svg size
 	var svg = d3.select("#" + "contributingFactors").selectAll("svg")
-		.data(data)
+		.data(dat)
 	.enter().append("svg")
 	  	.attr("class", "bullet")
 	  	.attr("width", width + margin.left + margin.right)
-	  	.attr("height", height + margin.top + margin.bottom)
-	.append("g")
-	  	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-	  	.call(chart);
+	  	.attr("height", height + margin.top + margin.bottom);
+	
 
-	// adds the title to the left side of each bullet chart
-  	var titles = svg.append("g")
-      	.style("text-anchor", "end")
-      	.attr("transform", "translate(-6," + ((height / 2) + 7) + ")")
-  	.append("text")
-      	.attr("class", "title")
-      	.text(function(d) { return d.title; });
+    // adds the title to the left side of each bullet chart
+    var titles = svg.append("g")
+        .style("text-anchor", "start")
+        .attr("transform", "translate(15," + ((height / 2) + 7) + ")")
+    .append("text")
+        .attr("class", "title")
+        .text(function(d) { return d.title; });
+
+    svg.append("g")
+        .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
+        .call(chart);
+
 
     // domain that the bullet charts are all scaled to
     var x = d3.scale.linear()
@@ -45,17 +47,47 @@ d3.json("./Data/" + name + ".json", function(error, data) {
     	.range([0, width]);
 
     // adds the scale at the bottom with ticks 
-	d3.select("#" + "contributingFactors").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
-	  .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-	    .attr("class", "axis")
-	    .call(d3.svg.axis()
-	      .scale(x)
-	      .orient("bottom")
-	      .ticks(3)
-	      .tickFormat(d3.format("s")));
+    d3.select("#" + "contributingFactors").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
+        .attr("class", "axis")
+        .call(d3.svg.axis()
+          .scale(x)
+          .orient("bottom")
+          .ticks(3)
+          .tickFormat(d3.format("s")));
+
+    // adds in the key
+    var heightOfKey = 10;
+    var shift = 40;
+    var key = d3.select("#" + "contributingFactors").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+    key.append("text")
+        .attr("transform", "translate(" + (shift + margin.left - 15) + "," + margin.top + ")")
+        .attr("y", heightOfKey)
+        .text("2015");
+    key.append("rect")
+        .attr("transform", "translate(" + (shift + margin.left + margin.right - 15) + "," + margin.top + ")")
+        .attr("width", 50)
+        .attr("height", heightOfKey)
+        .style("fill", "#00A3E0")
+        .attr("opacity", 0.7);
+    key.append("text")
+        .attr("transform", "translate(" + (shift + margin.left + margin.right + 65) + "," + margin.top + ")")
+        .attr("y", heightOfKey)
+        .text("2014");
+    key.append("line")
+        .attr("transform", "translate(" + (shift + margin.left + margin.right + 105) + "," + margin.top + ")")
+        .attr("x1", 0)
+        .attr("y1", -5)
+        .attr("x2", 0)
+        .attr("y2", 15)
+        .attr("stroke-width", 2)
+        .attr("stroke", "black");
+
 });
 
 
@@ -63,11 +95,9 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 var widthOfSpark = 100;
 var heightOfSpark = 40;
 
-var containers = [];
+var containers2 = [];
 var currentValue = [];
-var title = d3.select("#" + "contributingFactors" + "SparkTitle")
-    .style("font-size", "8px") 
-    .text("Last 5 Years");
+
 
 d3.json("./Data/" + "contributingFactors" + "Spark.json", function(error, data) {
     if (error) throw error;
@@ -79,7 +109,7 @@ d3.json("./Data/" + "contributingFactors" + "Spark.json", function(error, data) 
     // and an integer for the y value
     for (var i = 0; i < data.length; i++) {
         data[i].forEach(function(d) {
-            d.date = (widthOfSpark / 8) * (+d.date - 2010);
+            d.date = (widthOfSpark / 8) * (+d.date - 2012);
             currentValue[i] = d.yValue;            
             d.yValue = 13 - +d.yValue;  
         });
@@ -90,10 +120,10 @@ d3.json("./Data/" + "contributingFactors" + "Spark.json", function(error, data) 
     // and <div id="ageSpark(number)"></div> into #ageSparkId
     // otherwise there would be an existing div there
     for (var i = 1; i <= data.length; i++) {
-        var svgContainer = d3.select("#" + name + "Spark" + i).append("svg")
+        var contContainer = d3.select("#contributingFactors" + i).append("svg")
             .attr("width", widthOfSpark)
             .attr("height",heightOfSpark);
-        containers.push(svgContainer);
+        containers2.push(contContainer);
     }
 
     // functino for drawing a line. Linear is the style
@@ -105,26 +135,26 @@ d3.json("./Data/" + "contributingFactors" + "Spark.json", function(error, data) 
 
     // for each container, add a spark line with 
     // the data associated with that index
-    for (var i = 0; i < containers.length; i++) {
-        var svgContainer = containers[i];
+    for (var i = 0; i < 4; i++) {
+        var contContainer = containers2[i];
 
-        var endingPoint = lineFunctionCon(data[i]).split(",");        
-        var xCircle = endingPoint[endingPoint.length - 2].substring(2);
+        var endingPoint = lineFunctionCon(data[i]).split(",");
+        var xCircle = endingPoint[endingPoint.length - 2].split("L")[1];
         var yCircle = endingPoint[endingPoint.length - 1];
 
-        svgContainer.append("path")
+        contContainer.append("path")
             .attr("d", lineFunctionCon(data[i]))
             .attr("stroke", "black")
             .attr("stroke-width", 1)
             .attr("fill", "none");
 
-        svgContainer.append("circle")
+        contContainer.append("circle")
             .attr("cx", xCircle)
             .attr("cy", yCircle)
             .attr("r", 2);
 
-        svgContainer.append("text")
-            .attr("x", 70)
+        contContainer.append("text")
+            .attr("x", 60)
             .attr("y", 12)
             .style("font-size", "10px") 
             .text(currentValue[i]);
