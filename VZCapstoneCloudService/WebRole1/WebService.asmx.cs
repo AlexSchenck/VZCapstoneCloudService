@@ -212,7 +212,7 @@ namespace WebRole1
         // Creates and saves JSON for use in VZ progress chart
         private void saveProgressChartJSON(String collisionJSON)
         {
-            List<JObject> objects = convertToList(collisionJSON, false);
+            List<JObject> objects = convertToList(collisionJSON, true);
             SortedDictionary<int, int> fatalitiesPerYear = new SortedDictionary<int, int>();
             List<JObject> resultObjects = new List<JObject>();
             String resultString = "";
@@ -222,9 +222,10 @@ namespace WebRole1
             foreach (JObject jo in objects)
             {
                 int fatalities = (int) jo.GetValue("fatalities");
+                int seriousinjuries = (int) jo.GetValue("seriousinjuries");
                 
                 // Add to dictionary if there is one or more fatalities
-                if (fatalities > 0)
+                if (fatalities > 0 || seriousinjuries > 0)
                 {
                     String date = (String) jo.GetValue("incdttm");
                     int year = Convert.ToInt32(date.Split('/')[2].Substring(0, 4));
@@ -232,11 +233,11 @@ namespace WebRole1
                     // Year not yet found, add new key with value of "fatalities"
                     if (!fatalitiesPerYear.ContainsKey(year))
                     {
-                        fatalitiesPerYear.Add(year, fatalities);
+                        fatalitiesPerYear.Add(year, fatalities + seriousinjuries);
                     }
                     else
                     {
-                        fatalitiesPerYear[year] += fatalities;
+                        fatalitiesPerYear[year] += fatalities + seriousinjuries;
                     }
                 }
             }
