@@ -29,9 +29,49 @@ namespace WebRole1
         public String TestJSON()
         {   
             // Final JSON list of collisions as string
+            Trace.TraceInformation("Started data get");
             String collisions = getAllCollisions();
 
-            saveProgressChartJSON(String.Copy(collisions));
+            Trace.TraceInformation("Started progress");
+            String progress = getProgressChartJSON(String.Copy(collisions));
+
+            Trace.TraceInformation("Started stacked");
+            String stacked = getStackedBarChartJSON(String.Copy(collisions));
+
+            Trace.TraceInformation("Started table entry");
+            // Save to dashboard table
+            String connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=visionzerostorage;AccountKey=gub7wrXQbWsNxb2vW4+MqhXPKFo9Ik9GtugE3b590NCnNHspYZHYRU/SdwW9BziNiPQlN6mz2P2rlIVK/is5TQ==");
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CloudTable collisionDataTable = tableClient.GetTableReference("dashboarddata");
+            collisionDataTable.CreateIfNotExists();
+
+            // Delete old entity, then add
+            TableQuery<TableEntity> query = new TableQuery<TableEntity>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "progress"));
+            foreach(TableEntity entity in collisionDataTable.ExecuteQuery(query))
+            {
+                TableOperation op = TableOperation.Delete(entity);
+                collisionDataTable.Execute(op);
+            }
+
+            TableEntity te = new TableEntity("progress", progress);
+            TableOperation to = TableOperation.Insert(te);
+            collisionDataTable.Execute(to);
+
+            // Delete old entity, then add
+            query = new TableQuery<TableEntity>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "stacked"));
+            foreach (TableEntity entity in collisionDataTable.ExecuteQuery(query))
+            {
+                TableOperation op = TableOperation.Delete(entity);
+                collisionDataTable.Execute(op);
+            }
+
+            te = new TableEntity("stacked", stacked);
+            to = TableOperation.Insert(te);
+            collisionDataTable.Execute(to);
+
             // Create age JSON, age spark JSON
             // Create contributing factors JSON, contributing factors spark JSON
             // Create stackedbar JSON
@@ -209,25 +249,25 @@ namespace WebRole1
             }
         }
 
-        // Creates and saves JSON for use in VZ progress chart
-        private void saveProgressChartJSON(String collisionJSON)
+        // Creates and returns JSON for use in VZ progress chart
+        private String getProgressChartJSON(String collisionJSON)
         {
             List<JObject> objects = convertToList(collisionJSON, true);
-            SortedDictionary<int, int> fatalitiesPerYear = new SortedDictionary<int, int>();
             List<JObject> resultObjects = new List<JObject>();
-            String resultString = "";
+
+            SortedDictionary<int, int> fatalitiesPerYear = new SortedDictionary<int, int>();
 
             // For each collision find year
             // If there's a fatality, update dictionary for that year key
             foreach (JObject jo in objects)
             {
-                int fatalities = (int) jo.GetValue("fatalities");
-                int seriousinjuries = (int) jo.GetValue("seriousinjuries");
+                int fatalities = (int)jo.GetValue("fatalities");
+                int seriousinjuries = (int)jo.GetValue("seriousinjuries");
                 
                 // Add to dictionary if there is one or more fatalities
                 if (fatalities > 0 || seriousinjuries > 0)
                 {
-                    String date = (String) jo.GetValue("incdttm");
+                    String date = (String)jo.GetValue("incdttm");
                     int year = Convert.ToInt32(date.Split('/')[2].Substring(0, 4));
 
                     // Year not yet found, add new key with value of "fatalities"
@@ -254,18 +294,70 @@ namespace WebRole1
                 resultObjects.Add(temp);
             }
 
-            resultString = JsonConvert.SerializeObject(resultObjects);
+            return JsonConvert.SerializeObject(resultObjects);
+        }
 
-            // Save to dashboard table
-            String connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=visionzerostorage;AccountKey=gub7wrXQbWsNxb2vW4+MqhXPKFo9Ik9GtugE3b590NCnNHspYZHYRU/SdwW9BziNiPQlN6mz2P2rlIVK/is5TQ==");
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            CloudTable collisionDataTable = tableClient.GetTableReference("dashboarddata");
-            collisionDataTable.CreateIfNotExists();
+        // Creates and returns JSON used for stacked bar chart
+        private String getStackedBarChartJSON(String collisionJSON)
+        {
+            List<JObject> objects = convertToList(collisionJSON, true);
+            List<JArray> resultObjects = new List<JArray>();
 
-            TableEntity te = new TableEntity("progress", resultString);
-            TableOperation to = TableOperation.Insert(te);
-            collisionDataTable.Execute(to);
+            SortedDictionary<String, int> peds = new SortedDictionary<String, int>();
+            SortedDictionary<String, int> bicycles = new SortedDictionary<String, int>();
+            SortedDictionary<String, int> vehicles = new SortedDictionary<String, int>();
+
+            // For each collision, if there is a serious injury or fatality,
+            // regardless of how many, add number of peds, bicyclists, and vehicles
+            // involved for that year
+            foreach (JObject jo in objects)
+            {
+                if ((int)jo.GetValue("fatalities") > 0 || (int)jo.GetValue("seriousinjuries") > 0)
+                {
+                    String date = (String)jo.GetValue("incdttm");
+                    String year = date.Split('/')[2].Substring(0, 4);
+
+                    AddCountToSortedDictionary(peds, year, (int)jo.GetValue("pedcount"));
+                    AddCountToSortedDictionary(bicycles, year, (int)jo.GetValue("pedcylcount"));
+                    AddCountToSortedDictionary(vehicles, year, (int)jo.GetValue("vehcount"));
+                }
+            }
+
+            // Create formatted JSON objects as JArrays
+            resultObjects.Add(createJArrayFromSortedDictionary(peds));
+            resultObjects.Add(createJArrayFromSortedDictionary(bicycles));
+            resultObjects.Add(createJArrayFromSortedDictionary(vehicles));
+
+            return JsonConvert.SerializeObject(resultObjects);
+        }
+
+        // Adds given count value to given key value in given SortedDictionary
+        private void AddCountToSortedDictionary(SortedDictionary<String, int> dic, String year, int count)
+        {
+            if (count != 0)
+            {
+                if (!dic.ContainsKey(year))
+                {
+                    dic.Add(year, count);
+                }
+                else
+                {
+                    dic[year] += count;
+                }
+            }
+        }
+
+        // Creates JArray for stacked bar chart based on given SortedDicitonary of collision JSON
+        private JArray createJArrayFromSortedDictionary(SortedDictionary<String, int> dic)
+        {
+            JArray result = new JArray();
+
+            foreach (KeyValuePair<String, int> pair in dic)
+            {
+                result.Add(JObject.FromObject(new { year = pair.Key, y = pair.Value }));
+            }
+
+            return result;
         }
     }
 }
