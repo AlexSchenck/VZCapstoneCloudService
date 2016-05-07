@@ -38,6 +38,9 @@ namespace WebRole1
             Trace.TraceInformation("Started stacked");
             String stacked = getStackedBarChartJSON(String.Copy(collisions));
 
+            Trace.TraceInformation("Started age");
+            String age = getAgeChartJSON();
+
             Trace.TraceInformation("Started table entry");
             // Save to dashboard table
             String connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
@@ -358,6 +361,39 @@ namespace WebRole1
             }
 
             return result;
+        }
+
+        private void getAgeChartJSON(out String chart, out String spark)
+        {
+            var reader = new StreamReader(File.OpenRead(@".\Data\COLLISION_PERSONS.csv"));
+            
+            // read every line, except the first
+            Boolean firstLine = true;
+
+            while (!reader.EndOfStream)
+            {
+                if (firstLine)
+                {
+                    reader.ReadLine();
+                    firstLine = false;
+                }
+                else
+                {
+                    String[] line = reader.ReadLine().Split(',');
+                    String type = line[19];
+                    String age = line[23];
+                    String year = line[30].Split('/')[2];
+
+                    // If there is no missing information and the person is a driver
+                    if (!type.Equals("") && !age.Equals("") && !year.Equals("") && type.Equals("5"))
+                    {
+                        // Distribute frequencies into decades, decide how to get top 4
+                    }
+                }
+            }
+
+            chart = "";
+            spark = "";
         }
     }
 }
