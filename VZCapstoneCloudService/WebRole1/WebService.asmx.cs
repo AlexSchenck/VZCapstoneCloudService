@@ -30,16 +30,20 @@ namespace WebRole1
         {   
             // Final JSON list of collisions as string
             Trace.TraceInformation("Started data get");
-            String collisions = getAllCollisions();
+            //String collisions = getAllCollisions();
+            String collisions = "";
 
             Trace.TraceInformation("Started progress");
-            String progress = getProgressChartJSON(String.Copy(collisions));
+            //String progress = getProgressChartJSON(String.Copy(collisions));
+            String progress = "";
 
             Trace.TraceInformation("Started stacked");
-            String stacked = getStackedBarChartJSON(String.Copy(collisions));
+            //String stacked = getStackedBarChartJSON(String.Copy(collisions));
+            String stacked = "";
 
             Trace.TraceInformation("Started age");
-            String age = getAgeChartJSON();
+            String age = "", ageSpark = "";
+            getAgeChartJSON(out age, out ageSpark);
 
             Trace.TraceInformation("Started table entry");
             // Save to dashboard table
@@ -365,11 +369,23 @@ namespace WebRole1
 
         private void getAgeChartJSON(out String chart, out String spark)
         {
-            var reader = new StreamReader(File.OpenRead(@".\Data\COLLISION_PERSONS.csv"));
-            
-            // read every line, except the first
+            String personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
+            var reader = new StreamReader(File.OpenRead(personFile)); // Read PERSONS csv
+            int lastYear = DateTime.Today.AddYears(-1).Year; // Most previous year
+
+            // Read every line, except the first
             Boolean firstLine = true;
 
+            // Define age ranges
+            // Current format is: 10-19, 20-29, and so on until 99
+            List<AgeRange> ageRanges = new List<AgeRange>();
+
+            for (int i = 10; i < 100; i += 10)
+            {
+                ageRanges.Add(new AgeRange(i, i + 9));
+            }
+
+            int j = 0;
             while (!reader.EndOfStream)
             {
                 if (firstLine)
@@ -379,21 +395,108 @@ namespace WebRole1
                 }
                 else
                 {
+                    j++;
+                    Trace.TraceInformation("" + j);
                     String[] line = reader.ReadLine().Split(',');
-                    String type = line[19];
-                    String age = line[23];
-                    String year = line[30].Split('/')[2];
-
-                    // If there is no missing information and the person is a driver
-                    if (!type.Equals("") && !age.Equals("") && !year.Equals("") && type.Equals("5"))
+                    String type = line[19]; // type of participant (driver)
+                    String age = line[23]; // person age
+                    String year = line[30].Substring(line[30].Length - 4);//line[30].Split('/')[2]; // year of collision
+                    
+                    // If there is no missing information
+                    if (!type.Equals("") && !age.Equals("") && !year.Equals("") )
                     {
-                        // Distribute frequencies into decades, decide how to get top 4
+                        int numAge = Convert.ToInt32(age);
+                        int numYear = Convert.ToInt32(year);
+
+                        //The person is a driver, and the recorded date is between last year and 5 years ago inclusive
+                        if (type.Equals("5") && numYear <= lastYear && numYear >= lastYear - 4) 
+                        {
+                            // Find first appropriate age range
+                            for (int i = 0; i < ageRanges.Count; i++) 
+                            {
+                                AgeRange range = ageRanges[i];
+                                if (numAge > range.getMinimumAge() && numAge < range.getMaximumAge())
+                                {
+                                    range.AddCollision(numYear);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
 
+            // Sort age ranges based on amount of crashes in most recent year
+            // Top 4 will be saved into JSON
+            ageRanges.Sort();
+
+
+            
             chart = "";
             spark = "";
         }
+
+        // An implementation of an age range of drivers involved in serious/fatal
+        // collisions over a certain span of years
+        private class AgeRange : IComparable
+        {
+            // Human readable title for age range in the format "xx - yy"
+            private String plainTextTitle;
+
+            // Minimum age that can be included in this range
+            private int minimumAge;
+
+            // Maximum age that can be included in this range
+            private int maximumAge;
+
+            // Relationship of serious/fatal collisions this age range is responsible for
+            public SortedDictionary<int, int> collisionsPerYear;
+            
+            public AgeRange(int min, int max)
+            {
+                minimumAge = min;
+                maximumAge = max;
+                plainTextTitle = min + " - " + max;
+                collisionsPerYear = new SortedDictionary<int, int>();
+            }
+
+            public String getTitle() { return plainTextTitle; }
+
+            public int getMinimumAge() { return minimumAge; }
+
+            public int getMaximumAge() { return maximumAge; }
+
+            public void AddCollision(int year)
+            {
+                if (!collisionsPerYear.ContainsKey(year))
+                {
+                    collisionsPerYear.Add(year, 1);
+                }
+                else
+                {
+                    collisionsPerYear[year] += 1;
+                }
+            }
+
+            // Returns 1 if this age range has more collisions in the most recent year,
+            // returns 0 if the amount is the same, -1 if less
+            public int CompareTo(object otherRange)
+            {
+                int thisCollisions = collisionsPerYear.Values.Last();
+                int otherCollisions = ((AgeRange) otherRange).collisionsPerYear.Values.Last();
+
+                if (thisCollisions > otherCollisions) { return 1; }
+                else if (thisCollisions < otherCollisions) { return -1; }
+                else { return 0; }
+            }
+        }
     }
-}
+} 
+
+// Top 4 age decades in terms of fatal/serious collisions last year, with statistics of the year before and a spark line of the last 5 years
+// Get dynamic last year
+// Create 10 decades of age ranges
+// 10-19, 20-29, 30-39, 40-49, 50-59 ,60-69, 70-79, 80-89, 90-99
+// For every driver, add them to the age range if it's between last year and 5 years ago
+// Determine 4 highest frequency age ranges
+// Export to JSON and JSON spark
