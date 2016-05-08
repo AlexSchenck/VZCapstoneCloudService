@@ -1,6 +1,1 @@
-[
-  {"title":"16 - 25","ranges":[0, 10],"measures":[5],"markers":[2]},
-  {"title":"26 - 40","ranges":[0, 10],"measures":[4],"markers":[5]},
-  {"title":"70+","ranges":[0, 10],"measures":[2],"markers":[1]},
-  {"title":"50 - 60","ranges":[0, 10],"measures":[1],"markers":[2]}
-]
+[{"title":"20 - 29","ranges":[0,4000],"measures":[1266],"markers":[3623]},{"title":"10 - 19","ranges":[0,4000],"measures":[910],"markers":[2593]},{"title":"30 - 39","ranges":[0,4000],"measures":[719],"markers":[1855]},{"title":"40 - 49","ranges":[0,4000],"measures":[488],"markers":[1222]}]

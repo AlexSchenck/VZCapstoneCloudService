@@ -53,7 +53,7 @@ namespace WebRole1
             CloudTable collisionDataTable = tableClient.GetTableReference("dashboarddata");
             collisionDataTable.CreateIfNotExists();
 
-            // Delete old entity, then add
+            // Delete old Progress Bar data, add new
             TableQuery<TableEntity> query = new TableQuery<TableEntity>()
                 .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "progress"));
             foreach(TableEntity entity in collisionDataTable.ExecuteQuery(query))
@@ -66,7 +66,7 @@ namespace WebRole1
             TableOperation to = TableOperation.Insert(te);
             collisionDataTable.Execute(to);
 
-            // Delete old entity, then add
+            // Delete old Stacked Bar Chart data, add new
             query = new TableQuery<TableEntity>()
                 .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "stacked"));
             foreach (TableEntity entity in collisionDataTable.ExecuteQuery(query))
@@ -76,6 +76,19 @@ namespace WebRole1
             }
 
             te = new TableEntity("stacked", stacked);
+            to = TableOperation.Insert(te);
+            collisionDataTable.Execute(to);
+
+            // Delete old Age Chart data, add new
+            query = new TableQuery<TableEntity>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "age"));
+            foreach (TableEntity entity in collisionDataTable.ExecuteQuery(query))
+            {
+                TableOperation op = TableOperation.Delete(entity);
+                collisionDataTable.Execute(op);
+            }
+
+            te = new TableEntity("age", age);
             to = TableOperation.Insert(te);
             collisionDataTable.Execute(to);
 
@@ -233,7 +246,6 @@ namespace WebRole1
                 foreach (JObject jo in jsonObjects)
                 {
                     jo.Remove("sdot_colcode");
-                    jo.Remove("coldetkey");
                     jo.Remove("sdotcolnum");
                     jo.Remove("st_colcode");
                     jo.Remove("inckey");
@@ -385,7 +397,6 @@ namespace WebRole1
                 ageRanges.Add(new AgeRange(i, i + 9));
             }
 
-            int j = 0;
             while (!reader.EndOfStream)
             {
                 if (firstLine)
@@ -395,24 +406,23 @@ namespace WebRole1
                 }
                 else
                 {
-                    j++;
-                    Trace.TraceInformation("" + j);
                     String[] line = reader.ReadLine().Split(',');
                     String type = line[19]; // type of participant (driver)
                     String age = line[23]; // person age
-                    String year = line[30].Substring(line[30].Length - 4);//line[30].Split('/')[2]; // year of collision
+                    String year = line[30].Substring(line[30].Length - 4); // year of collision
                     
                     // If there is no missing information
-                    if (!type.Equals("") && !age.Equals("") && !year.Equals("") )
+                    if (type != String.Empty && age != String.Empty && year != String.Empty)
                     {
+                        int numType = Convert.ToInt32(type);
                         int numAge = Convert.ToInt32(age);
                         int numYear = Convert.ToInt32(year);
 
                         //The person is a driver, and the recorded date is between last year and 5 years ago inclusive
-                        if (type.Equals("5") && numYear <= lastYear && numYear >= lastYear - 4) 
+                        if (numType == 6 && numYear <= lastYear && numYear >= lastYear - 4)
                         {
                             // Find first appropriate age range
-                            for (int i = 0; i < ageRanges.Count; i++) 
+                            for (int i = 0; i < ageRanges.Count; i++)
                             {
                                 AgeRange range = ageRanges[i];
                                 if (numAge > range.getMinimumAge() && numAge < range.getMaximumAge())
@@ -430,9 +440,24 @@ namespace WebRole1
             // Top 4 will be saved into JSON
             ageRanges.Sort();
 
+            List<JObject> ageList = new List<JObject>();
 
-            
-            chart = "";
+            for (int i = 0; i < 4; i++)
+            {
+                AgeRange range = ageRanges[i];
+
+                JObject newJ = JObject.FromObject(new
+                {
+                    title = range.getTitle(),
+                    ranges = new int[] { 0, 4000 },
+                    measures = new int[] { range.collisionsPerYear.Values.Last() },
+                    markers = new int[] { range.collisionsPerYear.Values.Reverse().Skip(1).First() }
+                });
+
+                ageList.Add(newJ);
+            }
+
+            chart = JsonConvert.SerializeObject(ageList);
             spark = "";
         }
 
@@ -485,18 +510,10 @@ namespace WebRole1
                 int thisCollisions = collisionsPerYear.Values.Last();
                 int otherCollisions = ((AgeRange) otherRange).collisionsPerYear.Values.Last();
 
-                if (thisCollisions > otherCollisions) { return 1; }
-                else if (thisCollisions < otherCollisions) { return -1; }
+                if (thisCollisions > otherCollisions) { return -1; }
+                else if (thisCollisions < otherCollisions) { return 1; }
                 else { return 0; }
             }
         }
     }
-} 
-
-// Top 4 age decades in terms of fatal/serious collisions last year, with statistics of the year before and a spark line of the last 5 years
-// Get dynamic last year
-// Create 10 decades of age ranges
-// 10-19, 20-29, 30-39, 40-49, 50-59 ,60-69, 70-79, 80-89, 90-99
-// For every driver, add them to the age range if it's between last year and 5 years ago
-// Determine 4 highest frequency age ranges
-// Export to JSON and JSON spark
+}
