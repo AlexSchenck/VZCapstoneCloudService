@@ -27,7 +27,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 
 	//Set up scales
 	var xScale = d3.time.scale()
-    	.domain([new Date(2010, 0, 1), new Date(2015, 0, 1)])
+    	.domain([new Date(2004, 0, 1), new Date(2015, 0, 1)])
 		.rangeRound([0, w-padding.left-padding.right]);
 
 	var yScale = d3.scale.linear()
@@ -56,8 +56,11 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	//Create SVG element
 	var svg = d3.select("#stackedBarChart")
 				.append("svg")
-				.attr("width", w)
-				.attr("height", h);
+				// .attr("width", w)
+				// .attr("height", h)
+	    		.attr("preserveAspectRatio", "xMinYMin meet")
+				.attr("viewBox", "0 0 " + w + " " + h)
+				.classed("svg-content", true); 
 
 	// Add a group for each row of data
 	var groups = svg.selectAll("g")
@@ -101,17 +104,26 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.on('mouseover', mouseOverStackedBar)
 	  	.on('mouseout', mouseOutStackedBar);
 
-	svg.append("g")
-		.attr("class","x axis")
-		// adds x axis and moves to correct height
-		.attr("transform","translate(" + 44 + "," + (h - padding.bottom) + ")")
-		.call(xAxis)
-	  .selectAll("text")
-	    .attr("y", 0)
-	    .attr("x", 9)
-	    .attr("dy", ".35em")
-	    .attr("transform", "rotate(90)")
-	    .style("text-anchor", "start");
+	// svg.append("g")
+	// 	.attr("class","x axis")
+	// 	// adds x axis and moves to correct height
+	// 	.attr("transform","translate(" + (padding.left + 5) + "," + (h - padding.bottom) + ")")
+	// 	.call(xAxis)
+	//   .selectAll("text")
+	//     .attr("y", 0)
+	//     .attr("x", 9)
+	//     .attr("dy", ".35em")
+	//     .attr("transform", "rotate(90)")
+	//     .style("text-anchor", "start");
+
+	svg.append("g") 	
+	.attr("class","x axis")
+	// adds x axis and moves to correct height
+	.attr("transform","translate(" + (padding.left + 5)+ "," + (h - padding.bottom) + ")")
+	.call(xAxis)
+  .selectAll("text")
+    .style("text-anchor", "middle");
+
 
 	svg.append("g")
 		.attr("class","y axis")
@@ -161,17 +173,12 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	   .attr("y",h - 5)
 	   .attr("text-anchor","middle")
 	   .text("Year");
-
-	// svg.append("text")
-	//     .attr("class","title")
-	//     .attr("x", (w /3 ))             
-	//     .attr("y", 20)
-	//     .attr("text-anchor", "middle")  
-	//     .style("font-size", "16px") 
-	//     .text("Serious Injury and Fatal Collisions");
-
 });
 
+
+
+
+// bar hovering stuff
 var previousBarColor;
 
 var mouseOverStackedBar = function() {

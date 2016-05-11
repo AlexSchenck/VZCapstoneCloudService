@@ -20,10 +20,12 @@
 			<div id="top">
 				<div class="currentYear" id="topLeft">
 					<h1>Fatal Collisions in 2016</h1>
+					<h2>Running total of collisions in 2016 so far</h2>
 					<p>17</p>
 				</div>
 				<div class="currentYear" id="topRight">
 					<h1>Vision Zero's Goal by 2030</h1>
+					<h2>Collisions involving fatalies or serious injuries</h2>
 					<p>0</p>
 				</div>
 			</div>
@@ -50,7 +52,7 @@
 			<div class="section">
 				<h1>Collisions by Age</h1>
 				<h2>Collisions ordered by driver responsible for collisions resulting in a fatality or serious injury.</h2>
-				<div id="age"></div>
+				<div id="age" class="svg-container"></div>
 				<h3>Last 5 years</h3>
 		        <div id="ageSparkId">
 					<div id="ageSpark1"></div>
@@ -65,7 +67,7 @@
 			<div class="section">
 				<h1>Serious Injury and Fatal Collisions</h1>
 				<h2>Breakdown of collisions resulting in fatalities or serious injuries by type of individual involved.</h2>
-				<div id="stackedBarChart"></div>
+				<div id="stackedBarChart" class="svg-container"></div>
 			</div>
 
 			<div class="section">
@@ -81,13 +83,6 @@
 				</div>
 			</div>
 		</div>
-
-
-		<!-- <div class="svg-container">
-			<svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" class="svg-content">
-			<circle fill="#F7941E" stroke="#231F20" stroke-width="10" stroke-miterlimit="10" cx="250" cy="250" r="200" opacity="0.6" />
-			</svg>
-		</div> -->
 
 	
 		<script src="Scripts/stackedBarChart.js"></script>

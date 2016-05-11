@@ -26,7 +26,10 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 	.enter().append("svg")
 	  	.attr("class", "bullet")
 	  	.attr("width", width + margin.left + margin.right)
-	  	.attr("height", height + margin.top + margin.bottom);
+        .attr("height", height + margin.top + margin.bottom);
+        // .attr("preserveAspectRatio", "xMinYMin meet")
+        // .attr("viewBox", "0 0 " + 300 + " " + 40)
+        // .classed("svg-content", true); 
 	
 	// adds the title to the left side of each bullet chart
   	var titles = svg.append("g")

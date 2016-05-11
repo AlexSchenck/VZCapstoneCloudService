@@ -13,7 +13,7 @@ var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
 
-var paddingProgress = {top: 40, right: 40, bottom: 60, left:40};
+var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
 var widthProgress = outerW * .55;
 var heightProgress = outerH * .35;
 
@@ -25,13 +25,13 @@ var xAxis = d3.svg.axis()
 				.scale(xScale)
 			    .tickFormat(d3.format("d"));	
 
-var svgWidth = widthProgress + paddingProgress.left + paddingProgress.right;
-var svgHeight = heightProgress + paddingProgress.top + paddingProgress.bottom;
+var svgWidth = widthProgress;
+var svgHeight = heightProgress + paddingProgress.top;
 
 var svg = d3.select("#progress")
 			.append("svg")
-    		.attr("width", svgWidth)
-    		.attr("height", svgHeight)
+    		// .attr("width", svgWidth)
+    		// .attr("height", svgHeight)
     		.attr("preserveAspectRatio", "xMinYMin meet")
 			.attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
 			.classed("svg-content", true); 
@@ -54,16 +54,14 @@ d3.json("./Data/progress.json", function(error, result) {
 	start = data[0].y;
 
 
+	// coerce the data given into integers
 	data.forEach(function(d) {
 	    d.date = +d.date;
 	    d.y = +d.y;
 	});
 
-
-	console.log(data[0].year);
-
 	var max = d3.max(data, function(d) { return d.y; });
-	console.log(max);
+	// console.log(max);
 	yScale = d3.scale.linear()
 		.domain([0, max + 5])
  		.range([heightProgress - paddingProgress.bottom - paddingProgress.top, -20]);
@@ -100,7 +98,7 @@ d3.json("./Data/progress.json", function(error, result) {
 	  	.on('mouseout', mouseOut);
 
 
-	//draws target line based off of starting value 
+	//draws target line based off of starting value in 2004
 	var targetLine = [{ "y": start, "year": 2004 },{ "y": 0, "year": 2030 }];
 	svg.append('path')
 	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
@@ -108,4 +106,19 @@ d3.json("./Data/progress.json", function(error, result) {
 	  	.attr('stroke', 'grey')
 	  	.attr('stroke-width', 2)
 	  	.attr('fill', 'none');
+
+	// adding in titles and axis labels
+	svg.append("text")
+		.attr("transform","rotate(-90)")
+		.attr("x", 0- svgHeight / 2 - 40)
+		.attr("y", -3)
+		.attr("dy","1em")
+		.text("Number of Collisions");
+
+	svg.append("text")
+	   .attr("class","xtext")
+	   .attr("x", svgWidth / 2)
+	   .attr("y", svgHeight - paddingProgress.bottom)
+	   .attr("text-anchor","middle")
+	   .text("Year");
 })
