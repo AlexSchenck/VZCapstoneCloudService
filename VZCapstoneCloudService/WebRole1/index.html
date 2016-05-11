@@ -16,31 +16,40 @@
 	<body>
 		<iframe id="header" src="Views/header.html" frameBorder="0"></iframe>
 
+		
+		<!-- just put in p tags here and center them instead of using d3!-->
+		<div id="full"> 
+			<div id="top">
+				<div class="currentYear">
+					<h1>Fatal Collisions in 2016</h1>
+					<div id="currentFatal"></div>
+				</div>
+				<div class="currentYear">
+					<h1>Vision Zero's Goal by 2030</h1>
+					<div id="goal"></div>
+				</div>
+			</div>
+
+		
+
+			<div id="bottom">
+				<div class="currentYear">
+					<h1>Pedestrians who survive being hit by a vehicle</h1>
+					<div id="ped"></div>
+				</div>
+				<div class="currentYear">
+					<h1>Cyclists who survive being hit by a vehicle</h1>
+					<div id="cycle"></div>
+				</div>
+			</div>
+		</div>
+		
 		<div class="progressSection">
 			<h1>Vision Zero Progress</h1>
 			<div id="progress"></div>
 		</div>
-
-		<!-- just put in p tags here and center them instead of using d3!-->
-		<div class="currentYear">
-			<h1>Fatal Collisions in 2016</h1>
-			<div id="currentFatal"></div>
-		</div>
-		<div class="currentYear">
-			<h1>Vision Zero's Goal by 2030</h1>
-			<div id="goal"></div>
-		</div>
-
-		<div class="currentYear">
-			<h1>Pedestrians who survive being hit by a vehicle</h1>
-			<div id="ped"></div>
-		</div>
-		<div class="currentYear">
-			<h1>Cyclists who survive being hit by a vehicle</h1>
-			<div id="cycle"></div>
-		</div>
-
-		<div id="middle">
+	
+		<!-- <div id="middle">
 			<div class="section">
 				<h1>Collisions by Age</h1>
 
@@ -72,7 +81,7 @@
 					<div id="contributingFactors4"></div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 	
 		<script src="Scripts/stackedBarChart.js"></script>
