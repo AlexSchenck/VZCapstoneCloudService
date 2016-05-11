@@ -130,33 +130,56 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.attr("transform","translate(" + padding.left + "," + padding.top + ")")
 		.call(yAxis);
 
-	var legend = svg.append("g")
-		.attr("class","legend")
-		.attr("x", w - padding.right - 65)
-		.attr("y", 25)
-		.attr("height", 80)
-		.attr("width",80);
+	// var legend = svg.append("g")
+	// 	.attr("class","legend")
+	// 	.attr("x", w - padding.right - 65)
+	// 	.attr("y", 25)
+	// 	.attr("height", 80)
+	// 	.attr("width",80);
 
-	legend.selectAll("g").data(dataset)
-	  .enter()
-	  .append('g')
-	  .each(function(d,i){
-	  	var g = d3.select(this);
-	  	g.append("rect")
-	  		.attr("x", w - padding.right - 30)
-	  		.attr("y", i*25 + 3)
-	  		.attr("width", 7)
-	  		.attr("height",7)
-	  		.style("fill",color_hash[String(i)][1]);
+	// legend.selectAll("g").data(dataset)
+	//   .enter()
+	//   .append('g')
+	//   .each(function(d,i){
+	//   	var g = d3.select(this);
+	//   	g.append("rect")
+	//   		.attr("x", w - padding.right - 30)
+	//   		.attr("y", i*25 + 3)
+	//   		.attr("width", 7)
+	//   		.attr("height",7)
+	//   		.style("fill",color_hash[String(i)][1]);
 
-	  	g.append("text")
-	  	 .attr("x", w - padding.right - 15)
-	  	 .attr("y", i*25 + 12)
-	  	 .attr("height",30)
-	  	 .attr("width",100)
-	  	 .style("fill",color_hash[String(i)][1])
-	  	 .text(color_hash[String(i)][0]);
-	});
+	//   	g.append("text")
+	//   	 .attr("x", w - padding.right - 15)
+	//   	 .attr("y", i*25 + 12)
+	//   	 .attr("height",30)
+	//   	 .attr("width",100)
+	//   	 .style("fill",color_hash[String(i)][1])
+	//   	 .text(color_hash[String(i)][0]);
+	// });
+
+	var sizeOfLegendIcons = 25;
+
+	svg.append("svg:image")
+		.attr("xlink:href", "./Images/car-trip.svg")
+		.attr("x", padding.left / 2)
+        .attr("y", h - sizeOfLegendIcons)
+        .attr("width", sizeOfLegendIcons)
+        .attr("height", sizeOfLegendIcons); 
+
+	svg.append("svg:image")
+		.attr("xlink:href", "./Images/bicycle.svg")
+		.attr("x", padding.left / 2 + 35)
+        .attr("y", h - sizeOfLegendIcons)
+        .attr("width", sizeOfLegendIcons)
+        .attr("height", sizeOfLegendIcons); 
+
+	svg.append("svg:image")
+		.attr("xlink:href", "./Images/pedestrian-walking.svg")
+		.attr("x", padding.left / 2 + 65)
+        .attr("y", h - sizeOfLegendIcons)
+        .attr("width", sizeOfLegendIcons)
+        .attr("height", sizeOfLegendIcons); 
 
 
 	// adding in titles and axis labels
