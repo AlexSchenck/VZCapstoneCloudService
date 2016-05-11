@@ -9,50 +9,95 @@ html, body {
 	width: 100%;
 	height:100px;
 }
-/*
-.section {
-	display: inline-block;
-	width: 400px;
-}*/
 
 body {
 	background-color: rgba(99, 102, 106, .05);
 }
 
-
+/*each section is for the bottom 3 charts*/
 .section {
-	width: 30.2%;
-	height: 35%;
+	width: 31%;
+	height: 37%;
 	float: left;
 }
 
-/*
-#progress svg {
-	width: 120%;
-}
-*/
-.progressSection {
-	width: 54.6%;
-	height: 41.25%;
+/* top right 4 squares total area*/
+#full {
+	/*don't touch*/
+	height: 43%;
+	width: 42%;
 	float: left;
+	/*don't touch. this is for the top right section size/positioning overall*/
+	margin-left: 1%;
+	margin-top: 1%;
+}
+
+/*progress chart*/
+.progressSection {
+	/*don't touch*/
+	width: 54%;
+	height: 43%;
+	float: right;
 	
 }
 
-.currentYear {
-	width: 18%;
-	height: 18%;
-	float: left;
+/*technically the bottom section*/
+#middle {
+	/* so that the bottom section is on it's own line*/
+	clear: both;
 }
 
-.section, .progressSection, .currentYear {
-	padding: 12px;
-	margin: 11px;
+/*for each of the 4 boxes*/
+.currentYear {
+	float: left;
+	width: 47%;
+	height: 46.8%;
+
+
+	padding: 1%;
+	/*margin: 2.25%;*/
 	background-color: #ffffff;
 	border-radius: 2px;
 
 	-moz-box-shadow: 0 0 3px #ccc;
 	-webkit-box-shadow: 0 0 3px #ccc;
 	box-shadow: 0 0 3px #ccc;
+}
+
+/*positioning styling for 4 boxes*/
+#topLeft { 
+	margin-bottom: 2%;
+	margin-right: 2%;
+}
+
+#bottomRight {
+	margin-left: 2%;
+}
+
+#bottom {
+	clear: both;
+}
+
+#top .currentYear, #bottom .currentYear {
+	float: left;
+}
+
+/* styling for each box, border and padding */
+.section, .progressSection {
+	padding: .5%;
+	margin-left: 1%;
+	margin-top: 1%;
+	background-color: #ffffff;
+	border-radius: 2px;
+
+	-moz-box-shadow: 0 0 3px #ccc;
+	-webkit-box-shadow: 0 0 3px #ccc;
+	box-shadow: 0 0 3px #ccc;
+}
+
+.progressSection {
+		/*don't touch*/
+	margin-right: 1%;
 }
 
 h1 {
@@ -76,6 +121,7 @@ h3 {
 	font-size: 60px;
 }
 
-#currentFatal {
+p {
 	text-align: center;
+	font-size: 45px;
 }
