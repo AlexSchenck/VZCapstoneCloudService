@@ -14,13 +14,14 @@ body {
 	background-color: rgba(99, 102, 106, .05);
 }
 
-
+/*each section is for the bottom 3 charts*/
 .section {
 	width: 31%;
 	height: 37%;
 	float: left;
 }
 
+/* top right 4 squares total area*/
 #full {
 	/*don't touch*/
 	height: 43%;
@@ -31,6 +32,7 @@ body {
 	margin-top: 1%;
 }
 
+/*progress chart*/
 .progressSection {
 	/*don't touch*/
 	width: 54%;
@@ -39,14 +41,14 @@ body {
 	
 }
 
+/*technically the bottom section*/
 #middle {
 	/* so that the bottom section is on it's own line*/
 	clear: both;
 }
 
+/*for each of the 4 boxes*/
 .currentYear {
-	/*width: 18%;
-	height: 18%;*/
 	float: left;
 	width: 47%;
 	height: 46.8%;
@@ -62,6 +64,7 @@ body {
 	box-shadow: 0 0 3px #ccc;
 }
 
+/*positioning styling for 4 boxes*/
 #topLeft { 
 	margin-bottom: 2%;
 	margin-right: 2%;
@@ -79,8 +82,8 @@ body {
 	float: left;
 }
 
+/* styling for each box, border and padding */
 .section, .progressSection {
-
 	padding: .5%;
 	margin-left: 1%;
 	margin-top: 1%;
@@ -96,12 +99,6 @@ body {
 		/*don't touch*/
 	margin-right: 1%;
 }
-
-
-
-
-
-
 
 h1 {
 	font-size: 20px;
@@ -124,6 +121,7 @@ h3 {
 	font-size: 60px;
 }
 
-#currentFatal {
+p {
 	text-align: center;
+	font-size: 45px;
 }
