@@ -30,8 +30,7 @@ namespace WebRole1
         {   
             // Final JSON list of collisions as string
             Trace.TraceInformation("Started data get");
-            //String collisions = getAllCollisions();
-            String collisions = "";
+            String collisions = getAllCollisions();
 
             Trace.TraceInformation("Started progress");
             //String progress = getProgressChartJSON(String.Copy(collisions));
@@ -43,8 +42,9 @@ namespace WebRole1
 
             Trace.TraceInformation("Started age");
             String age = "", ageSpark = "";
-            getAgeChartJSON(out age, out ageSpark);
+            getAgeChartJSON(collisions, out age, out ageSpark);
 
+            /*
             Trace.TraceInformation("Started table entry");
             // Save to dashboard table
             String connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
@@ -91,6 +91,11 @@ namespace WebRole1
             te = new TableEntity("age", age);
             to = TableOperation.Insert(te);
             collisionDataTable.Execute(to);
+            */
+
+            // Write age information to file
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
 
             // Create age JSON, age spark JSON
             // Create contributing factors JSON, contributing factors spark JSON
@@ -232,7 +237,7 @@ namespace WebRole1
             return result + "]";
         }
 
-        // Returns collision JSON string to list of JObjects
+        // Returns collision JSON string as list of JObjects
         // and removes all "unnecessary" fields if flag is true
         private List<JObject> convertToList(String collisionJSON, Boolean clean)
         {
@@ -268,6 +273,22 @@ namespace WebRole1
             }
         }
 
+        // Returns collision JSON string as a Dictionary with "coldetkey" as int key
+        // and the corresponding JObject as the value
+        // Removes all "unnecessary" fields if flag is true
+        private Dictionary<String, JObject> convertToDictionary(String collisionJSON, Boolean clean)
+        {
+            Dictionary<String, JObject> result = new Dictionary<String,JObject>();
+            List<JObject> JObjects = convertToList(collisionJSON, clean);
+
+            foreach (JObject jo in JObjects)
+            {
+                result.Add((String)jo.GetValue("coldetkey"), jo);
+            }
+
+            return result;
+        }
+
         // Creates and returns JSON for use in VZ progress chart
         private String getProgressChartJSON(String collisionJSON)
         {
@@ -279,15 +300,13 @@ namespace WebRole1
             // For each collision find year
             // If there's a fatality, update dictionary for that year key
             foreach (JObject jo in objects)
-            {
-                int fatalities = (int)jo.GetValue("fatalities");
-                int seriousinjuries = (int)jo.GetValue("seriousinjuries");
-                
+            {   
                 // Add to dictionary if there is one or more fatalities
-                if (fatalities > 0 || seriousinjuries > 0)
+                if (collisionIsSeriousOrFatal(jo))
                 {
-                    String date = (String)jo.GetValue("incdttm");
-                    int year = Convert.ToInt32(date.Split('/')[2].Substring(0, 4));
+                    int fatalities = (int)jo.GetValue("fatalities");
+                    int seriousinjuries = (int)jo.GetValue("seriousinjuries");
+                    int year = Convert.ToInt32(getCollisionYear(jo));
 
                     // Year not yet found, add new key with value of "fatalities"
                     if (!fatalitiesPerYear.ContainsKey(year))
@@ -331,10 +350,9 @@ namespace WebRole1
             // involved for that year
             foreach (JObject jo in objects)
             {
-                if ((int)jo.GetValue("fatalities") > 0 || (int)jo.GetValue("seriousinjuries") > 0)
+                if (collisionIsSeriousOrFatal(jo))
                 {
-                    String date = (String)jo.GetValue("incdttm");
-                    String year = date.Split('/')[2].Substring(0, 4);
+                    String year = getCollisionYear(jo);
 
                     AddCountToSortedDictionary(peds, year, (int)jo.GetValue("pedcount"));
                     AddCountToSortedDictionary(bicycles, year, (int)jo.GetValue("pedcylcount"));
@@ -379,11 +397,12 @@ namespace WebRole1
             return result;
         }
 
-        private void getAgeChartJSON(out String chart, out String spark)
+        private void getAgeChartJSON(String collisionJSON, out String chart, out String spark)
         {
             String personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
             var reader = new StreamReader(File.OpenRead(personFile)); // Read PERSONS csv
             int lastYear = DateTime.Today.AddYears(-1).Year; // Most previous year
+            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON, true);
 
             // Read every line, except the first
             Boolean firstLine = true;
@@ -409,17 +428,21 @@ namespace WebRole1
                     String[] line = reader.ReadLine().Split(',');
                     String type = line[19]; // type of participant (driver)
                     String age = line[23]; // person age
-                    String year = line[30].Substring(line[30].Length - 4); // year of collision
-                    
-                    // If there is no missing information
-                    if (type != String.Empty && age != String.Empty && year != String.Empty)
+                    String collisionKey = line[12]; // key tieing this person to a certain collision
+                    JObject collision; // corresponding collision object
+
+                    // If there is no missing information, collision key exists
+                    if (type != String.Empty && age != String.Empty && collisionKey != String.Empty 
+                        && collisions.TryGetValue(collisionKey, out collision))
                     {
                         int numType = Convert.ToInt32(type);
                         int numAge = Convert.ToInt32(age);
-                        int numYear = Convert.ToInt32(year);
+                        int numYear = Convert.ToInt32(getCollisionYear(collision));
 
-                        //The person is a driver, and the recorded date is between last year and 5 years ago inclusive
-                        if (numType == 6 && numYear <= lastYear && numYear >= lastYear - 4)
+                        // The person is a driver, the recorded date is between last year and 5 years ago inclusive,
+                        // and the collision is serious/fatal
+                        if (numType == 5 && numYear <= lastYear && numYear >= lastYear - 4
+                            && collisionIsSeriousOrFatal(collision))
                         {
                             // Find first appropriate age range
                             for (int i = 0; i < ageRanges.Count; i++)
@@ -440,7 +463,25 @@ namespace WebRole1
             // Top 4 will be saved into JSON
             ageRanges.Sort();
 
+            // Find upper bound
+            int max = -1;
+
+            for (int i = 0; i < 4; i++)
+            {
+                AgeRange range = ageRanges[i];
+
+                // last year
+                int num1 = range.collisionsPerYear.Values.Last();
+
+                // the year before
+                int num2 = range.collisionsPerYear.Values.Reverse().Skip(1).First();
+
+                max = Math.Max(max, Math.Max(num1, num2));
+            }
+            
+            // Construct JSON for age chart
             List<JObject> ageList = new List<JObject>();
+            List<JArray> sparkList = new List<JArray>();
 
             for (int i = 0; i < 4; i++)
             {
@@ -449,16 +490,45 @@ namespace WebRole1
                 JObject newJ = JObject.FromObject(new
                 {
                     title = range.getTitle(),
-                    ranges = new int[] { 0, 4000 },
+                    ranges = new int[] { 0, max + 5 },
                     measures = new int[] { range.collisionsPerYear.Values.Last() },
                     markers = new int[] { range.collisionsPerYear.Values.Reverse().Skip(1).First() }
                 });
 
+                JArray newJarray = new JArray();
+
+                for (int j = lastYear - 4; j < lastYear + 1; j++)
+                {
+                    newJarray.Add(JObject.FromObject(new
+                    {
+                        date = j,
+                        yValue = range.collisionsPerYear[j]
+                    }));
+
+                    
+                }
+
                 ageList.Add(newJ);
+                sparkList.Add(newJarray);
             }
 
             chart = JsonConvert.SerializeObject(ageList);
-            spark = "";
+            spark = JsonConvert.SerializeObject(sparkList);
+        }
+
+        // Returns true if given JObject representing a collision
+        // contains a serious injury or fatality
+        private Boolean collisionIsSeriousOrFatal(JObject collision)
+        {
+            return (int)collision.GetValue("fatalities") > 0 
+                || (int)collision.GetValue("seriousinjuries") > 0;
+        }
+
+        // Returns String year of collision from collision JObject
+        private String getCollisionYear(JObject collision)
+        {
+            String date = (String)collision.GetValue("incdttm");
+            return date.Split('/')[2].Substring(0, 4);
         }
 
         // An implementation of an age range of drivers involved in serious/fatal
