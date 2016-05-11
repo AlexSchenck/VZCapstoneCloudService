@@ -34,15 +34,19 @@ namespace WebRole1
 
             Trace.TraceInformation("Started progress");
             //String progress = getProgressChartJSON(String.Copy(collisions));
-            String progress = "";
+            //String progress = "";
 
             Trace.TraceInformation("Started stacked");
             //String stacked = getStackedBarChartJSON(String.Copy(collisions));
-            String stacked = "";
+            //String stacked = "";
 
             Trace.TraceInformation("Started age");
-            String age = "", ageSpark = "";
-            getAgeChartJSON(collisions, out age, out ageSpark);
+            //String age = "", ageSpark = "";
+            //getAgeChartJSON(collisions, out age, out ageSpark);
+
+            Trace.TraceInformation("Start contributing factors");
+            String factors = "", factorsSpark = "";
+            getContributingFactorsChartJSON(collisions, out factors, out factorsSpark);
 
             /*
             Trace.TraceInformation("Started table entry");
@@ -94,8 +98,10 @@ namespace WebRole1
             */
 
             // Write age information to file
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
+            //System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
+            //System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactors.json"), factors);
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactorsSpark.json"), factorsSpark);
 
             // Create age JSON, age spark JSON
             // Create contributing factors JSON, contributing factors spark JSON
@@ -404,9 +410,6 @@ namespace WebRole1
             int lastYear = DateTime.Today.AddYears(-1).Year; // Most previous year
             Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON, true);
 
-            // Read every line, except the first
-            Boolean firstLine = true;
-
             // Define age ranges
             // Current format is: 10-19, 20-29, and so on until 99
             List<AgeRange> ageRanges = new List<AgeRange>();
@@ -416,43 +419,38 @@ namespace WebRole1
                 ageRanges.Add(new AgeRange(i, i + 9));
             }
 
+            // Read every line, except the first
+            reader.ReadLine();
+
             while (!reader.EndOfStream)
             {
-                if (firstLine)
-                {
-                    reader.ReadLine();
-                    firstLine = false;
-                }
-                else
-                {
-                    String[] line = reader.ReadLine().Split(',');
-                    String type = line[19]; // type of participant (driver)
-                    String age = line[23]; // person age
-                    String collisionKey = line[12]; // key tieing this person to a certain collision
-                    JObject collision; // corresponding collision object
+                String[] line = reader.ReadLine().Split(',');
+                String type = line[19]; // type of participant (driver)
+                String age = line[23]; // person age
+                String collisionKey = line[12]; // key tieing this person to a certain collision
+                JObject collision; // corresponding collision object
 
-                    // If there is no missing information, collision key exists
-                    if (type != String.Empty && age != String.Empty && collisionKey != String.Empty 
-                        && collisions.TryGetValue(collisionKey, out collision))
+                // If there is no missing information, collision key exists
+                if (type != String.Empty && age != String.Empty && collisionKey != String.Empty 
+                    && collisions.TryGetValue(collisionKey, out collision))
+                {
+                    int numType = Convert.ToInt32(type);
+                    int numAge = Convert.ToInt32(age);
+                    int numYear = Convert.ToInt32(getCollisionYear(collision));
+
+                    // The person is a driver, the recorded date is between last year and 5 years ago inclusive,
+                    // and the collision is serious/fatal
+                    if (numType == 5 && numYear <= lastYear && numYear >= lastYear - 4
+                        && collisionIsSeriousOrFatal(collision))
                     {
-                        int numType = Convert.ToInt32(type);
-                        int numAge = Convert.ToInt32(age);
-                        int numYear = Convert.ToInt32(getCollisionYear(collision));
-
-                        // The person is a driver, the recorded date is between last year and 5 years ago inclusive,
-                        // and the collision is serious/fatal
-                        if (numType == 5 && numYear <= lastYear && numYear >= lastYear - 4
-                            && collisionIsSeriousOrFatal(collision))
+                        // Find first appropriate age range
+                        for (int i = 0; i < ageRanges.Count; i++)
                         {
-                            // Find first appropriate age range
-                            for (int i = 0; i < ageRanges.Count; i++)
+                            AgeRange range = ageRanges[i];
+                            if (numAge > range.getMinimumAge() && numAge < range.getMaximumAge())
                             {
-                                AgeRange range = ageRanges[i];
-                                if (numAge > range.getMinimumAge() && numAge < range.getMaximumAge())
-                                {
-                                    range.AddCollision(numYear);
-                                    break;
-                                }
+                                range.AddCollision(numYear);
+                                break;
                             }
                         }
                     }
@@ -504,8 +502,6 @@ namespace WebRole1
                         date = j,
                         yValue = range.collisionsPerYear[j]
                     }));
-
-                    
                 }
 
                 ageList.Add(newJ);
@@ -513,6 +509,129 @@ namespace WebRole1
             }
 
             chart = JsonConvert.SerializeObject(ageList);
+            spark = JsonConvert.SerializeObject(sparkList);
+        }
+
+        private void getContributingFactorsChartJSON(String collisionJSON, out String chart, out String spark)
+        {
+            String personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
+            String codeFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\SDOT_INCIDENT_WSDOT_CRCMSTNCCODE.csv");
+            var reader = new StreamReader(File.OpenRead(personFile)); // Read PERSONS csv
+            var codeReader = new StreamReader(File.OpenRead(codeFile));
+            int lastYear = DateTime.Today.AddYears(-1).Year; // Most previous year
+            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON, true);
+            Dictionary<String, Factor> factors = new Dictionary<String, Factor>();
+
+            // List of factors to be omitted from comparison
+            HashSet<String> blackList = new HashSet<String>();
+            blackList.Add("0"); // Unknown
+            blackList.Add("17"); // Other
+            blackList.Add("18"); // None
+            blackList.Add("51"); // Unknown Driver Distraction
+            blackList.Add("52"); // Driver Not Distracted
+
+            // Read every line, except the first two
+            codeReader.ReadLine();
+            codeReader.ReadLine();
+
+            // Create list of factor objects from code table
+            while (!codeReader.EndOfStream)
+            {
+                String[] line = codeReader.ReadLine().Split(',');
+
+                if (!blackList.Contains(line[1]))
+                {
+                    factors.Add(line[0], new Factor(line[0], line[4]));
+                }               
+            }
+
+            // Read every line, except the first
+            reader.ReadLine();
+
+            while (!reader.EndOfStream)
+            {
+                String[] line = reader.ReadLine().Split(',');
+                String collisionKey = line[12];
+                JObject collision;
+
+                // Collision key is not empty and is valid, collision is serious/fatal
+                if (collisionKey != String.Empty 
+                    && collisions.TryGetValue(collisionKey, out collision)
+                    && collisionIsSeriousOrFatal(collision))
+                {
+                    int year = Convert.ToInt32(getCollisionYear(collision));
+
+                    // Get factors
+                    for (int i = 3; i < 6; i++)
+                    {
+                        String tempFactor = line[i];
+
+                        if (tempFactor != String.Empty && !blackList.Contains(tempFactor)
+                            && year > lastYear - 5)
+                        {
+                            factors[tempFactor].AddCollision(year);
+                        }
+                    }
+                }
+            }
+
+            // Sorted list of factors
+            List<Factor> sortedFactors = new List<Factor>();
+
+            foreach(KeyValuePair<String, Factor> pair in factors)
+            {
+                sortedFactors.Add(pair.Value);
+            }
+
+            sortedFactors.Sort();
+
+            // Find upper bound
+            int max = -1;
+
+            for (int i = 0; i < 4; i++)
+            {
+                Factor factor = sortedFactors[i];
+
+                // last year
+                int num1 = factor.collisionsPerYear.Values.Last();
+
+                // the year before
+                int num2 = factor.collisionsPerYear.Values.Reverse().Skip(1).First();
+
+                max = Math.Max(max, Math.Max(num1, num2));
+            }
+
+            List<JObject> factorList = new List<JObject>();
+            List<JArray> sparkList = new List<JArray>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                Factor factor = sortedFactors[i];
+
+                JObject newJ = JObject.FromObject(new
+                {
+                    title = factor.getTitle(),
+                    ranges = new int[] { 0, max + 5 },
+                    measures = new int[] { factor.collisionsPerYear.Values.Last() },
+                    markers = new int[] { factor.collisionsPerYear.Values.Reverse().Skip(1).First() }
+                });
+
+                JArray newJarray = new JArray();
+
+                for (int j = lastYear - 4; j < lastYear + 1; j++)
+                {
+                    newJarray.Add(JObject.FromObject(new
+                    {
+                        date = j,
+                        yValue = factor.collisionsPerYear[j]
+                    }));
+                }
+
+                factorList.Add(newJ);
+                sparkList.Add(newJarray);
+            }
+
+            chart = JsonConvert.SerializeObject(factorList);
             spark = JsonConvert.SerializeObject(sparkList);
         }
 
@@ -577,8 +696,73 @@ namespace WebRole1
             // returns 0 if the amount is the same, -1 if less
             public int CompareTo(object otherRange)
             {
+                if (collisionsPerYear.Values.Count == 0)
+                {
+                    return 1;
+                }
+                else if (((Factor)otherFactor).collisionsPerYear.Values.Count == 0)
+                {
+                    return -1;
+                }
+
                 int thisCollisions = collisionsPerYear.Values.Last();
                 int otherCollisions = ((AgeRange) otherRange).collisionsPerYear.Values.Last();
+
+                if (thisCollisions > otherCollisions) { return -1; }
+                else if (thisCollisions < otherCollisions) { return 1; }
+                else { return 0; }
+            }
+        }
+
+        private class Factor : IComparable
+        {
+            // Human readable title, as given by code table
+            private String plainTextTitle;
+
+            // Code index, as given by code table
+            private String code;
+
+            // Relationship of serious/fatal injuries to given year for this factor
+            public SortedDictionary<int, int> collisionsPerYear;
+
+            public Factor(String code, String descr)
+            {
+                this.code = code;
+                this.plainTextTitle = descr;
+                collisionsPerYear = new SortedDictionary<int, int>();
+            }
+
+            public String getCode() { return code; }
+
+            public String getTitle() { return plainTextTitle; }
+
+            public void AddCollision(int year)
+            {
+                if (!collisionsPerYear.ContainsKey(year))
+                {
+                    collisionsPerYear.Add(year, 1);
+                }
+                else
+                {
+                    collisionsPerYear[year] += 1;
+                }
+            }
+
+            // Returns 1 if this factor has more collisions in the most recent year,
+            // returns 0 if the amount is the same, -1 if less
+            public int CompareTo(object otherFactor)
+            {
+                if(collisionsPerYear.Values.Count == 0)
+                {
+                    return 1;
+                }
+                else if (((Factor) otherFactor).collisionsPerYear.Values.Count == 0)
+                {
+                    return -1;
+                }
+
+                int thisCollisions = collisionsPerYear.Values.Last();
+                int otherCollisions = ((Factor)otherFactor).collisionsPerYear.Values.Last();
 
                 if (thisCollisions > otherCollisions) { return -1; }
                 else if (thisCollisions < otherCollisions) { return 1; }
