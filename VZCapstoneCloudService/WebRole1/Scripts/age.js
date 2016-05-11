@@ -94,7 +94,7 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 
 
 // draws the spark lines
-var widthOfSpark = 100;
+var widthOfSpark = 20;
 var heightOfSpark = 40;
 
 var containers = [];
@@ -103,7 +103,7 @@ var currentValue = [];
 //     .style("font-size", "8px") 
 //     .text("Last 5 Years");
 
-d3.json("/Data/" + name + "Spark.json", function(error, data) {
+d3.json("./Data/" + name + "Spark.json", function(error, data) {
     if (error) throw error;
 
     console.log(data.length);
