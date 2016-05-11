@@ -25,10 +25,17 @@ var xAxis = d3.svg.axis()
 				.scale(xScale)
 			    .tickFormat(d3.format("d"));	
 
+var svgWidth = widthProgress + paddingProgress.left + paddingProgress.right;
+var svgHeight = heightProgress + paddingProgress.top + paddingProgress.bottom;
+
 var svg = d3.select("#progress")
 			.append("svg")
-    		.attr("width", widthProgress + paddingProgress.left + paddingProgress.right)
-    		.attr("height", heightProgress + paddingProgress.top + paddingProgress.bottom);
+    		.attr("width", svgWidth)
+    		.attr("height", svgHeight)
+    		.attr("preserveAspectRatio", "xMinYMin meet")
+			.attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
+			.classed("svg-content", true); 
+
 
 svg.append("g") 	
 	.attr("class","x axis")
@@ -94,13 +101,7 @@ d3.json("./Data/progress.json", function(error, result) {
 
 
 	//draws target line based off of starting value 
-	var targetLine = [{
-					    "y": start,
-					    "year": 2004
-					}, {
-					    "y": 0,
-					    "year": 2030
-					}];
+	var targetLine = [{ "y": start, "year": 2004 },{ "y": 0, "year": 2030 }];
 	svg.append('path')
 	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
 		.attr('d', line(targetLine))

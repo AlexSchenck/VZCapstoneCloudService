@@ -102,8 +102,19 @@ body {
 
 h1 {
 	font-size: 1.25vw;
-	margin: 5px;
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-bottom: 0px;
 	font-family: "Open Sans Condensed", sans-serif;
+}
+
+h2 {
+	font-size: 1vw;
+	color: #63666A;
+	margin-left: 5px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-family: Lato, sans-serif;
 }
 
 h3 {
@@ -124,5 +135,22 @@ h3 {
 p {
 	text-align: center;
 	font-size: 2.75vw;
-	margin: 7%;
+	margin-top: 7%;
+}
+
+
+.svg-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 100%; 
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
