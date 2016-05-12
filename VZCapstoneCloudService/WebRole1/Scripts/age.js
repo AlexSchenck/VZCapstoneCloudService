@@ -21,78 +21,78 @@ d3.json("./Data/" + name + ".json", function(error, data) {
    //      .text("Collisions by Age");	
 
     // establishes svg size
-	var svg = d3.select("#" + name).selectAll("svg")
-		.data(data)
-	.enter().append("svg")
-	  	.attr("class", "bullet")
-	  	.attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
-        // .attr("preserveAspectRatio", "xMinYMin meet")
-        // .attr("viewBox", "0 0 " + 300 + " " + 40)
-        // .classed("svg-content", true); 
+	// var svg = d3.select("#" + name).selectAll("svg")
+	// 	.data(data)
+	// .enter().append("svg")
+	//   	.attr("class", "bullet")
+	//   	.attr("width", width + margin.left + margin.right)
+ //        .attr("height", height + margin.top + margin.bottom);
+ //        // .attr("preserveAspectRatio", "xMinYMin meet")
+ //        // .attr("viewBox", "0 0 " + 300 + " " + 40)
+ //        // .classed("svg-content", true); 
 	
-	// adds the title to the left side of each bullet chart
-  	var titles = svg.append("g")
-      	.style("text-anchor", "start")
-      	.attr("transform", "translate(15," + ((height / 2) + 7) + ")")
-  	.append("text")
-      	.attr("class", "title")
-      	.text(function(d) { return d.title; });
+	// // adds the title to the left side of each bullet chart
+ //  	var titles = svg.append("g")
+ //      	.style("text-anchor", "start")
+ //      	.attr("transform", "translate(15," + ((height / 2) + 7) + ")")
+ //  	.append("text")
+ //      	.attr("class", "title")
+ //      	.text(function(d) { return d.title; });
 
-    svg.append("g")
-        .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
-        .call(chart);
+ //    svg.append("g")
+ //        .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
+ //        .call(chart);
 
 
     // domain that the bullet charts are all scaled to
-    var x = d3.scale.linear()
-    	.domain([0, 10])
-    	.range([0, width]);
+    // var x = d3.scale.linear()
+    // 	.domain([0, 10])
+    // 	.range([0, width]);
 
     // adds the scale at the bottom with ticks 
-	d3.select("#" + name).append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
-	  .append("g")
-	    .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
-	    .attr("class", "axis")
-	    .call(d3.svg.axis()
-	      .scale(x)
-	      .orient("bottom")
-	      .ticks(3)
-	      .tickFormat(d3.format("s")));
+	// d3.select("#" + name).append("svg")
+	//     .attr("width", width + margin.left + margin.right)
+	//     .attr("height", height + margin.top + margin.bottom)
+	//   .append("g")
+	//     .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
+	//     .attr("class", "axis")
+	//     .call(d3.svg.axis()
+	//       .scale(x)
+	//       .orient("bottom")
+	//       .ticks(3)
+	//       .tickFormat(d3.format("s")));
 
-    var heightOfKey = 10;
-    var shift = 40;
-    var key = d3.select("#" + name).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
+    // var heightOfKey = 10;
+    // var shift = 40;
+    // var key = d3.select("#" + name).append("svg")
+    //     .attr("width", width + margin.left + margin.right)
+    //     .attr("height", height + margin.top + margin.bottom);
 
-    key.append("text")
-        .attr("transform", "translate(" + (shift + margin.left - 15) + "," + margin.top + ")")
-        .attr("y", heightOfKey)
-        .text("2015");
+    // key.append("text")
+    //     .attr("transform", "translate(" + (shift + margin.left - 15) + "," + margin.top + ")")
+    //     .attr("y", heightOfKey)
+    //     .text("2015");
 
-    key.append("rect")
-        .attr("transform", "translate(" + (shift + margin.left + margin.right - 15) + "," + margin.top + ")")
-        .attr("width", 50)
-        .attr("height", heightOfKey)
-        .style("fill", "#00A3E0")
-        .attr("opacity", 0.7);
+    // key.append("rect")
+    //     .attr("transform", "translate(" + (shift + margin.left + margin.right - 15) + "," + margin.top + ")")
+    //     .attr("width", 50)
+    //     .attr("height", heightOfKey)
+    //     .style("fill", "#00A3E0")
+    //     .attr("opacity", 0.7);
 
-    key.append("text")
-        .attr("transform", "translate(" + (shift + margin.left + margin.right + 65) + "," + margin.top + ")")
-        .attr("y", heightOfKey)
-        .text("2014");
+    // key.append("text")
+    //     .attr("transform", "translate(" + (shift + margin.left + margin.right + 65) + "," + margin.top + ")")
+    //     .attr("y", heightOfKey)
+    //     .text("2014");
 
-    key.append("line")
-        .attr("transform", "translate(" + (shift + margin.left + margin.right + 105) + "," + margin.top + ")")
-        .attr("x1", 0)
-        .attr("y1", -5)
-        .attr("x2", 0)
-        .attr("y2", 15)
-        .attr("stroke-width", 2)
-        .attr("stroke", "black");
+    // key.append("line")
+    //     .attr("transform", "translate(" + (shift + margin.left + margin.right + 105) + "," + margin.top + ")")
+    //     .attr("x1", 0)
+    //     .attr("y1", -5)
+    //     .attr("x2", 0)
+    //     .attr("y2", 15)
+    //     .attr("stroke-width", 2)
+    //     .attr("stroke", "black");
 });
 
 
@@ -128,12 +128,15 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
     // otherwise there would be an existing div there
     for (var i = 1; i <= data.length; i++) {
         var svgContainer = d3.select("#" + name + "Spark" + i).append("svg")
-            .attr("width", widthOfSpark)
-            .attr("height",heightOfSpark);
+            // .attr("height", heightOfSpark)
+            // .attr("width", widthOfSpark)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + 500 + " " + 20)
+            .classed("svg-content", true); 
         containers.push(svgContainer);
     }
 
-    // functino for drawing a line. Linear is the style
+    // function for drawing a line. Linear is the style
     // of the line that's being drawn
     var lineFunction = d3.svg.line()
         .x(function(d) { return d.date; })

@@ -162,3 +162,12 @@ img {
 	width: 25px;
 	height: 25px;
 }
+
+.svg-container-spark { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding: 2%;
+	vertical-align: middle; 
+	overflow: hidden; 
+}
