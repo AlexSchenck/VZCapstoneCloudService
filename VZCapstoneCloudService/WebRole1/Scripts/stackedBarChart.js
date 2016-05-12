@@ -82,14 +82,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.style("fill-opacity",1e-6);
 
 
-	rects
-	// took out transition
-		// .transition()
-	 //     .duration(function(d,i){
-	 //    	 return 300;
-	 //     })
-	 //     .ease("linear")
-	    .attr("x", function(d) {
+	rects.attr("x", function(d) {
 			return xScale(new Date(d.year));
 		})
 		.attr("y", function(d) {
@@ -117,49 +110,19 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	//     .style("text-anchor", "start");
 
 	svg.append("g") 	
-	.attr("class","x axis")
-	// adds x axis and moves to correct height
-	.attr("transform","translate(" + (padding.left + 5)+ "," + (h - padding.bottom) + ")")
-	.call(xAxis)
-  .selectAll("text")
-    .style("text-anchor", "middle");
-
+			.attr("class","x axis")
+			// adds x axis and moves to correct height
+			.attr("transform","translate(" + (padding.left + 5)+ "," + (h - padding.bottom) + ")")
+			.call(xAxis)
+	  	.selectAll("text")
+	    	.style("text-anchor", "middle");
 
 	svg.append("g")
 		.attr("class","y axis")
 		.attr("transform","translate(" + padding.left + "," + padding.top + ")")
 		.call(yAxis);
 
-	// var legend = svg.append("g")
-	// 	.attr("class","legend")
-	// 	.attr("x", w - padding.right - 65)
-	// 	.attr("y", 25)
-	// 	.attr("height", 80)
-	// 	.attr("width",80);
-
-	// legend.selectAll("g").data(dataset)
-	//   .enter()
-	//   .append('g')
-	//   .each(function(d,i){
-	//   	var g = d3.select(this);
-	//   	g.append("rect")
-	//   		.attr("x", w - padding.right - 30)
-	//   		.attr("y", i*25 + 3)
-	//   		.attr("width", 7)
-	//   		.attr("height",7)
-	//   		.style("fill",color_hash[String(i)][1]);
-
-	//   	g.append("text")
-	//   	 .attr("x", w - padding.right - 15)
-	//   	 .attr("y", i*25 + 12)
-	//   	 .attr("height",30)
-	//   	 .attr("width",100)
-	//   	 .style("fill",color_hash[String(i)][1])
-	//   	 .text(color_hash[String(i)][0]);
-	// });
-
 	var sizeOfLegendIcons = 25;
-
 	svg.append("svg:image")
 		.attr("xlink:href", "./Images/car-trip.svg")
 		.attr("x", padding.left / 2)

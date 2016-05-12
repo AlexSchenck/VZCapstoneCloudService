@@ -88,6 +88,16 @@ d3.json("./Data/progress.json", function(error, result) {
 		})
 		.interpolate("linear");
 
+	//draws target line based off of starting value in 2004
+	var targetLine = [{ "y": start, "year": 2004 },{ "y": 0, "year": 2030 }];
+	svg.append('path')
+	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
+		.attr('d', line(targetLine))
+	  	.attr('stroke', 'grey')
+	  	.attr('stroke-width', 2)
+	  	.attr('fill', 'none');
+
+	// draws actual trend line of progress
 	svg.append('path')
 	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
 		.attr('d', line(data))
@@ -98,22 +108,13 @@ d3.json("./Data/progress.json", function(error, result) {
 	  	.on('mouseout', mouseOut);
 
 
-	//draws target line based off of starting value in 2004
-	var targetLine = [{ "y": start, "year": 2004 },{ "y": 0, "year": 2030 }];
-	svg.append('path')
-	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
-		.attr('d', line(targetLine))
-	  	.attr('stroke', 'grey')
-	  	.attr('stroke-width', 2)
-	  	.attr('fill', 'none');
-
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
-		.attr("x", 0- svgHeight / 2 - 40)
-		.attr("y", -3)
+		.attr("x", 0- svgHeight / 2 - 70)
+		.attr("y", -2)
 		.attr("dy","1em")
-		.text("Number of Collisions");
+		.text("Number of Fatalities and Serious Injuries");
 
 	svg.append("text")
 	   .attr("class","xtext")
