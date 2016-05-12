@@ -7,7 +7,7 @@
 		<script src="Packages/d3/d3.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="Styles/stackedBarChartStyle.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/age.css"/>
-		<!-- <link rel="stylesheet" type="text/css" href="Styles/contributingFactors.css"/> -->
+		<link rel="stylesheet" type="text/css" href="Styles/contributingFactors.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/dashboard.css"/>
 		<script src="Scripts/bullet.js"></script>
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
@@ -52,15 +52,18 @@
 			<div class="section">
 				<h1>Collisions by Age</h1>
 				<h2>Collisions ordered by driver responsible for collisions resulting in a fatality or serious injury.</h2>
-				<div id="age" class="svg-container"></div>
+				<div>
+				<div id="age" class="svg-container-bullet"></div>
+				<div id="age2" class="svg-container-bullet"></div>
+				</div>
 				<!-- <h3>Last 5 years</h3> -->
-		        <!-- <div id="ageSparkId"> -->
+		       <!--  <div id="ageSparkId">
 					<div id="ageSpark1" class="svg-container-spark"></div>
 					<div id="ageSpark2" class="svg-container-spark"></div>
 					<div id="ageSpark3" class="svg-container-spark"></div>
 					<div id="ageSpark4" class="svg-container-spark"></div>
-				<!-- </div> -->
-				<div id="ageSparkKey"></div>
+				</div>
+				<div id="ageSparkKey"></div> -->
 
 			</div>
 
@@ -76,11 +79,11 @@
 				<h2>Collisions ordered by contributing factor for collisions resulting in a fatality or serious injury.</h2>				
 				<div id="contributingFactors"></div>
 				<h3>Last 5 years</h3>
-		        <div id="contributingFactorsId">
-					<div id="contributingFactors1" class="svg-container-spark"></div>
-					<div id="contributingFactors2" class="svg-container-spark"></div>
-					<div id="contributingFactors3" class="svg-container-spark"></div>
-					<div id="contributingFactors4" class="svg-container-spark"></div>
+		        <div id="contributingFactorsSparkId">
+					<div id="contributingFactors1"></div>
+					<div id="contributingFactors2"></div>
+					<div id="contributingFactors3"></div>
+					<div id="contributingFactors4"></div>
 				</div>
 			</div>
 		</div>

@@ -13,12 +13,7 @@ d3.json("./Data/contributingFactors.json", function(error, data) {
   if (error) throw error;
   var dat = data;
 
-  	// // adds the title of the graph to the top 
-  	// var titleGraph = d3.select("#age")
-  	// 	.append("text")
-   //      .style("font-size", "16px") 
-   //      .text("Collisions by Age");	
-
+  
     // establishes svg size
 	var svg = d3.select("#" + "contributingFactors").selectAll("svg")
 		.data(dat)
@@ -105,13 +100,16 @@ d3.json("./Data/" + "contributingFactors" + "Spark.json", function(error, data) 
     console.log(data.length);
 
 
+    var startDate = data[0][0].date;
+    console.log(typeof(data[0][0].date));
+
     // coercing each value to an integer for the date
     // and an integer for the y value
     for (var i = 0; i < data.length; i++) {
         data[i].forEach(function(d) {
-            d.date = (widthOfSpark / 8) * (+d.date - 2012);
+            d.date = (widthOfSpark / 8) * (+d.date - startDate);
             currentValue[i] = d.yValue;            
-            d.yValue = 13 - +d.yValue;  
+            d.yValue = (heightOfSpark / 2) - (+d.yValue);  
         });
     }
 
@@ -155,7 +153,7 @@ d3.json("./Data/" + "contributingFactors" + "Spark.json", function(error, data) 
 
         contContainer.append("text")
             .attr("x", 60)
-            .attr("y", 12)
+            .attr("y", heightOfSpark / 2)
             .style("font-size", "10px") 
             .text(currentValue[i]);
     }

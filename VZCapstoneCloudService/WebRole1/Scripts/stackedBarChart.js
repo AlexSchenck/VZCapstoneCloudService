@@ -1,4 +1,4 @@
-var outerW = window.outerWidth;
+	var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
 var w = outerW / 3 - 60;       
@@ -42,7 +42,8 @@ d3.json("./Data/stackedBar.json", function(error, result){
 
 	// draws the x axis
 	var xAxis = d3.svg.axis()
-				   .scale(xScale);
+					.scale(xScale)
+    				.tickFormat(d3.time.format("'%y"));
 
 	// draws the y axis
 	var yAxis = d3.svg.axis()
@@ -112,7 +113,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	svg.append("g") 	
 			.attr("class","x axis")
 			// adds x axis and moves to correct height
-			.attr("transform","translate(" + (padding.left + 5)+ "," + (h - padding.bottom) + ")")
+			.attr("transform","translate(" + (padding.left + 5) + "," + (h - padding.bottom) + ")")
 			.call(xAxis)
 	  	.selectAll("text")
 	    	.style("text-anchor", "middle");
@@ -156,7 +157,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	svg.append("text")
 	   .attr("class","xtext")
 	   .attr("x",w/2)
-	   .attr("y",h - 5)
+	   .attr("y",h - 20)
 	   .attr("text-anchor","middle")
 	   .text("Year");
 });
