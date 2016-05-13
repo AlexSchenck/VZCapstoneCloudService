@@ -10,7 +10,7 @@
 
 /* makes the ticks go away so they're not on 
    bullet chart*/
-#age.tick, .section .axis path, #age .bullet .tick {
+#age.tick, .section .axis path, #age .bullet .tick, #contributingFactors .bullet .tick, #contributingFactors.ticks {
 	display: none;
 }
 
@@ -24,8 +24,52 @@
 */.bullet .title { font-size: 16px; }
 .bullet .subtitle { fill: #999; }
 
-#ageSparkId, #contributingFactorsId {
-  	float:left;
-  	padding-top: 19px;
-  	padding-left: 30px;
+#ageSparkId, #contributingFactorsSparkId {
+  	float: right;
+  	padding-top: 4%;
+  	/*padding-left: 30px;*/
+}
+
+
+#ageBullets {
+	padding-top: 4%;
+
+}
+
+.svg-container-bullet { 
+	/*margin-top: 5%;*/
+	/*display: inline-block;*/
+	position: relative;
+	width: 100%;
+	padding-bottom: 12%; 
+	vertical-align: middle; 
+	overflow: hidden;
+}
+
+#ageBullets .axis text {
+	font-size: 8px;
+}
+
+
+.svg-container-block { 
+	display: inline-block;
+	position: relative;
+	width: 70%;
+	/*padding-bottom: 100%; */
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
+.svg-container-spark-block { 
+
+	width: 25%;
+}
+
+.svg-container-spark { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 36%; 
+	vertical-align: middle; 
+	overflow: hidden; 
 }

@@ -1,4 +1,6 @@
 [
   {"title":"16 - 25","ranges":[0, 10],"measures":[5],"markers":[2]},
-  {"title":"26 - 40","ranges":[0, 10],"measures":[4],"markers":[5]}
+  {"title":"26 - 40","ranges":[0, 10],"measures":[4],"markers":[5]},
+  {"title":"70+","ranges":[0, 10],"measures":[2],"markers":[1]},
+  {"title":"50 - 60","ranges":[0, 10],"measures":[1],"markers":[2]}
 ]
