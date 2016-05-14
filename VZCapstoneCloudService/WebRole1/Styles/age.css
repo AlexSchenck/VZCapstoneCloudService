@@ -1,11 +1,4 @@
 #age, #contributingFactors {
- 	/*position: relative;*/
- 	/*width:300px;*/
-  	/*margin:30px;*/
-	/*padding: 15px;
-	padding-top: 30px;
-	padding-left: 5px;
-	float:left;*/
 }
 
 /* makes the ticks go away so they're not on 
@@ -47,9 +40,12 @@
 }
 
 #ageBullets .axis text {
-	font-size: 8px;
+	font-size: 10px;
 }
 
+#ageSparkKey .axis .tick text {
+	font-size: 30px;
+}
 
 .svg-container-block { 
 	display: inline-block;
@@ -61,14 +57,14 @@
 }
 
 .svg-container-spark-block { 
-	width: 25%;
+	width: 27%;
 }
 
 .svg-container-spark { 
 	display: inline-block;
 	position: relative;
 	width: 100%;
-	padding-bottom: 36%; 
+	padding-bottom: 32%; 
 	vertical-align: middle; 
 	overflow: hidden; 
 }
