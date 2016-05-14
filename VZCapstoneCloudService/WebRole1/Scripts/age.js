@@ -18,7 +18,7 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 
     d3.select("#" + name + "BulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-92 -15 250 40")
+            .attr("viewBox", "-90 -15 250 40")
             .classed("svg-content", true)
         .append("text")
         .style("font-size", 10)
@@ -71,45 +71,43 @@ d3.json("./Data/" + name + ".json", function(error, data) {
                .ticks(3)
                .tickFormat(d3.format("s")));
 
-    var heightOfKey = 10;
-
-    var key = d3.select("#" + name + "Key").append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-20 15 200 50")
-            .classed("svg-content", true);
-
-    key.append("rect")
-        .attr("transform", "translate(" + 0 + "," + (margin.top * 5 + 1) + ")")
-        .attr("width", 25)
-        .attr("height", heightOfKey)
-        .style("fill", "#00A3E0")
-        .attr("opacity", 0.7);
-
-    key.append("text")
-        .attr("transform", "translate(" + (margin.right - 10) + "," + (margin.top * 5) + ")")
-        .attr("y", heightOfKey)
-        .style("font-size", fontSizeOfKey)
-       .text("Current Year");
-
-    key.append("line")
-        .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
-        .attr("x1", 0)
-        .attr("y1", -5)
-        .attr("x2", 0)
-        .attr("y2", 12)
-        .attr("stroke-width", 2)
-        .attr("stroke", "black");
-
-    key.append("text")
-        .attr("transform", "translate(" + (margin.right + 70) + "," + (margin.top * 5) + ")")
-        .attr("y", heightOfKey)
-        .style("font-size", fontSizeOfKey)
-        .text("Last Year");
-
 
 });
 
+var heightOfKey = 10;
 
+var key = d3.select("#" + name + "Key").append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "-20 15 200 50")
+        .classed("svg-content", true);
+
+key.append("rect")
+    .attr("transform", "translate(" + 0 + "," + (margin.top * 5 + 1) + ")")
+    .attr("width", 25)
+    .attr("height", heightOfKey)
+    .style("fill", "#00A3E0")
+    .attr("opacity", 0.7);
+
+key.append("text")
+    .attr("transform", "translate(" + (margin.right - 10) + "," + (margin.top * 5) + ")")
+    .attr("y", heightOfKey)
+    .style("font-size", fontSizeOfKey)
+   .text("Current Year");
+
+key.append("line")
+    .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
+    .attr("x1", 0)
+    .attr("y1", -5)
+    .attr("x2", 0)
+    .attr("y2", 12)
+    .attr("stroke-width", 2)
+    .attr("stroke", "black");
+
+key.append("text")
+    .attr("transform", "translate(" + (margin.right + 70) + "," + (margin.top * 5) + ")")
+    .attr("y", heightOfKey)
+    .style("font-size", fontSizeOfKey)
+    .text("Last Year");
 
 // adds title of the spark lines
 d3.select("#" + name + "SparkTitle").append("svg")
@@ -137,7 +135,7 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
     // and an integer for the y value
     for (var i = 0; i < data.length; i++) {
         data[i].forEach(function(d) {
-            d.date = (widthOfSpark / 8) * (+d.date - startDate);
+            d.date = (widthOfSpark/ 3 * 2) * (+d.date - startDate);
             currentValue[i] = d.yValue;            
             d.yValue = (heightOfSpark / 2) - (+d.yValue);  
         });
