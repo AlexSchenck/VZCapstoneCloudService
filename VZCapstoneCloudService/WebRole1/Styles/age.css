@@ -26,7 +26,7 @@
 
 #ageSparkId, #contributingFactorsSparkId {
   	float: right;
-  	padding-top: 4%;
+  	/*padding-top: 4%;*/
   	/*padding-left: 30px;*/
 }
 
@@ -61,7 +61,6 @@
 }
 
 .svg-container-spark-block { 
-
 	width: 25%;
 }
 
@@ -70,6 +69,15 @@
 	position: relative;
 	width: 100%;
 	padding-bottom: 36%; 
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
+.svg-container-title { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 18%; 
 	vertical-align: middle; 
 	overflow: hidden; 
 }

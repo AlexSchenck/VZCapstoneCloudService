@@ -10,30 +10,6 @@ var chart = d3.bullet()
     .width(width)
     .height(height);
 
-// draws the spark lines
-// var widthOfSpark = 20;
-// var heightOfSpark = 40;
-// var sparkData;
-// d3.json("./Data/" + name + "Spark.json", function(error, data) {
-//     if (error) throw error;
-//     sparkData = data;
-
-//     var startDate = data[0][0].date;
-//     console.log(typeof(data[0][0].date));
-
-//     // coercing each value to an integer for the date
-//     // and an integer for the y value
-//     for (var i = 0; i < sparkData.length; i++) {
-//         sparkData[i].forEach(function(d) {
-//             d.date = (widthOfSpark / 8) * (+d.date - startDate);
-//             currentValue[i] = d.yValue;            
-//             d.yValue = (heightOfSpark / 2) - (+d.yValue);  
-//         });
-//     }
-
-// }
-
-
 
 // draws bullet charts
 d3.json("./Data/" + name + ".json", function(error, data) {
@@ -128,6 +104,12 @@ d3.json("./Data/" + name + ".json", function(error, data) {
         .attr("stroke", "black");
 });
 
+d3.select("#ageSparkTitle").append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 -15 " + 100 + " " + 50)
+        .classed("svg-content", true)
+    .append("text")
+    .text("Last 5 years");
 
 // draws the spark lines
 var widthOfSpark = 20;
