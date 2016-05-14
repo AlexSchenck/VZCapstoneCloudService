@@ -16,6 +16,14 @@ var range = 20;
 d3.json("./Data/" + name + ".json", function(error, data) {
     if (error) throw error;
 
+    d3.select("#" + name + "BulletTitle").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-92 -15 250 40")
+            .classed("svg-content", true)
+        .append("text")
+        .style("font-size", 10)
+        .text("Number of Collisions");
+
     // draws all of the bullet charts manually so that they are able to scale
     for (var i = 1; i <= data.length; i++) {
         //establishes svg size
@@ -51,7 +59,7 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 
 
     // adds the scale at the bottom with ticks 
-    var key = d3.select("#" + name + "Key").append("svg")
+    d3.select("#" + name + "Axis").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", "-" + (margin.left + margin.right - 10) + " 0 " + widthFull + " 50")
             .classed("svg-content", true)
@@ -65,33 +73,40 @@ d3.json("./Data/" + name + ".json", function(error, data) {
 
     var heightOfKey = 10;
 
-    key.append("text")
-        .attr("transform", "translate(" + 0 + "," + (margin.top * 5) + ")")
-        .attr("y", heightOfKey)
-        .style("font-size", fontSizeOfKey)
-        .text("2015");
+    var key = d3.select("#" + name + "Key").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-20 15 200 50")
+            .classed("svg-content", true);
 
     key.append("rect")
-        .attr("transform", "translate(" + (margin.right - 5) + "," + (margin.top * 5 + 1) + ")")
-        .attr("width", 50)
+        .attr("transform", "translate(" + 0 + "," + (margin.top * 5 + 1) + ")")
+        .attr("width", 25)
         .attr("height", heightOfKey)
         .style("fill", "#00A3E0")
         .attr("opacity", 0.7);
 
     key.append("text")
-        .attr("transform", "translate(" + (margin.right + 75) + "," + (margin.top * 5) + ")")
+        .attr("transform", "translate(" + (margin.right - 10) + "," + (margin.top * 5) + ")")
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
-        .text("2014");
+       .text("Current Year");
 
     key.append("line")
-        .attr("transform", "translate(" + (margin.right + 110) + "," + (margin.top * 5 + 2) + ")")
+        .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
         .attr("x1", 0)
         .attr("y1", -5)
         .attr("x2", 0)
-        .attr("y2", 15)
+        .attr("y2", 12)
         .attr("stroke-width", 2)
         .attr("stroke", "black");
+
+    key.append("text")
+        .attr("transform", "translate(" + (margin.right + 70) + "," + (margin.top * 5) + ")")
+        .attr("y", heightOfKey)
+        .style("font-size", fontSizeOfKey)
+        .text("Last Year");
+
+
 });
 
 
@@ -103,7 +118,7 @@ d3.select("#" + name + "SparkTitle").append("svg")
         .classed("svg-content", true)
     .append("text")
     .style("font-size", 10)
-    .text("Last 5 years");
+    .text("Past 5 years");
 
 
 // draws the spark lines
@@ -134,6 +149,8 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
     // otherwise there would be an existing div there
     for (var i = 1; i <= data.length; i++) {
         var svgContainer = d3.select("#" + name + "Spark" + i).append("svg")
+            // .attr("width", 100)
+            // .attr("height",20);
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", "0 0 110 40")
             .classed("svg-content", true); 
@@ -176,19 +193,19 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
 
    
 
-    var years = d3.time.scale()
-        .domain([new Date(2012, 0, 1), new Date(2016, 0, 1)])
-        .rangeRound([0, width]);
+    // var years = d3.time.scale()
+    //     .domain([new Date(2012, 0, 1), new Date(2016, 0, 1)])
+    //     .rangeRound([0, width]);
 
-    var svgContainer = d3.select("#" + name + "SparkKey").append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-10 0 400 50")
-            .classed("svg-content", true)
-      .append("g")
-            .attr("class", "axis")
-        .call(d3.svg.axis()
-            .scale(years)
-            .orient("bottom")
-            .ticks(2)
-            .tickFormat(d3.time.format("'%y")));
+    // var svgContainer = d3.select("#" + name + "SparkKey").append("svg")
+    //         .attr("preserveAspectRatio", "xMinYMin meet")
+    //         .attr("viewBox", "-10 0 400 50")
+    //         .classed("svg-content", true)
+    //   .append("g")
+    //         .attr("class", "axis")
+    //     .call(d3.svg.axis()
+    //         .scale(years)
+    //         .orient("bottom")
+    //         .ticks(2)
+    //         .tickFormat(d3.time.format("'%y")));
 })

@@ -1,6 +1,3 @@
-#age, #contributingFactors {
-}
-
 /* makes the ticks go away so they're not on 
    bullet chart*/
 #age.tick, .section .axis path, #age .bullet .tick, #contributingFactors .bullet .tick, #contributingFactors.ticks {
@@ -9,29 +6,20 @@
 
 .bullet { font: 10px;}
 .bullet .marker { stroke: #000; stroke-width: 2px; }
-.bullet .range.s0 { fill: #63666A;
-					opacity: .15; }
-.bullet .measure.s0 { fill: #00A3E0; 
-						opacity: .7; }
-/*.bullet .measure.s1 { fill: steelblue; }
-*/.bullet .title { font-size: 16px; }
+.bullet .range.s0 { fill: #63666A; opacity: .15; }
+.bullet .measure.s0 { fill: #00A3E0; opacity: .7; }
+.bullet .title { font-size: 16px; }
 .bullet .subtitle { fill: #999; }
 
 #ageSparkId, #contributingFactorsSparkId {
   	float: right;
-  	/*padding-top: 4%;*/
-  	/*padding-left: 30px;*/
 }
-
 
 #ageBullets {
 	padding-top: 4%;
-
 }
 
-.svg-container-bullet { 
-	/*margin-top: 5%;*/
-	/*display: inline-block;*/
+.svg-container-bullet {
 	position: relative;
 	width: 100%;
 	padding-bottom: 12%; 
@@ -48,32 +36,43 @@
 }
 
 .svg-container-block { 
-	display: inline-block;
-	position: relative;
 	width: 70%;
-	/*padding-bottom: 100%; */
-	vertical-align: middle; 
-	overflow: hidden; 
 }
 
 .svg-container-spark-block { 
+	padding-top: 4%;
 	width: 27%;
 }
 
 .svg-container-spark { 
-	display: inline-block;
-	position: relative;
 	width: 100%;
 	padding-bottom: 32%; 
-	vertical-align: middle; 
-	overflow: hidden; 
 }
 
 .svg-container-title { 
+	width: 100%;
+	padding-bottom: 22%; 
+}
+
+.svg-container-bullet-title { 
+	width: 100%;
+	padding-bottom: 8%; 
+}
+
+#ageKey, #stackedKey {
+	float: right;
+}
+
+.svg-container-key {  
+	width: 35%;
+	padding-bottom: 5%;  
+}
+
+
+.svg-container-key, .svg-container-bullet-title, .svg-container-title, .svg-container-spark
+,.svg-container-block { 
 	display: inline-block;
 	position: relative;
-	width: 100%;
-	padding-bottom: 18%; 
 	vertical-align: middle; 
 	overflow: hidden; 
 }

@@ -1,4 +1,4 @@
-	var outerW = window.outerWidth;
+var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
 var w = outerW / 3 - 60;       
@@ -123,29 +123,6 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.attr("transform","translate(" + padding.left + "," + padding.top + ")")
 		.call(yAxis);
 
-	var sizeOfLegendIcons = 25;
-	svg.append("svg:image")
-		.attr("xlink:href", "./Images/car-trip.svg")
-		.attr("x", padding.left / 2)
-        .attr("y", h - sizeOfLegendIcons)
-        .attr("width", sizeOfLegendIcons)
-        .attr("height", sizeOfLegendIcons); 
-
-	svg.append("svg:image")
-		.attr("xlink:href", "./Images/bicycle.svg")
-		.attr("x", padding.left / 2 + 35)
-        .attr("y", h - sizeOfLegendIcons)
-        .attr("width", sizeOfLegendIcons)
-        .attr("height", sizeOfLegendIcons); 
-
-	svg.append("svg:image")
-		.attr("xlink:href", "./Images/pedestrian-walking.svg")
-		.attr("x", padding.left / 2 + 65)
-        .attr("y", h - sizeOfLegendIcons)
-        .attr("width", sizeOfLegendIcons)
-        .attr("height", sizeOfLegendIcons); 
-
-
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
@@ -163,7 +140,33 @@ d3.json("./Data/stackedBar.json", function(error, result){
 });
 
 
+	var sizeOfLegendIcons = 35;
 
+	var key = d3.select("#stackedKey").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-80 15 220 50")
+            .classed("svg-content", true);
+
+	key.append("svg:image")
+		.attr("xlink:href", "./Images/car-trip.svg")
+		.attr("x", 0)
+        .attr("y", 20)
+        .attr("width", sizeOfLegendIcons)
+        .attr("height", sizeOfLegendIcons); 
+
+	key.append("svg:image")
+		.attr("xlink:href", "./Images/bicycle.svg")
+		.attr("x", 45)
+        .attr("y", 20)
+        .attr("width", sizeOfLegendIcons)
+        .attr("height", sizeOfLegendIcons); 
+
+	key.append("svg:image")
+		.attr("xlink:href", "./Images/pedestrian-walking.svg")
+		.attr("x", 85)
+        .attr("y", 	20)
+        .attr("width", sizeOfLegendIcons)
+        .attr("height", sizeOfLegendIcons); 
 
 // bar hovering stuff
 var previousBarColor;
