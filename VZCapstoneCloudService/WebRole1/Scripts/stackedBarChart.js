@@ -64,7 +64,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.enter()
 		.append("g")
 		.attr("class","rgroups")
-		.attr("transform","translate("+ padding.left + "," + (h - padding.bottom) +")")
+		.attr("transform","translate("+ (padding.left + 15) + "," + (h - padding.bottom) +")")
 		.style("fill", function(d, i) {
 			return color_hash[dataset.indexOf(d)][1];
 		});
@@ -108,14 +108,14 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	svg.append("g") 	
 			.attr("class","x axis")
 			// adds x axis and moves to correct height
-			.attr("transform","translate(" + (padding.left + 5) + "," + (h - padding.bottom) + ")")
+			.attr("transform","translate(" + (padding.left + 20) + "," + (h - padding.bottom) + ")")
 			.call(xAxis)
 	  	.selectAll("text")
 	    	.style("text-anchor", "middle");
 
 	svg.append("g")
 		.attr("class","y axis")
-		.attr("transform","translate(" + padding.left + "," + padding.top + ")")
+		.attr("transform","translate(" + (padding.left + 15) + "," + padding.top + ")")
 		.call(yAxis);
 
 	// adding in titles and axis labels

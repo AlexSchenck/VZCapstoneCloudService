@@ -8,7 +8,6 @@ var mouseOut = function() {
 	console.log(curr);
 }
 
-
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
@@ -30,8 +29,6 @@ var svgHeight = heightProgress + paddingProgress.top;
 
 var svg = d3.select("#progress")
 			.append("svg")
-    		// .attr("width", svgWidth)
-    		// .attr("height", svgHeight)
     		.attr("preserveAspectRatio", "xMinYMin meet")
 			.attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
 			.classed("svg-content", true); 
@@ -122,4 +119,16 @@ d3.json("./Data/progress.json", function(error, result) {
 	   .attr("y", svgHeight - paddingProgress.bottom)
 	   .attr("text-anchor","middle")
 	   .text("Year");
+
+	var visionZeroStartDate = [{"y":-20,"year":2015},{"y":20,"year":2015}]
+
+	svg.append('path')
+	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
+		.attr('d', line(visionZeroStartDate))
+	  	.attr('stroke', "green")
+	  	.attr('stroke-width', 3)
+	  	.attr('fill', 'none')
+	  	.on('mouseover', mouseOver)
+	  	.on('mouseout', mouseOut);
+
 })
