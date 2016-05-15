@@ -140,33 +140,34 @@ d3.json("./Data/stackedBar.json", function(error, result){
 });
 
 
-	var sizeOfLegendIcons = 35;
+var sizeOfLegendIcons = 35;
+var yPosition = 20;
 
-	var key = d3.select("#stackedKey").append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-80 15 220 50")
-            .classed("svg-content", true);
+var key = d3.select("#stackedKey").append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "-80 15 220 50")
+        .classed("svg-content", true);
 
-	key.append("svg:image")
-		.attr("xlink:href", "./Images/car-trip.svg")
-		.attr("x", 0)
-        .attr("y", 20)
-        .attr("width", sizeOfLegendIcons)
-        .attr("height", sizeOfLegendIcons); 
+key.append("svg:image")
+	.attr("xlink:href", "./Images/car-trip.svg")
+	.attr("x", 0)
+    .attr("y", yPosition)
+    .attr("width", sizeOfLegendIcons)
+    .attr("height", sizeOfLegendIcons); 
 
-	key.append("svg:image")
-		.attr("xlink:href", "./Images/bicycle.svg")
-		.attr("x", 45)
-        .attr("y", 20)
-        .attr("width", sizeOfLegendIcons)
-        .attr("height", sizeOfLegendIcons); 
+key.append("svg:image")
+	.attr("xlink:href", "./Images/bicycle.svg")
+	.attr("x", 45)
+    .attr("y", yPosition)
+    .attr("width", sizeOfLegendIcons)
+    .attr("height", sizeOfLegendIcons); 
 
-	key.append("svg:image")
-		.attr("xlink:href", "./Images/pedestrian-walking.svg")
-		.attr("x", 85)
-        .attr("y", 	20)
-        .attr("width", sizeOfLegendIcons)
-        .attr("height", sizeOfLegendIcons); 
+key.append("svg:image")
+	.attr("xlink:href", "./Images/pedestrian-walking.svg")
+	.attr("x", 80)
+    .attr("y", yPosition)
+    .attr("width", sizeOfLegendIcons)
+    .attr("height", sizeOfLegendIcons - 5); 
 
 // bar hovering stuff
 var previousBarColor;

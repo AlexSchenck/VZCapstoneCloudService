@@ -1,0 +1,61 @@
+[
+	[
+		{"date":2012,"yValue":3},
+		{"date":2013,"yValue":2},
+		{"date":2014,"yValue":6},
+		{"date":2015,"yValue":2},
+		{"date":2016,"yValue":5}
+	],
+	[
+		{"date":2012,"yValue":7},
+		{"date":2013,"yValue":5},
+		{"date":2014,"yValue":2},
+		{"date":2015,"yValue":5},
+		{"date":2016,"yValue":4}
+	],
+	[
+		{"date":2012,"yValue":2},
+		{"date":2013,"yValue":1},
+		{"date":2014,"yValue":9},
+		{"date":2015,"yValue":1},
+		{"date":2016,"yValue":2}
+	],
+	[
+		{"date":2012,"yValue":4},
+		{"date":2013,"yValue":2},
+		{"date":2014,"yValue":4},
+		{"date":2015,"yValue":2},
+		{"date":2016,"yValue":1}
+	]
+]
+
+[
+	[
+		{"date":2011,"yValue":37},
+		{"date":2012,"yValue":56},
+		{"date":2013,"yValue":41},
+		{"date":2014,"yValue":53},
+		{"date":2015,"yValue":44}
+	],
+	[
+		{"date":2011,"yValue":52},
+		{"date":2012,"yValue":53},
+		{"date":2013,"yValue":70},
+		{"date":2014,"yValue":67},
+		{"date":2015,"yValue":43}
+	],
+	[
+		{"date":2011,"yValue":31},
+		{"date":2012,"yValue":48},
+		{"date":2013,"yValue":44},
+		{"date":2014,"yValue":30},
+		{"date":2015,"yValue":27}
+	],
+	[
+		{"date":2011,"yValue":28},
+		{"date":2012,"yValue":52},
+		{"date":2013,"yValue":40},
+		{"date":2014,"yValue":44},
+		{"date":2015,"yValue":24}
+	]
+]
