@@ -19,3 +19,10 @@ html, body {
 .leaflet-popup {
     z-index: 100000;
 }
+
+#search {
+    position: absolute;
+    z-index: 2;
+    top: 120px;
+    right: 25px;
+}
