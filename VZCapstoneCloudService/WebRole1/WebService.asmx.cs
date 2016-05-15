@@ -25,196 +25,57 @@ namespace WebRole1
     [System.Web.Script.Services.ScriptService]
     public class WebService : System.Web.Services.WebService
     {
+        String openDataURL; // SDOT collision data endpoint
+        int lastYear; // Most previous year
+        String personFile; // Local filepath of PERSONS data table
+
         [WebMethod]
         public String TestJSON()
-        {   
+        {
+            openDataURL = "https://data.seattle.gov/resource/v7k9-7dn4.json";
+            lastYear = DateTime.Today.AddYears(-1).Year;
+            personFile = personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             // Final JSON list of collisions as string
             Trace.TraceInformation("Started data get");
             String collisions = getAllCollisions();
+            Trace.TraceInformation("" + sw.Elapsed);
+            sw.Restart();
 
+            // Make objects for progress bar and save to file
             Trace.TraceInformation("Started progress");
-            //String progress = getProgressChartJSON(String.Copy(collisions));
-            //String progress = "";
+            String progress = getProgressChartJSON(String.Copy(collisions));
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\progress.json"), progress);
+            Trace.TraceInformation("" + sw.Elapsed);
+            sw.Restart();
 
+            // Make objects for stacked bar chart and save to file
             Trace.TraceInformation("Started stacked");
-            //String stacked = getStackedBarChartJSON(String.Copy(collisions));
-            //String stacked = "";
+            String stacked = getStackedBarChartJSON(String.Copy(collisions));
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\stackedBar.json"), stacked);
+            Trace.TraceInformation("" + sw.Elapsed);
+            sw.Restart();
 
+            // Make objects for age chart and save to file
             Trace.TraceInformation("Started age");
-            //String age = "", ageSpark = "";
-            //getAgeChartJSON(collisions, out age, out ageSpark);
+            String age = "", ageSpark = "";
+            getAgeChartJSON(String.Copy(collisions), out age, out ageSpark);
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
+            Trace.TraceInformation("" + sw.Elapsed);
+            sw.Restart();
 
+            // Make objects for contributing factors chart and save to file
             Trace.TraceInformation("Start contributing factors");
             String factors = "", factorsSpark = "";
-            getContributingFactorsChartJSON(collisions, out factors, out factorsSpark);
-
-            /*
-            Trace.TraceInformation("Started table entry");
-            // Save to dashboard table
-            String connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=visionzerostorage;AccountKey=gub7wrXQbWsNxb2vW4+MqhXPKFo9Ik9GtugE3b590NCnNHspYZHYRU/SdwW9BziNiPQlN6mz2P2rlIVK/is5TQ==");
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            CloudTable collisionDataTable = tableClient.GetTableReference("dashboarddata");
-            collisionDataTable.CreateIfNotExists();
-
-            // Delete old Progress Bar data, add new
-            TableQuery<TableEntity> query = new TableQuery<TableEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "progress"));
-            foreach(TableEntity entity in collisionDataTable.ExecuteQuery(query))
-            {
-                TableOperation op = TableOperation.Delete(entity);
-                collisionDataTable.Execute(op);
-            }
-
-            TableEntity te = new TableEntity("progress", progress);
-            TableOperation to = TableOperation.Insert(te);
-            collisionDataTable.Execute(to);
-
-            // Delete old Stacked Bar Chart data, add new
-            query = new TableQuery<TableEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "stacked"));
-            foreach (TableEntity entity in collisionDataTable.ExecuteQuery(query))
-            {
-                TableOperation op = TableOperation.Delete(entity);
-                collisionDataTable.Execute(op);
-            }
-
-            te = new TableEntity("stacked", stacked);
-            to = TableOperation.Insert(te);
-            collisionDataTable.Execute(to);
-
-            // Delete old Age Chart data, add new
-            query = new TableQuery<TableEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "age"));
-            foreach (TableEntity entity in collisionDataTable.ExecuteQuery(query))
-            {
-                TableOperation op = TableOperation.Delete(entity);
-                collisionDataTable.Execute(op);
-            }
-
-            te = new TableEntity("age", age);
-            to = TableOperation.Insert(te);
-            collisionDataTable.Execute(to);
-            */
-
-            // Write age information to file
-            //System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
-            //System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
+            getContributingFactorsChartJSON(String.Copy(collisions), out factors, out factorsSpark);
             System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactors.json"), factors);
             System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactorsSpark.json"), factorsSpark);
-
-            // Create age JSON, age spark JSON
-            // Create contributing factors JSON, contributing factors spark JSON
-            // Create stackedbar JSON
-            // Create map JSON, store locally as flat file OR year-to-year in table
-
-
-
-            /*
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            */
-
-            //System.IO.File.WriteAllText(@"C:\Users\Alex\Desktop\ALLDATA.txt", allRecords);
-
-            /* Upload to table
-            String connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=visionzerostorage;AccountKey=gub7wrXQbWsNxb2vW4+MqhXPKFo9Ik9GtugE3b590NCnNHspYZHYRU/SdwW9BziNiPQlN6mz2P2rlIVK/is5TQ==");
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            CloudTable collisionDataTable = tableClient.GetTableReference("collisiondatatable");
-            collisionDataTable.CreateIfNotExists();
-
-            TableEntity te = new TableEntity("full data", allRecords);
-            TableOperation to = TableOperation.Insert(te);
-            collisionDataTable.Execute(to);
-            */
-
-            //JsonConvert.DeserializedObject<Collision>(allRecords);
-
-            //Trace.TraceInformation("Time to download and save string: " + sw.Elapsed);
-            //sw.Restart();
-
-            /* Convert all JObjects to strings
-            int i2 = 1;
-            foreach (JObject jo in collisions)
-            {
-                stringCollisions += JsonConvert.SerializeObject(jo);
-                Trace.TraceInformation("" + i2);
-                i2++;
-            }
-            */
-
-            /* Save to blob
-            // Connect to blob container
-            String connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=visionzerostorage;AccountKey=gub7wrXQbWsNxb2vW4+MqhXPKFo9Ik9GtugE3b590NCnNHspYZHYRU/SdwW9BziNiPQlN6mz2P2rlIVK/is5TQ==");
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer collisionContainer = blobClient.GetContainerReference("collisions");
-            collisionContainer.CreateIfNotExists();
-
-            // Upload blob
-            CloudBlockBlob collisionBlob = collisionContainer.GetBlockBlobReference("collisions");
-            collisionBlob.UploadText(stringCollisions);
-
-            Trace.TraceInformation("Time to save blob: " + sw.Elapsed);
-            sw.Restart();
-            */
-
-            /* Downloading blob as string
-            string test = "";
-            using (var memoryStream = new MemoryStream())
-            {
-                collisionBlob.DownloadToStream(memoryStream);
-                test = System.Text.Encoding.UTF8.GetString(memoryStream.ToArray());
-            }
-
-            Trace.TraceInformation("Time to download blob: " + sw.Elapsed);
-            Trace.TraceInformation("" + test.Length);
-            sw.Restart();
-            */
-
-            /* All map data
-            // Make for map
-            // List of object for Map
-            //List<JObject> mapPoints = new List<JObject>();
-            foreach (JObject c in collisions)
-            {
-                double lat = Convert.ToDouble((String) c.SelectToken(@"shape.latitude"));
-                double lon = Convert.ToDouble((String) c.SelectToken(@"shape.longitude"));
-                String loc = (String) c.SelectToken(@"location");
-                String weather = (String) c.SelectToken(@"weather");
-
-                JObject newJ = JObject.FromObject(new
-                {
-                    type = "Feature",
-                    geometry = new 
-                    {
-                        type = "Point",
-                        coordinates = new double[] {lon, lat}
-                    },
-                    properties = new 
-                    {
-                        location = loc,
-                        weather = weather
-                    }
-                });
-                
-                mapPoints.Add(newJ);
-            }
-
-            using (StreamWriter writer = new StreamWriter(@"C:\Users\Alex\Desktop\map.geojson"))
-            {
-                foreach (JObject jo in mapPoints)
-                {
-                    writer.Write(jo + ", ");
-                }
-            }
-
-            Trace.TraceInformation("Time to convert to map points: " + sw.Elapsed);
-            Trace.TraceInformation("" + mapPoints.Count);
-            Trace.TraceInformation("" + mapPoints[0]);
-            sw.Restart();
-            */
+            Trace.TraceInformation("" + sw.Elapsed);
+            sw.Stop();
 
             return "done";
         }
@@ -225,7 +86,7 @@ namespace WebRole1
             String result = "[";
 
             //Determine total records
-            String url = "https://data.seattle.gov/resource/v7k9-7dn4.json?$select=count(reportno)";
+            String url = openDataURL + "?$select=count(reportno)";
             var totalRecordsJSON = new WebClient().DownloadString(url);
             int totalRecords = Convert.ToInt32(totalRecordsJSON.Split('"')[3].Trim());
 
@@ -233,59 +94,26 @@ namespace WebRole1
             for (int i = 0; i < totalRecords; i += 49999)
             {
                 // Get next block of 50k records
-                url = "https://data.seattle.gov/resource/v7k9-7dn4.json?$limit=49999&$offset=" + i;
+                url = openDataURL + "?$limit=49999&$offset=" + i;
                 String response = new WebClient().DownloadString(url);
                 result += response.Substring(2, response.Length - 3) + ",";
-
-                Trace.TraceInformation("yep");
             }
 
             return result + "]";
         }
 
         // Returns collision JSON string as list of JObjects
-        // and removes all "unnecessary" fields if flag is true
-        private List<JObject> convertToList(String collisionJSON, Boolean clean)
+        private List<JObject> convertToList(String collisionJSON)
         {
-            List<JObject> jsonObjects = JsonConvert.DeserializeObject<List<JObject>>(collisionJSON);
-
-            if (clean)
-            {
-                List<JObject> result = new List<JObject>();
-
-                // Remove unnecessary fields to save space
-                foreach (JObject jo in jsonObjects)
-                {
-                    jo.Remove("sdot_colcode");
-                    jo.Remove("sdotcolnum");
-                    jo.Remove("st_colcode");
-                    jo.Remove("inckey");
-                    jo.Remove("segkey");
-                    jo.Remove("status");
-                    jo.Remove("width");
-                    jo.Remove("seglanekey");
-                    jo.Remove("intkey");
-                    jo.Remove("objectid");
-                    jo.Remove("incdate");
-
-                    result.Add(jo);
-                }
-
-                return result;
-            }
-            else
-            {
-                return jsonObjects;
-            }
+            return JsonConvert.DeserializeObject<List<JObject>>(collisionJSON);
         }
 
-        // Returns collision JSON string as a Dictionary with "coldetkey" as int key
-        // and the corresponding JObject as the value
-        // Removes all "unnecessary" fields if flag is true
-        private Dictionary<String, JObject> convertToDictionary(String collisionJSON, Boolean clean)
+        // Returns collision JSON string as a Dictionary 
+        // with "coldetkey" (collision key) as String key and the corresponding JObject as the value
+        private Dictionary<String, JObject> convertToDictionary(String collisionJSON)
         {
             Dictionary<String, JObject> result = new Dictionary<String,JObject>();
-            List<JObject> JObjects = convertToList(collisionJSON, clean);
+            List<JObject> JObjects = convertToList(collisionJSON);
 
             foreach (JObject jo in JObjects)
             {
@@ -298,35 +126,46 @@ namespace WebRole1
         // Creates and returns JSON for use in VZ progress chart
         private String getProgressChartJSON(String collisionJSON)
         {
-            List<JObject> objects = convertToList(collisionJSON, true);
-            List<JObject> resultObjects = new List<JObject>();
+            List<JObject> objects = convertToList(collisionJSON);
+            List<JArray> result = new List<JArray>();
+            JArray collisionTotal = new JArray(); // JArray representing all collisions
+            JArray fatalTotal = new JArray(); // JArray representing serious/fatal collisions
 
+            // Key: year as int, Value: number of serious injuries/fatalities for that year as int
+            SortedDictionary<int, int> collisionsPerYear = new SortedDictionary<int, int>();
             SortedDictionary<int, int> fatalitiesPerYear = new SortedDictionary<int, int>();
 
-            // For each collision find year
+            // Iterate through each collision and find year
             // If there's a fatality, update dictionary for that year key
             foreach (JObject jo in objects)
-            {   
-                // Add to dictionary if there is one or more fatalities
-                if (collisionIsSeriousOrFatal(jo))
-                {
-                    int fatalities = (int)jo.GetValue("fatalities");
-                    int seriousinjuries = (int)jo.GetValue("seriousinjuries");
-                    int year = Convert.ToInt32(getCollisionYear(jo));
+            {
+                int year = Convert.ToInt32(getCollisionYear(jo));
 
-                    // Year not yet found, add new key with value of "fatalities"
-                    if (!fatalitiesPerYear.ContainsKey(year))
-                    {
-                        fatalitiesPerYear.Add(year, fatalities + seriousinjuries);
-                    }
-                    else
-                    {
-                        fatalitiesPerYear[year] += fatalities + seriousinjuries;
-                    }
+                // Add to dictionary if there is one or more fatalities or serious injuries
+                if (collisionIsSeriousOrFatal(jo) && year >= 2004)
+                {
+                    // Add that many fatalities and serious injuries
+                    int fatalities = (int)jo.GetValue("fatalities");
+                    int seriousInjuries = (int)jo.GetValue("seriousinjuries");
+
+                    AddCountToSortedDictionary(collisionsPerYear, year, 1);
+                    AddCountToSortedDictionary(fatalitiesPerYear, year, fatalities + seriousInjuries);
                 }
             }
 
-            // Create formatted JObjects
+            // Create formatted JArray for collisions
+            foreach (KeyValuePair<int, int> pair in collisionsPerYear)
+            {
+                JObject temp = JObject.FromObject(new
+                {
+                    y = pair.Value,
+                    year = pair.Key
+                });
+
+                collisionTotal.Add(temp);
+            }
+
+            // Create formatted JArray for fatalities and serious injuries
             foreach (KeyValuePair<int, int> pair in fatalitiesPerYear)
             {
                 JObject temp = JObject.FromObject(new
@@ -335,24 +174,29 @@ namespace WebRole1
                     year = pair.Key
                 });
 
-                resultObjects.Add(temp);
+                fatalTotal.Add(temp);
             }
 
-            return JsonConvert.SerializeObject(resultObjects);
+            result.Add(collisionTotal);
+            result.Add(fatalTotal);
+            
+            // Return list of JObjects as JSON string
+            return JsonConvert.SerializeObject(result);
         }
 
         // Creates and returns JSON used for stacked bar chart
         private String getStackedBarChartJSON(String collisionJSON)
         {
-            List<JObject> objects = convertToList(collisionJSON, true);
+            List<JObject> objects = convertToList(collisionJSON);
             List<JArray> resultObjects = new List<JArray>();
 
+            // Key: year as String, Value: number of participants in serious/fatal collisions for that year as int
             SortedDictionary<String, int> peds = new SortedDictionary<String, int>();
             SortedDictionary<String, int> bicycles = new SortedDictionary<String, int>();
             SortedDictionary<String, int> vehicles = new SortedDictionary<String, int>();
 
             // For each collision, if there is a serious injury or fatality,
-            // regardless of how many, add number of peds, bicyclists, and vehicles
+            // regardless of how many, add number of all peds, bicyclists, and vehicles
             // involved for that year
             foreach (JObject jo in objects)
             {
@@ -371,47 +215,18 @@ namespace WebRole1
             resultObjects.Add(createJArrayFromSortedDictionary(bicycles));
             resultObjects.Add(createJArrayFromSortedDictionary(vehicles));
 
+            // Return list of JArrays as JSON string
             return JsonConvert.SerializeObject(resultObjects);
         }
 
-        // Adds given count value to given key value in given SortedDictionary
-        private void AddCountToSortedDictionary(SortedDictionary<String, int> dic, String year, int count)
-        {
-            if (count != 0)
-            {
-                if (!dic.ContainsKey(year))
-                {
-                    dic.Add(year, count);
-                }
-                else
-                {
-                    dic[year] += count;
-                }
-            }
-        }
-
-        // Creates JArray for stacked bar chart based on given SortedDicitonary of collision JSON
-        private JArray createJArrayFromSortedDictionary(SortedDictionary<String, int> dic)
-        {
-            JArray result = new JArray();
-
-            foreach (KeyValuePair<String, int> pair in dic)
-            {
-                result.Add(JObject.FromObject(new { year = pair.Key, y = pair.Value }));
-            }
-
-            return result;
-        }
-
+        // Creates and returns JSON used for age chart and corresponding sparklines into out variables
         private void getAgeChartJSON(String collisionJSON, out String chart, out String spark)
         {
-            String personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
-            var reader = new StreamReader(File.OpenRead(personFile)); // Read PERSONS csv
-            int lastYear = DateTime.Today.AddYears(-1).Year; // Most previous year
-            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON, true);
+            var reader = new StreamReader(File.OpenRead(personFile)); // Read local PERSONS csv
+            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
 
             // Define age ranges
-            // Current format is: 10-19, 20-29, and so on until 99
+            // Current format is: 10-19, 20-29, and so on until 90-99
             List<AgeRange> ageRanges = new List<AgeRange>();
 
             for (int i = 10; i < 100; i += 10)
@@ -425,13 +240,13 @@ namespace WebRole1
             while (!reader.EndOfStream)
             {
                 String[] line = reader.ReadLine().Split(',');
-                String type = line[19]; // type of participant (driver)
+                String type = line[19]; // type of participant (driver, etc.)
                 String age = line[23]; // person age
                 String collisionKey = line[12]; // key tieing this person to a certain collision
                 JObject collision; // corresponding collision object
 
-                // If there is no missing information, collision key exists
-                if (type != String.Empty && age != String.Empty && collisionKey != String.Empty 
+                // Check there is no missing information, collision key exists
+                if (type != String.Empty && age != String.Empty && collisionKey != String.Empty
                     && collisions.TryGetValue(collisionKey, out collision))
                 {
                     int numType = Convert.ToInt32(type);
@@ -443,25 +258,25 @@ namespace WebRole1
                     if (numType == 5 && numYear <= lastYear && numYear >= lastYear - 4
                         && collisionIsSeriousOrFatal(collision))
                     {
-                        // Find first appropriate age range
-                        for (int i = 0; i < ageRanges.Count; i++)
+                        // Find appropriate age ranges
+                        // If age ranges overlap, a collision will be added to all ranges applicable
+                        foreach (AgeRange range in ageRanges)
                         {
-                            AgeRange range = ageRanges[i];
-                            if (numAge > range.getMinimumAge() && numAge < range.getMaximumAge())
+                            if (numAge >= range.getMinimumAge() && numAge <= range.getMaximumAge())
                             {
                                 range.AddCollision(numYear);
-                                break;
                             }
                         }
                     }
                 }
             }
 
+            // Age ranges now contain collision information from last 5 years
             // Sort age ranges based on amount of crashes in most recent year
             // Top 4 will be saved into JSON
             ageRanges.Sort();
 
-            // Find upper bound
+            // Find upper bound for defining bar range in chart
             int max = -1;
 
             for (int i = 0; i < 4; i++)
@@ -476,7 +291,7 @@ namespace WebRole1
 
                 max = Math.Max(max, Math.Max(num1, num2));
             }
-            
+
             // Construct JSON for age chart
             List<JObject> ageList = new List<JObject>();
             List<JArray> sparkList = new List<JArray>();
@@ -485,6 +300,7 @@ namespace WebRole1
             {
                 AgeRange range = ageRanges[i];
 
+                // Chart object
                 JObject newJ = JObject.FromObject(new
                 {
                     title = range.getTitle(),
@@ -493,6 +309,7 @@ namespace WebRole1
                     markers = new int[] { range.collisionsPerYear.Values.Reverse().Skip(1).First() }
                 });
 
+                // Sparkline object
                 JArray newJarray = new JArray();
 
                 for (int j = lastYear - 4; j < lastYear + 1; j++)
@@ -508,21 +325,21 @@ namespace WebRole1
                 sparkList.Add(newJarray);
             }
 
+            // Return list of JObjects and list of JArrays as JSON string
             chart = JsonConvert.SerializeObject(ageList);
             spark = JsonConvert.SerializeObject(sparkList);
         }
 
+        // Creates and returns JSON used for contributing factors chart and corresponding sparklines into out variables
         private void getContributingFactorsChartJSON(String collisionJSON, out String chart, out String spark)
         {
-            String personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
             String codeFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\SDOT_INCIDENT_WSDOT_CRCMSTNCCODE.csv");
             var reader = new StreamReader(File.OpenRead(personFile)); // Read PERSONS csv
-            var codeReader = new StreamReader(File.OpenRead(codeFile));
-            int lastYear = DateTime.Today.AddYears(-1).Year; // Most previous year
-            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON, true);
+            var codeReader = new StreamReader(File.OpenRead(codeFile)); // Read SRCMSTNCCODE csv
+            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
             Dictionary<String, Factor> factors = new Dictionary<String, Factor>();
 
-            // List of factors to be omitted from comparison
+            // Set of factors to be omitted from comparison
             HashSet<String> blackList = new HashSet<String>();
             blackList.Add("0"); // Unknown
             blackList.Add("17"); // Other
@@ -538,11 +355,13 @@ namespace WebRole1
             while (!codeReader.EndOfStream)
             {
                 String[] line = codeReader.ReadLine().Split(',');
+                String factorCode = line[0];
 
-                if (!blackList.Contains(line[1]))
+                // Check not a blacklisted factor
+                if (!blackList.Contains(factorCode))
                 {
-                    factors.Add(line[0], new Factor(line[0], line[4]));
-                }               
+                    factors.Add(factorCode, new Factor(factorCode, line[4]));
+                }
             }
 
             // Read every line, except the first
@@ -554,8 +373,8 @@ namespace WebRole1
                 String collisionKey = line[12];
                 JObject collision;
 
-                // Collision key is not empty and is valid, collision is serious/fatal
-                if (collisionKey != String.Empty 
+                // Check collision key is not empty and is valid, person is driver, collision is serious/fatal
+                if (collisionKey != String.Empty
                     && collisions.TryGetValue(collisionKey, out collision)
                     && collisionIsSeriousOrFatal(collision))
                 {
@@ -566,8 +385,10 @@ namespace WebRole1
                     {
                         String tempFactor = line[i];
 
+                        // The factor is not empty and not blacklisted, 
+                        // the recorded date is between last year and 5 years ago inclusive,
                         if (tempFactor != String.Empty && !blackList.Contains(tempFactor)
-                            && year > lastYear - 5)
+                            && year <= lastYear && year >= lastYear - 4)
                         {
                             factors[tempFactor].AddCollision(year);
                         }
@@ -575,10 +396,11 @@ namespace WebRole1
                 }
             }
 
-            // Sorted list of factors
+            // Factors dictionary now contains collision information from last 5 years
+            // List of factors sorted in terms of most collisions last year
             List<Factor> sortedFactors = new List<Factor>();
 
-            foreach(KeyValuePair<String, Factor> pair in factors)
+            foreach (KeyValuePair<String, Factor> pair in factors)
             {
                 sortedFactors.Add(pair.Value);
             }
@@ -608,6 +430,7 @@ namespace WebRole1
             {
                 Factor factor = sortedFactors[i];
 
+                // Chart object
                 JObject newJ = JObject.FromObject(new
                 {
                     title = factor.getTitle(),
@@ -616,6 +439,7 @@ namespace WebRole1
                     markers = new int[] { factor.collisionsPerYear.Values.Reverse().Skip(1).First() }
                 });
 
+                // Sparkline object
                 JArray newJarray = new JArray();
 
                 for (int j = lastYear - 4; j < lastYear + 1; j++)
@@ -631,8 +455,55 @@ namespace WebRole1
                 sparkList.Add(newJarray);
             }
 
+            // Return list of JObjects and list of JArrays as JSON string
             chart = JsonConvert.SerializeObject(factorList);
             spark = JsonConvert.SerializeObject(sparkList);
+        }
+
+        // Adds given count value to given key value (int) in given SortedDictionary<int, int>
+        private void AddCountToSortedDictionary(SortedDictionary<int, int> dic, int year, int count)
+        {
+            if (count != 0)
+            {
+                if (!dic.ContainsKey(year))
+                {
+                    dic.Add(year, count);
+                }
+                else
+                {
+                    dic[year] += count;
+                }
+            }
+        }
+
+        // Adds given count value to given key value (String) in given SortedDictionary<String, int>
+        private void AddCountToSortedDictionary(SortedDictionary<String, int> dic, String year, int count)
+        {
+            if (count != 0)
+            {
+                if (!dic.ContainsKey(year))
+                {
+                    dic.Add(year, count);
+                }
+                else
+                {
+                    dic[year] += count;
+                }
+            }
+        }
+
+        // Creates JArray filled with JObjects for stacked bar chart
+        // based on given SortedDicitonary of collision JSON
+        private JArray createJArrayFromSortedDictionary(SortedDictionary<String, int> dic)
+        {
+            JArray result = new JArray();
+
+            foreach (KeyValuePair<String, int> pair in dic)
+            {
+                result.Add(JObject.FromObject(new { year = pair.Key, y = pair.Value }));
+            }
+
+            return result;
         }
 
         // Returns true if given JObject representing a collision
@@ -652,6 +523,7 @@ namespace WebRole1
 
         // An implementation of an age range of drivers involved in serious/fatal
         // collisions over a certain span of years
+        // Can be compared to other age ranges by amount of collisions in most recent year
         private class AgeRange : IComparable
         {
             // Human readable title for age range in the format "xx - yy"
@@ -664,8 +536,10 @@ namespace WebRole1
             private int maximumAge;
 
             // Relationship of serious/fatal collisions this age range is responsible for
+            // Key: year as int, value: total number of serious/fatal collisions for that year as int
             public SortedDictionary<int, int> collisionsPerYear;
             
+            // Constructs an AgeRange given range lower bound and upper bound
             public AgeRange(int min, int max)
             {
                 minimumAge = min;
@@ -674,12 +548,16 @@ namespace WebRole1
                 collisionsPerYear = new SortedDictionary<int, int>();
             }
 
+            // Returns title
             public String getTitle() { return plainTextTitle; }
 
+            // Returns minimum age necessary to be considered part of this group
             public int getMinimumAge() { return minimumAge; }
 
+            // Returns maximum age to be considered part of this group
             public int getMaximumAge() { return maximumAge; }
 
+            // Adds one collision to the value of the given year key in local dictionary
             public void AddCollision(int year)
             {
                 if (!collisionsPerYear.ContainsKey(year))
@@ -696,11 +574,12 @@ namespace WebRole1
             // returns 0 if the amount is the same, -1 if less
             public int CompareTo(object otherRange)
             {
+                // No collisions stored in this range and other range respectively
                 if (collisionsPerYear.Values.Count == 0)
                 {
                     return 1;
                 }
-                else if (((Factor)otherFactor).collisionsPerYear.Values.Count == 0)
+                else if (((AgeRange)otherRange).collisionsPerYear.Values.Count == 0)
                 {
                     return -1;
                 }
@@ -714,6 +593,9 @@ namespace WebRole1
             }
         }
 
+        // An implementation of contributing or circumstancial factors in serious/fatal
+        // collisions over a certain span of years
+        // Can be compared to other factors by amount of collisions in most recent year
         private class Factor : IComparable
         {
             // Human readable title, as given by code table
@@ -723,8 +605,10 @@ namespace WebRole1
             private String code;
 
             // Relationship of serious/fatal injuries to given year for this factor
+            // Key: year as int, value: total number of serious/fatal collisions for that year as int
             public SortedDictionary<int, int> collisionsPerYear;
 
+            // Constructs a Factor given SDOT factor code and plain text description
             public Factor(String code, String descr)
             {
                 this.code = code;
@@ -732,10 +616,13 @@ namespace WebRole1
                 collisionsPerYear = new SortedDictionary<int, int>();
             }
 
+            // Returns code
             public String getCode() { return code; }
-
+            
+            // Returns title
             public String getTitle() { return plainTextTitle; }
 
+            // Adds one collision to the value of the given year key in local dictionary
             public void AddCollision(int year)
             {
                 if (!collisionsPerYear.ContainsKey(year))
@@ -752,6 +639,7 @@ namespace WebRole1
             // returns 0 if the amount is the same, -1 if less
             public int CompareTo(object otherFactor)
             {
+                // No collisions stored in this factor and other factor respectively
                 if(collisionsPerYear.Values.Count == 0)
                 {
                     return 1;
