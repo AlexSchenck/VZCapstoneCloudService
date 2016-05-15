@@ -2,9 +2,7 @@ var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
 var w = outerW / 3 - 60;       
-var width = w;                 
 var h = outerH / 3 - 90;     
-var height = h;                   
 var padding = {top: 40, right: 40, bottom: 60, left:40};
 var dataset;
 
@@ -27,7 +25,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 
 	//Set up scales
 	var xScale = d3.time.scale()
-    	.domain([new Date(2004, 0, 1), new Date(2015, 0, 1)])
+    	.domain([new Date(2004, 0, 1), new Date(2016, 0, 1)])
 		.rangeRound([0, w-padding.left-padding.right]);
 
 	var yScale = d3.scale.linear()
@@ -48,8 +46,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	// draws the y axis
 	var yAxis = d3.svg.axis()
 				   .scale(yScale)
-				   .orient("left")
-				   .ticks(5);
+				   .orient("left");
 
 	//Easy colors accessible via a 10-step ordinal scale
 	var colors = d3.scale.category10();
@@ -57,8 +54,6 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	//Create SVG element
 	var svg = d3.select("#stackedBarChart")
 				.append("svg")
-				// .attr("width", w)
-				// .attr("height", h)
 	    		.attr("preserveAspectRatio", "xMinYMin meet")
 				.attr("viewBox", "0 0 " + w + " " + h)
 				.classed("svg-content", true); 

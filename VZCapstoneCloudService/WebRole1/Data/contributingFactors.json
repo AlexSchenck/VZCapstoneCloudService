@@ -1,6 +1,1 @@
-[
-  {"title":"Texting","ranges":[0, 10],"measures":[7],"markers":[6]},
-  {"title":"Weather","ranges":[0, 10],"measures":[4],"markers":[5]},
-  {"title":"Inattention","ranges":[0, 10],"measures":[2],"markers":[1]},
-  {"title":"Speeding","ranges":[0, 10],"measures":[1],"markers":[1]}
-]
+[{"title":"Inattention","ranges":[0,35],"measures":[25],"markers":[30]},{"title":"Did not Grant Right of Way to Vehicle","ranges":[0,35],"measures":[17],"markers":[28]},{"title":"Did not Grant Right of Way to Pedestrian","ranges":[0,35],"measures":[14],"markers":[19]},{"title":"Under the Influence of Alcohol","ranges":[0,35],"measures":[14],"markers":[21]}]

@@ -62,13 +62,10 @@ d3.json("./Data/" + name + ".json", function(error, data) {
                .orient("bottom")
                // .ticks(6)
                .tickFormat(d3.format("s")));
-
-
 });
 
 drawBulletKey();
 drawTitles();
-
 
 // draws the spark lines
 var widthOfSpark = 20;
@@ -86,14 +83,9 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
     // coercing each value to an integer for the date
     // and an integer for the y value
     for (var i = 0; i < data.length; i++) {
-
         var maxHeight = 30;
-
         var max = d3.max(data[i], function(d) { return d.yValue; });
         var shift = Math.round(max / 30);
-
-        // console.log(max / maxHeight + "  " + max + " " + shift);    
-
         data[i].forEach(function(d) {
             d.date = (widthOfSpark/ 3 * 2) * (+d.date - startDate);
             currentValue[i] = d.yValue;  
@@ -219,7 +211,7 @@ function drawTitles() {
             .classed("svg-content", true)
         .append("text")
         .style("font-size", 10)
-        .text("Number of Collisions");
+        .text("Number of Drivers");
 
     d3.select("#" + name + "SparkTitle").append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
