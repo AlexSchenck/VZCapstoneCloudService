@@ -2,8 +2,10 @@ require([
     "esri/map",
     "esri/layers/FeatureLayer",
     "esri/InfoTemplate",
-    "esri/dijit/Search"
-], function (Map, FeatureLayer, InfoTemplate, Search) {
+    "esri/dijit/Search",
+    "esri/geometry/Extent", 
+    "esri/SpatialReference"
+], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference) {
     var map = new Map("mapid", {
         basemap: 'streets-navigation-vector',
         sliderOrientation : "horizontal",
@@ -16,7 +18,11 @@ require([
     });
     map.addLayer(featureLayer);
 
+    // var extent = new Extent(1249026.1158677936,184059.089008525,1293046.6773208678,271525.40346609056, new SpatialReference({ wkid:2926 }));
+    // http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?searchExtent={%22xmin%22:1249026.1158677936,%22ymin%22:184059.089008525,%22xmax%22:1293046.6773208678,%22ymax%22:271525.40346609056,%22spatialReference%22:{%22wkid%22:2926}}&outSR=102100&f=pjson
+
     var search = new Search({
+        enableInfoWindow: false,
         map: map
     }, "search");
     search.startup();
