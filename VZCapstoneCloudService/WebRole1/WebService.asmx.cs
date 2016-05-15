@@ -187,36 +187,66 @@ namespace WebRole1
         // Creates and returns JSON used for stacked bar chart
         private String getStackedBarChartJSON(String collisionJSON)
         {
+            var reader = new StreamReader(File.OpenRead(personFile)); // Read local PERSONS csv
             List<JObject> objects = convertToList(collisionJSON);
-            List<JArray> resultObjects = new List<JArray>();
+            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
+            List<JArray> result = new List<JArray>();
 
             // Key: year as String, Value: number of participants in serious/fatal collisions for that year as int
             SortedDictionary<String, int> peds = new SortedDictionary<String, int>();
             SortedDictionary<String, int> bicycles = new SortedDictionary<String, int>();
             SortedDictionary<String, int> vehicles = new SortedDictionary<String, int>();
 
-            // For each collision, if there is a serious injury or fatality,
-            // regardless of how many, add number of all peds, bicyclists, and vehicles
-            // involved for that year
-            foreach (JObject jo in objects)
-            {
-                if (collisionIsSeriousOrFatal(jo))
-                {
-                    String year = getCollisionYear(jo);
+            // Read each line, except the first
+            reader.ReadLine();
 
-                    AddCountToSortedDictionary(peds, year, (int)jo.GetValue("pedcount"));
-                    AddCountToSortedDictionary(bicycles, year, (int)jo.GetValue("pedcylcount"));
-                    AddCountToSortedDictionary(vehicles, year, (int)jo.GetValue("vehcount"));
+            // For each person, if they were seriously injured or killed,
+            // add them to appropriate group dictionary
+            while (!reader.EndOfStream)
+            {
+                String[] line = reader.ReadLine().Split(',');
+                String type = line[19]; // type of participant (driver, etc.)
+                String injury = line[15]; // type of injury
+                String collisionKey = line[12]; // key tieing this person to a certain collision
+                JObject collision; // Corresponding collision object
+
+                // Check there is no missing information, collision key exists
+                if (type != String.Empty && injury != String.Empty && collisionKey != String.Empty
+                    && collisions.TryGetValue(collisionKey, out collision))
+                {
+                    int numType = Convert.ToInt32(type);
+                    int numInjury = Convert.ToInt32(injury);
+
+                    // Check the person was seriously injured or killed
+                    if (numInjury > 1 && numInjury < 6)
+                    {
+                        switch (numType) 
+                        {
+                            case 5:
+                            case 6:
+                                AddCountToSortedDictionary(vehicles, getCollisionYear(collision), 1);
+                                break;
+                            case 7:
+                                AddCountToSortedDictionary(peds, getCollisionYear(collision), 1);
+                                break;
+                            case 8:
+                            case 9:
+                                AddCountToSortedDictionary(bicycles, getCollisionYear(collision), 1);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
             }
 
             // Create formatted JSON objects as JArrays
-            resultObjects.Add(createJArrayFromSortedDictionary(peds));
-            resultObjects.Add(createJArrayFromSortedDictionary(bicycles));
-            resultObjects.Add(createJArrayFromSortedDictionary(vehicles));
+            result.Add(createJArrayFromSortedDictionary(peds));
+            result.Add(createJArrayFromSortedDictionary(bicycles));
+            result.Add(createJArrayFromSortedDictionary(vehicles));
 
             // Return list of JArrays as JSON string
-            return JsonConvert.SerializeObject(resultObjects);
+            return JsonConvert.SerializeObject(result);
         }
 
         // Creates and returns JSON used for age chart and corresponding sparklines into out variables
@@ -245,18 +275,17 @@ namespace WebRole1
                 String collisionKey = line[12]; // key tieing this person to a certain collision
                 JObject collision; // corresponding collision object
 
-                // Check there is no missing information, collision key exists
+                // Check there is no missing information, collision key exists, collision is serious/fatal
                 if (type != String.Empty && age != String.Empty && collisionKey != String.Empty
-                    && collisions.TryGetValue(collisionKey, out collision))
+                    && collisions.TryGetValue(collisionKey, out collision)
+                    && collisionIsSeriousOrFatal(collision))
                 {
                     int numType = Convert.ToInt32(type);
                     int numAge = Convert.ToInt32(age);
                     int numYear = Convert.ToInt32(getCollisionYear(collision));
 
-                    // The person is a driver, the recorded date is between last year and 5 years ago inclusive,
-                    // and the collision is serious/fatal
-                    if (numType == 5 && numYear <= lastYear && numYear >= lastYear - 4
-                        && collisionIsSeriousOrFatal(collision))
+                    // The person is a driver, the recorded date is between last year and 5 years ago inclusive
+                    if (numType == 5 && numYear <= lastYear && numYear >= lastYear - 4)
                     {
                         // Find appropriate age ranges
                         // If age ranges overlap, a collision will be added to all ranges applicable
