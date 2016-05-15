@@ -1,0 +1,78 @@
+/* makes the ticks go away so they're not on 
+   bullet chart*/
+#age.tick, .section .axis path, #age .bullet .tick, #contributingFactors .bullet .tick, #contributingFactors.ticks {
+	display: none;
+}
+
+.bullet { font: 10px;}
+.bullet .marker { stroke: #000; stroke-width: 2px; }
+.bullet .range.s0 { fill: #63666A; opacity: .15; }
+.bullet .measure.s0 { fill: #00A3E0; opacity: .7; }
+.bullet .title { font-size: 16px; }
+.bullet .subtitle { fill: #999; }
+
+#ageSparkId, #contributingFactorsSparkId {
+  	float: right;
+}
+
+#ageBullets, #contributingFactorsBullets {
+	padding-top: 4%;
+}
+
+.svg-container-bullet {
+	position: relative;
+	width: 100%;
+	padding-bottom: 12%; 
+	vertical-align: middle; 
+	overflow: hidden;
+}
+
+#ageBullets .axis text, #contributingFactorsBullets .axis text {
+	font-size: 10px;
+}
+
+#ageSparkKey .axis .tick text, #contributingFactorsSparkKey .axis .tick text {
+	font-size: 18px;
+}
+
+.svg-container-block { 
+	width: 70%;
+}
+
+.svg-container-spark-block { 
+	padding-top: 4%;
+	width: 27%;
+}
+
+.svg-container-spark { 
+	width: 100%;
+	padding-top: 31.25%; 
+}
+
+.svg-container-title { 
+	width: 100%;
+	padding-bottom: 22%; 
+}
+
+.svg-container-bullet-title { 
+	width: 100%;
+	padding-bottom: 8%; 
+}
+
+.bulletKey, #stackedKey {
+	float: right;
+}
+
+.svg-container-key {  
+	width: 35%;
+	padding-bottom: 8%;  
+}
+
+
+.svg-container-key, .svg-container-bullet-title, .svg-container-title, .svg-container-spark,
+.svg-container-block { 
+	display: inline-block;
+	position: relative;
+	vertical-align: middle; 
+	overflow: hidden; 
+}
