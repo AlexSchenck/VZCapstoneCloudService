@@ -59,7 +59,7 @@ d3.json("./Data/contributingFactors.json", function(error, data) {
             .call(d3.svg.axis()
                .scale(bulletScale)
                .orient("bottom")
-               // .ticks(6)
+               .ticks(4)
                .tickFormat(d3.format("s")));
 
 
@@ -87,19 +87,30 @@ drawTitles();
 function drawTitles() {
     d3.select("#contributingFactorsBulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-12 -15 250 40")
+            .classed("svg-content", true)
+        .append("text")
+        .style("font-size", 10)
+        .style("font-family", "Open Sans Condensed")
+        .text("Factor");
+
+    d3.select("#contributingFactorsBulletTitle").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", "-90 -15 250 40")
             .classed("svg-content", true)
         .append("text")
         .style("font-size", 10)
+        .style("font-family", "Open Sans Condensed")
         .text("Frequency");
 
     d3.select("#contributingFactorsSparkTitle").append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 -15 100 50")
-        .classed("svg-content", true)
-    .append("text")
-    .style("font-size", 10)
-    .text("Past 5 years");
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 -15 100 50")
+            .classed("svg-content", true)
+        .append("text")
+        .style("font-size", 10)
+        .style("font-family", "Open Sans Condensed")
+        .text("Past 5 years");
 }
 
 
@@ -128,7 +139,7 @@ d3.json("./Data/contributingFactorsSpark.json", function(error, data) {
         data[i].forEach(function(d) {
             d.date = (widthOfSpark/ 3 * 2) * (+d.date - startDate);
             currentValueCF[i] = d.yValue;
-            d.yValue = (maxHeight * shift - +d.yValue);  
+            d.yValue = (maxHeight * shift - +d.yValue) / 2;   
             if (d.yValue < 2) {
                 d.yValue = 2;
             } else if (d.yValue > maxHeight) {

@@ -29,6 +29,7 @@
 
 #ageBullets .axis text, #contributingFactorsBullets .axis text {
 	font-size: 10px;
+	font-weight: normal;
 }
 
 #ageSparkKey .axis .tick text, #contributingFactorsSparkKey .axis .tick text {

@@ -50,7 +50,6 @@ d3.json("./Data/progress.json", function(error, result) {
 	data = result;
 	start = data[0].y;
 
-
 	// coerce the data given into integers
 	data.forEach(function(d) {
 	    d.date = +d.date;
@@ -125,10 +124,8 @@ d3.json("./Data/progress.json", function(error, result) {
 	svg.append('path')
 	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
 		.attr('d', line(visionZeroStartDate))
-	  	.attr('stroke', "green")
+	  	.attr('stroke', "#006b94")
 	  	.attr('stroke-width', 3)
-	  	.attr('fill', 'none')
-	  	.on('mouseover', mouseOver)
-	  	.on('mouseout', mouseOut);
+	  	.attr('fill', 'none');
 
 })

@@ -53,14 +53,14 @@ d3.json("./Data/" + name + ".json", function(error, data) {
     // adds the scale at the bottom with ticks 
     d3.select("#" + name + "Axis").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-" + (margin.left + margin.right - 10) + " 0 " + widthFull + " 50")
+            .attr("viewBox", "-" + (margin.left + margin.right - 10) + " 0 " + (widthFull + 2) + " 50")
             .classed("svg-content", true)
         .append("g")
             .attr("class", "axis")
             .call(d3.svg.axis()
                .scale(bulletScale)
                .orient("bottom")
-               // .ticks(6)
+               .ticks(4)
                .tickFormat(d3.format("s")));
 });
 
@@ -89,7 +89,7 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
         data[i].forEach(function(d) {
             d.date = (widthOfSpark/ 3 * 2) * (+d.date - startDate);
             currentValue[i] = d.yValue;  
-            d.yValue = (maxHeight * shift - +d.yValue);   
+            d.yValue = (maxHeight * shift - +d.yValue) / 2;   
             if (d.yValue < 2) {
                 d.yValue = 2;
             } else if (d.yValue > maxHeight) {
@@ -174,17 +174,17 @@ function drawBulletKey() {
             .classed("svg-content", true);
 
     key.append("rect")
-        .attr("transform", "translate(" + 0 + "," + (margin.top * 5 + 1) + ")")
+        .attr("transform", "translate(" + (margin.right) + "," + (margin.top * 5 + 1) + ")")
         .attr("width", 25)
         .attr("height", heightOfKey)
         .style("fill", "#00A3E0")
         .attr("opacity", 0.7);
 
     key.append("text")
-        .attr("transform", "translate(" + (margin.right - 10) + "," + (margin.top * 5) + ")")
+        .attr("transform", "translate(" + (margin.right + 30) + "," + (margin.top * 5) + ")")
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
-       .text("Current Year");
+       .text("2015");
 
     key.append("line")
         .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
@@ -196,14 +196,22 @@ function drawBulletKey() {
         .attr("stroke", "black");
 
     key.append("text")
-        .attr("transform", "translate(" + (margin.right + 70) + "," + (margin.top * 5) + ")")
+        .attr("transform", "translate(" + (margin.right + 72) + "," + (margin.top * 5) + ")")
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
-        .text("Last Year");
+        .text("2014");
 }
 
 // draws the title of the spark lines 
 function drawTitles() {
+    d3.select("#" + name + "BulletTitle").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-12 -15 250 40")
+            .classed("svg-content", true)
+        .append("text")
+        .style("font-size", 10)
+        .style("font-family", "Open Sans Condensed")
+        .text("Age (Years)");
 
     d3.select("#" + name + "BulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
@@ -211,6 +219,7 @@ function drawTitles() {
             .classed("svg-content", true)
         .append("text")
         .style("font-size", 10)
+        .style("font-family", "Open Sans Condensed")
         .text("Number of Drivers");
 
     d3.select("#" + name + "SparkTitle").append("svg")
@@ -219,5 +228,6 @@ function drawTitles() {
         .classed("svg-content", true)
     .append("text")
     .style("font-size", 10)
+    .style("font-family", "Open Sans Condensed")
     .text("Past 5 years");
 }
