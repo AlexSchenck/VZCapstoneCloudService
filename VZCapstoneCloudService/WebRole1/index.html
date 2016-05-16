@@ -18,32 +18,34 @@
 		<div id="full"> 
 			<div id="top">
 				<div class="currentYear" id="topLeft">
-					<h1>Fatal Collisions in 2016</h1>
-					<h2>Running total of collisions in 2016 so far</h2>
-					<p>17</p>
+					<h1>Collisions in Seattle</h1>
+					<h2>Running total of collisions resulting in fatalities or serious injuries in 2016</h2>
+					<p>58</p>
 				</div>
 				<div class="currentYear" id="topRight">
-					<h1>Vision Zero's Goal by 2030</h1>
-					<h2>Collisions involving fatalies or serious injuries</h2>
-					<p>0</p>
+					<h1>Survival ratio for pedestrians involved in vehicular collisions in Seattle</h1>
+					<p>9/10</p>
+					<div id="pedImages"></div>
 				</div>
 			</div>
 
 			<div id="bottom">
 				<div class="currentYear" id="bottomLeft">
-					<h1>Pedestrians who survive being hit by a vehicle</h1>
-					<p>9/10</p>
+					<h1>Vision Zero Seattle's Goal</h1>
+					<h2>Collisions resulting in fatalities or serious injuries by 2030</h2>
+					<p>0</p>
 				</div>
 				<div class="currentYear" id="bottomRight">
-					<h1>Cyclists who survive being hit by a vehicle</h1>
+					<h1>Survival ratio for bicyclists involved in vehicular collisions in Seattle</h1>
 					<p>7/10</p>
+					<div id="bikeImages"></div>
 				</div>
 			</div>
 		</div>
 		
 		<div class="progressSection">
-			<h1>Vision Zero Progress</h1>
-			<h2>Number of collisions that result in fatalities or serious injuries.</h2>
+			<h1>Vision Zero Seattle Progress</h1>
+			<h2>Number of collisions resulting in fatalities or serious injuries and total number of fatal or serious injuries.</h2>
 			<div id="progress" class="svg-container"></div>
 		</div>
 	
@@ -51,7 +53,7 @@
 			<div class="section">
 				<h1>Collisions by Age<div class="bulletKey svg-container-key"></div>
 				</h1>
-				<h2>Collisions ordered by driver responsible for collisions resulting in a fatality or serious injury.</h2>
+				<h2>Collisions ranked by age group of drivers responsible for fatal or serious collisions.</h2>
 				<div id="ageBullets" class="svg-container-block">
 					<div id="ageBulletTitle" class="svg-container-bullet-title"></div>
 					<div id="age1" class="svg-container-bullet"></div>
@@ -71,7 +73,7 @@
 			</div>
 
 			<div class="section">
-				<h1>Serious Injury and Fatal Collisions<div id="stackedKey" class="svg-container-key"></div></h1>
+				<h1>Collisions by Type<div id="stackedKey" class="svg-container-key"></div></h1>
 				<h2>Breakdown of collisions resulting in fatalities or serious injuries by type of individual involved.</h2>
 				<div id="stackedBarChart" class="svg-container">
 				</div>
@@ -79,7 +81,7 @@
 
 			<div class="section">
 				<h1>Contributing Factors<div class="bulletKey svg-container-key"></div></h1>
-				<h2>Collisions ordered by contributing factor for collisions resulting in a fatality or serious injury.</h2>
+				<h2>Contributing factors ranked by frequency for collisions resulting in fatalities and serious injuries.</h2>
 				<div id="contributingFactorsBullets" class="svg-container-block">
 					<div id="contributingFactorsBulletTitle" class="svg-container-bullet-title"></div>
 					<div id="contributingFactors1" class="svg-container-bullet"></div>
@@ -104,5 +106,6 @@
 		<script src="Scripts/progress.js"></script>
 		<script src="Scripts/bullet.js"></script>
 		<script src="Scripts/contributingFactors.js"></script>
+		<script src="Scripts/survival.js"></script>
 	</body>
 </html>
