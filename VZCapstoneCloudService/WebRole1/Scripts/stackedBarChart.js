@@ -1,10 +1,12 @@
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
-var w = outerW / 3 - 60;       
-var h = outerH / 3 - 90;     
 var padding = {top: 40, right: 40, bottom: 60, left:40};
 var dataset;
+
+
+var w = outerW / 3 - 60;       
+var h = outerH / 3 - 60;     
 
 //Set up stack method
 var stack = d3.layout.stack();
@@ -46,7 +48,8 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	// draws the y axis
 	var yAxis = d3.svg.axis()
 				   .scale(yScale)
-				   .orient("left");
+				   .orient("left")
+				   .ticks(5);
 
 	//Easy colors accessible via a 10-step ordinal scale
 	var colors = d3.scale.category10();
@@ -55,7 +58,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	var svg = d3.select("#stackedBarChart")
 				.append("svg")
 	    		.attr("preserveAspectRatio", "xMinYMin meet")
-				.attr("viewBox", "0 0 " + w + " " + h)
+				.attr("viewBox", "0 20 " + w + " " + (h))
 				.classed("svg-content", true); 
 
 	// Add a group for each row of data
@@ -121,10 +124,10 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
-		.attr("x", 0-h/2 - 40)
+		.attr("x", 0- h / 2 - 50)
 		.attr("y", -3)
 		.attr("dy","1em")
-		.text("Number of Collisions");
+		.text("Number of Individuals");
 
 	svg.append("text")
 	   .attr("class","xtext")
@@ -135,8 +138,8 @@ d3.json("./Data/stackedBar.json", function(error, result){
 });
 
 
-var sizeOfLegendIcons = 35;
-var yPosition = 20;
+var sizeOfLegendIcons = 45;
+var yPosition = 15;
 
 var key = d3.select("#stackedKey").append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
@@ -152,14 +155,14 @@ key.append("svg:image")
 
 key.append("svg:image")
 	.attr("xlink:href", "./Images/bicycle.svg")
-	.attr("x", 45)
+	.attr("x", 50)
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)
     .attr("height", sizeOfLegendIcons); 
 
 key.append("svg:image")
 	.attr("xlink:href", "./Images/pedestrian-walking.svg")
-	.attr("x", 80)
+	.attr("x", 90)
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)
     .attr("height", sizeOfLegendIcons - 5); 

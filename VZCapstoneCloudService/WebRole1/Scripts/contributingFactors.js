@@ -36,7 +36,7 @@ d3.json("./Data/contributingFactors.json", function(error, data) {
             .text(function(d) { return d.title; });
 
         svg.append("g")
-            .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
+            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
             .call(chart);
     }
 
@@ -52,7 +52,7 @@ d3.json("./Data/contributingFactors.json", function(error, data) {
     // adds the scale at the bottom with ticks 
     d3.select("#contributingFactorsAxis").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-" + (margin.left + margin.right - 10) + " 0 " + widthFull + " 50")
+            .attr("viewBox", "-" + (margin.left + margin.right) + " 0 " + (widthFull + 5) + " 50")
             .classed("svg-content", true)
         .append("g")
             .attr("class", "axis")
@@ -92,11 +92,11 @@ function drawTitles() {
         .append("text")
         .style("font-size", 10)
         .style("font-family", "Open Sans Condensed")
-        .text("Factor");
+        .text("Contributing Factor");
 
     d3.select("#contributingFactorsBulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-90 -15 250 40")
+            .attr("viewBox", "-100 -15 250 40")
             .classed("svg-content", true)
         .append("text")
         .style("font-size", 10)
@@ -197,11 +197,11 @@ d3.json("./Data/contributingFactorsSpark.json", function(error, data) {
         .domain([new Date(2012, 0, 1), new Date(2016, 0, 1)])
         .rangeRound([0, width / 2]);
 
-    var svgContainer = d3.select("#" + name + "SparkKey").append("svg")
+    var svgContainer = d3.select("#contributingFactorsSparkKey").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", "-5 0 200 30")
             .classed("svg-content", true)
-      .append("g")
+        .append("g")
             .attr("class", "axis")
         .call(d3.svg.axis()
             .scale(years)
@@ -209,5 +209,3 @@ d3.json("./Data/contributingFactorsSpark.json", function(error, data) {
             .ticks(2)
             .tickFormat(d3.time.format("'%y")));
 })
-
-

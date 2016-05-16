@@ -48,15 +48,18 @@ var yScale;
 d3.json("./Data/progress.json", function(error, result) {
 	console.log(error);
 	data = result;
-	start = data[0].y;
+	console.log(data[0]);
+	start = data[0][0].y;
 
-	// coerce the data given into integers
-	data.forEach(function(d) {
-	    d.date = +d.date;
-	    d.y = +d.y;
-	});
+	for (var i = 0; i < data.length; i++) {
+		// coerce the data given into integers
+		data[i].forEach(function(d) {
+		    d.date = +d.date;
+		    d.y = +d.y;
+		});
+	}
 
-	var max = d3.max(data, function(d) { return d.y; });
+	var max = d3.max(data[1], function(d) { return d.y; });
 	// console.log(max);
 	yScale = d3.scale.linear()
 		.domain([0, max + 5])
@@ -93,24 +96,27 @@ d3.json("./Data/progress.json", function(error, result) {
 	  	.attr('stroke-width', 2)
 	  	.attr('fill', 'none');
 
-	// draws actual trend line of progress
-	svg.append('path')
-	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
-		.attr('d', line(data))
-	  	.attr('stroke', "#00A3E0")
-	  	.attr('stroke-width', 3)
-	  	.attr('fill', 'none')
-	  	.on('mouseover', mouseOver)
-	  	.on('mouseout', mouseOut);
-
+	var colors = ["#006b94", "#87a96b"]
+	for (var i = 0; i < data.length; i++) {
+		// draws actual trend line of progress
+		svg.append('path')
+		  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
+			.attr('d', line(data[i]))
+		  	.attr('stroke', colors[i])
+		  	.attr('stroke-width', 3)
+		  	.attr('fill', 'none')
+		  	.style('opacity', .9);
+		  	// .on('mouseover', mouseOver)
+		  	// .on('mouseout', mouseOut);
+	}
 
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
-		.attr("x", 0- svgHeight / 2 - 70)
+		.attr("x", 0- svgHeight / 2)
 		.attr("y", -2)
 		.attr("dy","1em")
-		.text("Number of Fatalities and Serious Injuries");
+		.text("Frequency");
 
 	svg.append("text")
 	   .attr("class","xtext")
@@ -124,7 +130,7 @@ d3.json("./Data/progress.json", function(error, result) {
 	svg.append('path')
 	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
 		.attr('d', line(visionZeroStartDate))
-	  	.attr('stroke', "#006b94")
+	  	.attr('stroke',  "#00A3E0")
 	  	.attr('stroke-width', 3)
 	  	.attr('fill', 'none');
 

@@ -4,7 +4,6 @@ var margin = {top: 5, right: 40, bottom: 5, left: 80};
 var widthFull = 300;
 var width = widthFull - margin.left - margin.right;
 var height = 30 + (((width + margin.left + margin.right) - 250) / 5) - margin.top - margin.bottom;
-var fontSizeOfKey = 12;
 
 var chart = d3.bullet()
     .width(width)
@@ -37,7 +36,7 @@ d3.json("./Data/" + name + ".json", function(error, data) {
           	.text(function(d) { return d.title; });
 
         svg.append("g")
-            .attr("transform", "translate(" + (margin.left + margin.right - 10) + "," + margin.top + ")")
+            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
             .call(chart);
     }
 
@@ -53,7 +52,7 @@ d3.json("./Data/" + name + ".json", function(error, data) {
     // adds the scale at the bottom with ticks 
     d3.select("#" + name + "Axis").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-" + (margin.left + margin.right - 10) + " 0 " + (widthFull + 2) + " 50")
+            .attr("viewBox", "-" + (margin.left + margin.right) + " 0 " + (widthFull + 5) + " 50")
             .classed("svg-content", true)
         .append("g")
             .attr("class", "axis")
@@ -86,6 +85,9 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
         var maxHeight = 30;
         var max = d3.max(data[i], function(d) { return d.yValue; });
         var shift = Math.round(max / 30);
+        if (shift == 0) {
+            shift = 1;
+        }
         data[i].forEach(function(d) {
             d.date = (widthOfSpark/ 3 * 2) * (+d.date - startDate);
             currentValue[i] = d.yValue;  
@@ -153,7 +155,7 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", "-5 0 200 30")
             .classed("svg-content", true)
-      .append("g")
+        .append("g")
             .attr("class", "axis")
         .call(d3.svg.axis()
             .scale(years)
@@ -167,6 +169,7 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
 // top right hand corner of the section
 function drawBulletKey() {
     var heightOfKey = 10;
+    var fontSizeOfKey = 16;
 
     var key = d3.selectAll(".bulletKey").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
@@ -174,25 +177,25 @@ function drawBulletKey() {
             .classed("svg-content", true);
 
     key.append("rect")
-        .attr("transform", "translate(" + (margin.right) + "," + (margin.top * 5 + 1) + ")")
-        .attr("width", 25)
-        .attr("height", heightOfKey)
+        .attr("transform", "translate(" + (margin.right - 20) + "," + (margin.top * 5 - 2) + ")")
+        .attr("width", 30)
+        .attr("height", heightOfKey + 3)
         .style("fill", "#00A3E0")
         .attr("opacity", 0.7);
 
     key.append("text")
-        .attr("transform", "translate(" + (margin.right + 30) + "," + (margin.top * 5) + ")")
+        .attr("transform", "translate(" + (margin.right + 17) + "," + (margin.top * 5) + ")")
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
-       .text("2015");
+        .text("2015");
 
     key.append("line")
         .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
         .attr("x1", 0)
-        .attr("y1", -5)
+        .attr("y1", -10)
         .attr("x2", 0)
-        .attr("y2", 12)
-        .attr("stroke-width", 2)
+        .attr("y2", 15)
+        .attr("stroke-width", 3)
         .attr("stroke", "black");
 
     key.append("text")
@@ -215,7 +218,7 @@ function drawTitles() {
 
     d3.select("#" + name + "BulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-90 -15 250 40")
+            .attr("viewBox", "-100 -15 250 40")
             .classed("svg-content", true)
         .append("text")
         .style("font-size", 10)
