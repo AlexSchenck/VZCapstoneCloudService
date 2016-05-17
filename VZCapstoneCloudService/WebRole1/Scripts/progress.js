@@ -85,7 +85,7 @@ d3.json("./Data/progress.json", function(error, result) {
 		.y(function(d) {
 		    return yScale(d.y);
 		})
-		.interpolate("linear");
+		.interpolate("monotone");
 
 	//draws target line based off of starting value in 2004
 	var targetLine = [{ "y": start, "year": 2004 },{ "y": 0, "year": 2030 }];
@@ -108,16 +108,19 @@ d3.json("./Data/progress.json", function(error, result) {
 		  	.style('opacity', .9);
 		  	// .on('mouseover', mouseOver)
 		  	// .on('mouseout', mouseOut);
+
+
+		// Add the dots
+	    svg.selectAll("dot")	
+	        .data(data[i])			
+	    .enter().append("circle")
+	    	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
+	        .attr("r", 3)		
+	        .attr("cx", function(d) { return xScale(d.year); })		 
+	        .attr("cy", function(d) { return yScale(d.y); });	
 	}
 
 
- // Add the scatterplot
-    // svg.selectAll("dot")	
-    //     .data(data[0])			
-    // .enter().append("circle")								
-    //     .attr("r", 5)		
-    //     .attr("cx", function(d) { return x(d.year); })		 
-    //     .attr("cy", function(d) { return y(d.y); });	
         // .on("mouseover", function(d) {		
         //     div.transition()		
         //         .duration(200)		
@@ -130,7 +133,7 @@ d3.json("./Data/progress.json", function(error, result) {
         //     div.transition()		
         //         .duration(500)		
         //         .style("opacity", 0);	
-    // });
+    	// });
 
 	// adding in titles and axis labels
 	svg.append("text")
