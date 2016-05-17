@@ -110,6 +110,28 @@ d3.json("./Data/progress.json", function(error, result) {
 		  	// .on('mouseout', mouseOut);
 	}
 
+
+ // Add the scatterplot
+    // svg.selectAll("dot")	
+    //     .data(data[0])			
+    // .enter().append("circle")								
+    //     .attr("r", 5)		
+    //     .attr("cx", function(d) { return x(d.year); })		 
+    //     .attr("cy", function(d) { return y(d.y); });	
+        // .on("mouseover", function(d) {		
+        //     div.transition()		
+        //         .duration(200)		
+        //         .style("opacity", .9);		
+        //     div	.html(formatTime(d.date) + "<br/>"  + d.close)	
+        //         .style("left", (d3.event.pageX) + "px")		
+        //         .style("top", (d3.event.pageY - 28) + "px");	
+        //     })					
+        // .on("mouseout", function(d) {		
+        //     div.transition()		
+        //         .duration(500)		
+        //         .style("opacity", 0);	
+    // });
+
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
@@ -135,3 +157,35 @@ d3.json("./Data/progress.json", function(error, result) {
 	  	.attr('fill', 'none');
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var tooltip = d3.select('#top')            // NEW 
+//   .append('div')                             // NEW
+//   .attr('class', 'tooltip');                 // NEW
+
+// tooltip.append('div')                        // NEW
+//   .attr('class', 'label');                   // NEW
+
+// tooltip.append('div')                        // NEW
+//   .attr('class', 'count');                   // NEW
+
+// tooltip.append('div')                        // NEW
+//   .attr('class', 'percent');                 // NEW
