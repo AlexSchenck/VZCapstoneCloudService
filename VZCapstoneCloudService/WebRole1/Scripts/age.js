@@ -1,70 +1,70 @@
-var name = "age";
+// var name = "age";
 
-var margin = {top: 5, right: 40, bottom: 5, left: 80};
-var widthFull = 300;
-var width = widthFull - margin.left - margin.right;
-var height = 30 + (((width + margin.left + margin.right) - 250) / 5) - margin.top - margin.bottom;
+// var margin = {top: 5, right: 40, bottom: 5, left: 80};
+// var widthFull = 300;
+// var width = widthFull - margin.left - margin.right;
+// var height = 30 + (((width + margin.left + margin.right) - 250) / 5) - margin.top - margin.bottom;
 
-var chart = d3.bullet()
-    .width(width)
-    .height(height);
+// var chart = d3.bullet()
+//     .width(width)
+//     .height(height);
 
-var range = 20;
+// var range = 20;
 
-// draws bullet charts
-d3.json("./Data/" + name + ".json", function(error, data) {
-    if (error) throw error;
+// // draws bullet charts
+// d3.json("./Data/" + name + ".json", function(error, data) {
+//     if (error) throw error;
 
-    // draws all of the bullet charts manually so that they are able to scale
-    for (var i = 1; i <= data.length; i++) {
-        //establishes svg size
-    	var svg = d3.select("#" + name + i).selectAll("svg")
-    		.data([data[i - 1]])
-    	.enter().append("svg")
-    	  	.attr("class", "bullet")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "0 0 " + (width + margin.left + margin.right + 3) + " " + (height + 10))
-            .classed("svg-content", true); 
+//     // draws all of the bullet charts manually so that they are able to scale
+//     for (var i = 1; i <= data.length; i++) {
+//         //establishes svg size
+//     	var svg = d3.select("#" + name + i).selectAll("svg")
+//     		.data([data[i - 1]])
+//     	.enter().append("svg")
+//     	  	.attr("class", "bullet")
+//             .attr("preserveAspectRatio", "xMinYMin meet")
+//             .attr("viewBox", "0 0 " + (width + margin.left + margin.right + 3) + " " + (height + 10))
+//             .classed("svg-content", true); 
     	
-    	// adds the title to the left side of each bullet chart
-      	svg.append("g")
-          	.style("text-anchor", "start")
-          	.attr("transform", "translate(15," + ((height / 2) + 7) + ")")
-      	.append("text")
-          	.attr("class", "title")
-            .style("font-size", 14)
-          	.text(function(d) { return d.title; });
+//     	// adds the title to the left side of each bullet chart
+//       	svg.append("g")
+//           	.style("text-anchor", "start")
+//           	.attr("transform", "translate(15," + ((height / 2) + 7) + ")")
+//       	.append("text")
+//           	.attr("class", "title")
+//             .style("font-size", 14)
+//           	.text(function(d) { return d.title; });
 
-        svg.append("g")
-            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
-            .call(chart);
-    }
+//         svg.append("g")
+//             .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
+//             .call(chart);
+//     }
 
-    // get the range of the bullets for the scale at the bottom
-    range = data[0].ranges[1];
+//     // get the range of the bullets for the scale at the bottom
+//     range = data[0].ranges[1];
 
-    // domain that the bullet charts are all scaled to
-    var bulletScale = d3.scale.linear()
-        .domain([0, range])
-        .range([0, width]);
+//     // domain that the bullet charts are all scaled to
+//     var bulletScale = d3.scale.linear()
+//         .domain([0, range])
+//         .range([0, width]);
 
 
-    // adds the scale at the bottom with ticks 
-    d3.select("#" + name + "Axis").append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-" + (margin.left + margin.right) + " 0 " + (widthFull + 5) + " 50")
-            .classed("svg-content", true)
-        .append("g")
-            .attr("class", "axis")
-            .call(d3.svg.axis()
-               .scale(bulletScale)
-               .orient("bottom")
-               .ticks(4)
-               .tickFormat(d3.format("s")));
-});
+//     // adds the scale at the bottom with ticks 
+//     d3.select("#" + name + "Axis").append("svg")
+//             .attr("preserveAspectRatio", "xMinYMin meet")
+//             .attr("viewBox", "-" + (margin.left + margin.right) + " 0 " + (widthFull + 5) + " 50")
+//             .classed("svg-content", true)
+//         .append("g")
+//             .attr("class", "axis")
+//             .call(d3.svg.axis()
+//                .scale(bulletScale)
+//                .orient("bottom")
+//                .ticks(4)
+//                .tickFormat(d3.format("s")));
+// });
 
-drawBulletKey();
-drawTitles();
+// drawBulletKey();
+// drawTitles();
 
 // draws the spark lines
 var widthOfSpark = 20;
@@ -165,72 +165,72 @@ d3.json("./Data/" + name + "Spark.json", function(error, data) {
 })
 
 
-// draws the key for the bullet charts at the
-// top right hand corner of the section
-function drawBulletKey() {
-    var heightOfKey = 10;
-    var fontSizeOfKey = 16;
+// // draws the key for the bullet charts at the
+// // top right hand corner of the section
+// function drawBulletKey() {
+//     var heightOfKey = 10;
+//     var fontSizeOfKey = 16;
 
-    var key = d3.selectAll(".bulletKey").append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-20 15 200 50")
-            .classed("svg-content", true);
+//     var key = d3.selectAll(".bulletKey").append("svg")
+//             .attr("preserveAspectRatio", "xMinYMin meet")
+//             .attr("viewBox", "-20 15 200 50")
+//             .classed("svg-content", true);
 
-    key.append("rect")
-        .attr("transform", "translate(" + (margin.right - 20) + "," + (margin.top * 5 - 2) + ")")
-        .attr("width", 30)
-        .attr("height", heightOfKey + 3)
-        .style("fill", "#00A3E0")
-        .attr("opacity", 0.7);
+//     key.append("rect")
+//         .attr("transform", "translate(" + (margin.right - 20) + "," + (margin.top * 5 - 2) + ")")
+//         .attr("width", 30)
+//         .attr("height", heightOfKey + 3)
+//         .style("fill", "#00A3E0")
+//         .attr("opacity", 0.7);
 
-    key.append("text")
-        .attr("transform", "translate(" + (margin.right + 17) + "," + (margin.top * 5) + ")")
-        .attr("y", heightOfKey)
-        .style("font-size", fontSizeOfKey)
-        .text("2015");
+//     key.append("text")
+//         .attr("transform", "translate(" + (margin.right + 17) + "," + (margin.top * 5) + ")")
+//         .attr("y", heightOfKey)
+//         .style("font-size", fontSizeOfKey)
+//         .text("2015");
 
-    key.append("line")
-        .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
-        .attr("x1", 0)
-        .attr("y1", -10)
-        .attr("x2", 0)
-        .attr("y2", 15)
-        .attr("stroke-width", 3)
-        .attr("stroke", "black");
+//     key.append("line")
+//         .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
+//         .attr("x1", 0)
+//         .attr("y1", -10)
+//         .attr("x2", 0)
+//         .attr("y2", 15)
+//         .attr("stroke-width", 3)
+//         .attr("stroke", "black");
 
-    key.append("text")
-        .attr("transform", "translate(" + (margin.right + 72) + "," + (margin.top * 5) + ")")
-        .attr("y", heightOfKey)
-        .style("font-size", fontSizeOfKey)
-        .text("2014");
-}
+//     key.append("text")
+//         .attr("transform", "translate(" + (margin.right + 72) + "," + (margin.top * 5) + ")")
+//         .attr("y", heightOfKey)
+//         .style("font-size", fontSizeOfKey)
+//         .text("2014");
+// }
 
-// draws the title of the spark lines 
-function drawTitles() {
-    d3.select("#" + name + "BulletTitle").append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-12 -15 250 40")
-            .classed("svg-content", true)
-        .append("text")
-        .style("font-size", 10)
-        .style("font-family", "Open Sans Condensed")
-        .text("Age (Years)");
+// // draws the title of the spark lines 
+// function drawTitles() {
+//     d3.select("#" + name + "BulletTitle").append("svg")
+//             .attr("preserveAspectRatio", "xMinYMin meet")
+//             .attr("viewBox", "-12 -15 250 40")
+//             .classed("svg-content", true)
+//         .append("text")
+//         .style("font-size", 10)
+//         .style("font-family", "Open Sans Condensed")
+//         .text("Age (Years)");
 
-    d3.select("#" + name + "BulletTitle").append("svg")
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-100 -15 250 40")
-            .classed("svg-content", true)
-        .append("text")
-        .style("font-size", 10)
-        .style("font-family", "Open Sans Condensed")
-        .text("Number of Drivers");
+//     d3.select("#" + name + "BulletTitle").append("svg")
+//             .attr("preserveAspectRatio", "xMinYMin meet")
+//             .attr("viewBox", "-100 -15 250 40")
+//             .classed("svg-content", true)
+//         .append("text")
+//         .style("font-size", 10)
+//         .style("font-family", "Open Sans Condensed")
+//         .text("Number of Drivers");
 
-    d3.select("#" + name + "SparkTitle").append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 -15 100 50")
-        .classed("svg-content", true)
-    .append("text")
-    .style("font-size", 10)
-    .style("font-family", "Open Sans Condensed")
-    .text("Past 5 years");
-}
+//     d3.select("#" + name + "SparkTitle").append("svg")
+//         .attr("preserveAspectRatio", "xMinYMin meet")
+//         .attr("viewBox", "0 -15 100 50")
+//         .classed("svg-content", true)
+//     .append("text")
+//     .style("font-size", 10)
+//     .style("font-family", "Open Sans Condensed")
+//     .text("Past 5 years");
+// }
