@@ -1,6 +1,1 @@
-[
-  {"title":"Texting","ranges":[0, 10],"measures":[7],"markers":[6]},
-  {"title":"Weather","ranges":[0, 10],"measures":[4],"markers":[5]},
-  {"title":"Inattention","ranges":[0, 10],"measures":[2],"markers":[1]},
-  {"title":"Speeding","ranges":[0, 10],"measures":[1],"markers":[1]}
-]
+[{"title":"Inattention","ranges":[0,40],"measures":[25],"markers":[30]},{"title":"Failure to Yield","ranges":[0,40],"measures":[17],"markers":[28]},{"title":"Failure to Signal","ranges":[0,40],"measures":[14],"markers":[19]},{"title":"Alcohol","ranges":[0,40],"measures":[14],"markers":[21]}]

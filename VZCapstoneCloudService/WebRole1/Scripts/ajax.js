@@ -1,0 +1,31 @@
+[
+	[
+		{"date":2012,"yValue":3},
+		{"date":2013,"yValue":2},
+		{"date":2014,"yValue":6},
+		{"date":2015,"yValue":2},
+		{"date":2016,"yValue":5}
+	],
+	[
+		{"date":2012,"yValue":7},
+		{"date":2013,"yValue":5},
+		{"date":2014,"yValue":2},
+		{"date":2015,"yValue":5},
+		{"date":2016,"yValue":4}
+	],
+	[
+		{"date":2012,"yValue":2},
+		{"date":2013,"yValue":1},
+		{"date":2014,"yValue":9},
+		{"date":2015,"yValue":1},
+		{"date":2016,"yValue":2}
+	],
+	[
+		{"date":2012,"yValue":4},
+		{"date":2013,"yValue":2},
+		{"date":2014,"yValue":4},
+		{"date":2015,"yValue":2},
+		{"date":2016,"yValue":1}
+	]
+]
+
