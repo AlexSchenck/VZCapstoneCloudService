@@ -30,7 +30,7 @@ namespace WebRole1
         String personFile; // Local filepath of PERSONS data table
 
         [WebMethod]
-        public String TestJSON()
+        public String PullDataAndSave()
         {
             openDataURL = "https://data.seattle.gov/resource/v7k9-7dn4.json";
             lastYear = DateTime.Today.AddYears(-1).Year;
