@@ -1,7 +1,16 @@
 var sizeOfImages = 20;
 var spaceBetween = 30;
 var heightOfImages = 20;
-var pedImages = d3.select("#pedImages").append("svg");
+
+var outerW = window.outerWidth * .42 * .47;
+console.log(outerW);
+var pedH = window.outerHeight * .43 * .477 * .35;
+
+//47 of 42 percent
+var pedImages = d3.select("#pedImages").append("svg")
+				.attr("preserveAspectRatio", "xMinYMin meet")
+	            .attr("viewBox", "0 0 " + outerW + " " + pedH)
+	            .classed("svg-content", true); 
 
 var pedSurvive = 9;
 
@@ -27,7 +36,11 @@ var bikeSurvive = 7;
 sizeOfImages = 20;
 spaceBetween = 30;
 
-var bikeImages = d3.select("#bikeImages").append("svg");
+var bikeImages = d3.select("#bikeImages").append("svg")
+				.attr("preserveAspectRatio", "xMinYMin meet")
+	            .attr("viewBox", "0 0 " + outerW + " " + pedH)
+	            .classed("svg-content", true); 
+	            
 for (var i = 0; i < bikeSurvive; i++) {
 	bikeImages.append("svg:image")
 		.attr("xlink:href", "./Images/bicycle-rider-green.svg")

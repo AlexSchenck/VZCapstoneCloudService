@@ -11,8 +11,6 @@ var chart = d3.bullet()
     .width(width)
     .height(height);
 
-var range = 20;
-
 drawBulletKey();
 
 for (var i = 0; i < names.length; i++) {
@@ -63,7 +61,7 @@ function drawBulletKey() {
 
     var key = d3.selectAll(".bulletKey").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-20 15 180 50")
+            .attr("viewBox", "-20 15 190 50")
             .classed("svg-content", true);
 
     key.append("rect")
@@ -77,6 +75,7 @@ function drawBulletKey() {
         .attr("transform", "translate(" + (margin.right + 17) + "," + (margin.top * 5) + ")")
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
+        .style("font-weight", "normal")
         .text("2015");
 
     key.append("line")
@@ -92,6 +91,7 @@ function drawBulletKey() {
         .attr("transform", "translate(" + (margin.right + 72) + "," + (margin.top * 5) + ")")
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
+        .style("font-weight", "normal")
         .text("2014");
 }
 
@@ -126,7 +126,7 @@ function drawBulletCharts(name) {
 	    }	
 
 	    // get the range of the bullets for the scale at the bottom
-	    range = data[0].ranges[1];
+	    var range = data[0].ranges[1];
 
 	    // domain that the bullet charts are all scaled to
 	    var bulletScale = d3.scale.linear()
@@ -242,7 +242,7 @@ function drawSparkLines(name) {
 	        .call(d3.svg.axis()
 	            .scale(years)
 	            .orient("bottom")
-	            .ticks(2)
+	            .ticks(3)
 	            .tickFormat(d3.time.format("'%y")));
 	})
 }

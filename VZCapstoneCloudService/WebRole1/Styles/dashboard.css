@@ -19,7 +19,7 @@ body {
 	width: 31%;
 	height: 37%;
 	float: left;
-	min-height: 300px;
+	/*min-height: 300px;*/
 }
 
 /* top right 4 squares total area*/
@@ -80,8 +80,8 @@ body {
 
 #top .currentYear, #bottom .currentYear {
 	float: left;
-	min-height: 150px;
-	max-height: 200px;
+	/*min-height: 150px;
+	max-height: 200px;*/
 }
 /* styling for each box, border and padding */
 .section, .progressSection {
@@ -102,8 +102,8 @@ body {
 .progressSection {
 		/*don't touch*/
 	margin-right: 1%;
-	min-height: 325px;
-	max-height: 400px;
+	/*min-height: 325px;
+	max-height: 400px;*/
 }
 
 h1 {
@@ -168,5 +168,5 @@ img {
 }
 
 #pedImages { 
-	height: 200px;
+	/*height: 200px;*/
 }
