@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using Microsoft.WindowsAzure.Storage.Blob;
+using System.Text;
 
 namespace WebRole1
 {
@@ -29,7 +30,7 @@ namespace WebRole1
         int lastYear; // Most previous year
         String personFile; // Local filepath of PERSONS data table
 
-        [WebMethod]
+        [System.Web.Services.WebMethod()]
         public String PullDataAndSave()
         {
             openDataURL = "https://data.seattle.gov/resource/v7k9-7dn4.json";
@@ -83,7 +84,7 @@ namespace WebRole1
         // Returns a String representing the full JSON of SDOT collision data
         private String getAllCollisions()
         {
-            String result = "[";
+            StringBuilder builder = new StringBuilder("[");
 
             //Determine total records
             String url = openDataURL + "?$select=count(reportno)";
@@ -96,10 +97,13 @@ namespace WebRole1
                 // Get next block of 50k records
                 url = openDataURL + "?$limit=49999&$offset=" + i;
                 String response = new WebClient().DownloadString(url);
-                result += response.Substring(2, response.Length - 3) + ",";
+                builder.Append(response.Substring(2, response.Length - 3));
+                builder.Append(",");
             }
 
-            return result + "]";
+            builder.Append("]");
+
+            return builder.ToString();
         }
 
         // Returns collision JSON string as list of JObjects
