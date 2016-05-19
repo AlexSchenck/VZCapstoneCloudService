@@ -1,7 +1,6 @@
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
-
 var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
 var widthProgress = outerW * .55;
 var heightProgress = outerH * .35;
@@ -115,6 +114,11 @@ d3.json("./Data/progress.json", function(error, data) {
 
 	var colors = ["#006b94", "#87a96b"];
 
+
+	drawCollisionDots(data[0]);
+	drawFatalDots(data[1]);
+
+
 	for (var i = 0; i < data.length; i++) {
 		// draws actual trend line of progress
 		svg.append('path')
@@ -124,40 +128,8 @@ d3.json("./Data/progress.json", function(error, data) {
 		  	.attr('stroke-width', 1.5)
 		  	.attr('fill', 'none')
 		  	.style('opacity', .9);
-
-
-		// Add the dots
-	    svg.selectAll("dot")	
-	        .data(data[i])			
-	    .enter().append("circle")
-	    	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
-	        .attr("r", 3)		
-	        .attr("cx", function(d) { return xScale(d.year); })		 
-	        .attr("cy", function(d) { return yScale(d.y); })
-	        .attr("fill", "#63666A")
-	        .on("mouseover", function(d) {		
-	        	var duration = 200; 
-	            div.transition()		
-	                .duration(duration)		
-	                .style("opacity", 1);		
-	            div.html(d.y + " collisions")
-	            	.style("left", xScale(d.year))
-	            	.style("top", yScale(d.y));	
-	            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
-	            })	
-			.on("mousemove", function(){
-				console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
-				return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
-	        .on("mouseout", function(d) {
-	        	var duration = 500;		
-	            div.transition()		
-	                .duration(duration)		
-	                .style("opacity", 0);	
-	    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 3);
-			});	
 	}
-        
-
+	
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
@@ -199,8 +171,69 @@ d3.json("./Data/progress.json", function(error, data) {
     	});	
 })
 
+function drawFatalDots(data) {
+	// Add the dots
+    svg.selectAll("dot")	
+        .data(data)			
+    .enter().append("circle")
+    	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
+        .attr("r", 3)		
+        .attr("cx", function(d) { return xScale(d.year); })		 
+        .attr("cy", function(d) { return yScale(d.y); })
+        .attr("fill", "#63666A")
+        .on("mouseover", function(d) {		
+        	var duration = 200; 
+            div.transition()		
+                .duration(duration)		
+                .style("opacity", 1);		
+            div.html("" + d.y + " fatalities and serious injuries")
+            	.style("left", xScale(d.year))
+            	.style("top", yScale(d.y));	
+            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
+            })	
+		.on("mousemove", function(){
+			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
+			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+        .on("mouseout", function(d) {
+        	var duration = 500;		
+            div.transition()		
+                .duration(duration)		
+                .style("opacity", 0);	
+    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 3);
+		});	
+}
 
-
+function drawCollisionDots(data) {
+	// Add the dots
+    svg.selectAll("dot")	
+        .data(data)			
+    .enter().append("circle")
+    	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
+        .attr("r", 3)		
+        .attr("cx", function(d) { return xScale(d.year); })		 
+        .attr("cy", function(d) { return yScale(d.y); })
+        .attr("fill", "#63666A")
+        .on("mouseover", function(d) {		
+        	var duration = 200; 
+            div.transition()		
+                .duration(duration)		
+                .style("opacity", 1);		
+            div.html("" + d.y + " collisions")
+            	.style("left", xScale(d.year))
+            	.style("top", yScale(d.y));	
+            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
+            })	
+		.on("mousemove", function(){
+			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
+			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+        .on("mouseout", function(d) {
+        	var duration = 500;		
+            div.transition()		
+                .duration(duration)		
+                .style("opacity", 0);	
+    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 3);
+		});	
+}
 
 
 
