@@ -103,9 +103,9 @@ d3.json("./Data/stackedBar.json", function(error, result){
             divStack.transition()		
                 .duration(200)		
                 .style("opacity", 1);		
-            divStack.html(d.y + " collisions")
+            divStack.html(d.y + " people")
             .style("left", xScale(new Date(d.year, 0, 1)))
-            	.style("top", yScale(d.y));	
+            .style("top", yScale(d.y));	
            
 
 			// gets the color of the bar that was already there

@@ -129,7 +129,7 @@ d3.json("./Data/progress.json", function(error, data) {
 		  	.attr('fill', 'none')
 		  	.style('opacity', .9);
 	}
-	
+
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
@@ -186,7 +186,7 @@ function drawFatalDots(data) {
             div.transition()		
                 .duration(duration)		
                 .style("opacity", 1);		
-            div.html("" + d.y + " fatalities and serious injuries")
+            div.html("" + d.y + " fatalities and serious injuries in " + d.year)
             	.style("left", xScale(d.year))
             	.style("top", yScale(d.y));	
             var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
@@ -218,7 +218,7 @@ function drawCollisionDots(data) {
             div.transition()		
                 .duration(duration)		
                 .style("opacity", 1);		
-            div.html("" + d.y + " collisions")
+            div.html("" + d.y + " collisions in " + d.year)
             	.style("left", xScale(d.year))
             	.style("top", yScale(d.y));	
             var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
