@@ -1,6 +1,6 @@
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
-d3.select(".progressSection").attr("width", "700px").attr("height", "300px");
+// d3.select(".progressSection").attr("width", "700px").attr("height", "300px");
 
 var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
 var widthProgress = outerW * .55;
@@ -20,8 +20,8 @@ var svgHeight = heightProgress + paddingProgress.top;
 var svg = d3.select("#progress")
 			.append("svg")
     		.attr("preserveAspectRatio", "xMinYMin meet")
-			.attr("viewBox", "0 0 " + svgWidth + " " + svgHeight);
-			// .classed("svg-content", true); 
+			.attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
+			.classed("svg-content", true); 
 
 
 svg.append("g") 	
