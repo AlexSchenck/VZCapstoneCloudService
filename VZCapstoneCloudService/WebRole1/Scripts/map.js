@@ -13,9 +13,12 @@ require([
         zoom: 15
     });
 
+
     var featureLayer = new FeatureLayer("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51", {
         infoTemplate: new InfoTemplate("Collision:", "${OBJECTID:getData}")
     });
+
+    featureLayer.setDefinitionExpression("INCDATE > date'1-1-2015' AND INCDATE < date'1-1-2016' AND (FATALITIES > 0 OR SERIOUSINJURIES > 0)");
     map.addLayer(featureLayer);
 
     // var extent = new Extent(1249026.1158677936,184059.089008525,1293046.6773208678,271525.40346609056, new SpatialReference({ wkid:2926 }));

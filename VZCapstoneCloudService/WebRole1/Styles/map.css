@@ -22,7 +22,23 @@ html, body {
 
 #search {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     top: 120px;
     right: 25px;
+}
+
+#filters {
+    position: absolute;
+    z-index: 2;
+    top: 170px;
+    right: 25px;
+}
+
+#filters div {
+    float: left;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    margin-left: 15px;
+    border: 1px black solid;
 }
