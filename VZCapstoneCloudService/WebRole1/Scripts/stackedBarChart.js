@@ -184,18 +184,63 @@ key.append("svg:image")
 	.attr("x", 0)
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)
-    .attr("height", sizeOfLegendIcons); 
+    .attr("height", sizeOfLegendIcons)
+    .on("mouseover", function(d) {		
+        divStack.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+        divStack.html("Collisions resulting in fatalities and serious injuries involving vehicles only.")
+        .style("left", 0)
+        .style("top", yPosition);	
+    })					
+	.on("mousemove", function(){
+		return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+    .on("mouseout", function(d) {		
+        divStack.transition()		
+            .duration(500)		
+            .style("opacity", 0);
+	});	 
 
 key.append("svg:image")
 	.attr("xlink:href", "./Images/bicycle.svg")
 	.attr("x", 50)
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)
-    .attr("height", sizeOfLegendIcons); 
+    .attr("height", sizeOfLegendIcons)
+    .on("mouseover", function(d) {		
+        divStack.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+        divStack.html("Collisions resulting in fatalities and serious injuries involving cyclists.")
+        .style("left", 0)
+        .style("top", yPosition);	
+    })					
+	.on("mousemove", function(){
+		return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+    .on("mouseout", function(d) {		
+        divStack.transition()		
+            .duration(500)		
+            .style("opacity", 0);
+	});	 
 
 key.append("svg:image")
 	.attr("xlink:href", "./Images/pedestrian-walking.svg")
 	.attr("x", 90)
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)
-    .attr("height", sizeOfLegendIcons - 5); 
+    .attr("height", sizeOfLegendIcons - 5)
+    .on("mouseover", function(d) {		
+        divStack.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+        divStack.html("Collisions resulting in fatalities and serious injuries involving pedestrians.")
+        .style("left", 0)
+        .style("top", yPosition);	
+    })					
+	.on("mousemove", function(){
+		return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+    .on("mouseout", function(d) {		
+        divStack.transition()		
+            .duration(500)		
+            .style("opacity", 0);
+	});	  
