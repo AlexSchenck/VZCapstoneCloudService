@@ -37,10 +37,10 @@ body {
 /*progress chart*/
 .progressSection {
 	/*don't touch*/
-	width: 54%;
-	height: 44.5%;
-	min-height: 330px;
-	float: right;
+	/*width: 54%;*/
+	/*height: 44.5%;*/
+	/*min-height: 330px;*/
+	float: left;
 	margin-right: 1%;
 	
 }
