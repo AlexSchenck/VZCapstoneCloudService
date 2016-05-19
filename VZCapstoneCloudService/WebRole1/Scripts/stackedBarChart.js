@@ -7,9 +7,15 @@ var dataset;
 
 var w = outerW / 3 - 60;       
 var h = outerH / 3 - 60;     
+var previousBarColor;
 
 //Set up stack method
 var stack = d3.layout.stack();
+// Define the div for the tooltip
+
+var divStack = d3.select("body").append("div")	
+    .attr("class", "tooltip")	
+    .style("opacity", 0);
 
 d3.json("./Data/stackedBar.json", function(error, result){
 	console.log(error);
@@ -34,7 +40,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.domain([0,				
 			d3.max(dataset, function(d) {
 				return d3.max(d, function(d) {
-					return d.y0 + d.y;
+					return Math.round((d.y0 + d.y) / 100) * 100;
 				});
 			})
 		])
@@ -80,7 +86,6 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.attr("width", 2)
 		.style("fill-opacity",1e-6);
 
-
 	rects.attr("x", function(d) {
 			return xScale(new Date(d.year));
 		})
@@ -93,8 +98,36 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		// width of bars
 		.attr("width", 10)
 		.style("fill-opacity", 0.9)
-		.on('mouseover', mouseOverStackedBar)
-	  	.on('mouseout', mouseOutStackedBar);
+		.on("mouseover", function(d) {		
+            divStack.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            divStack.html(d.y + " collisions")
+            .style("left", xScale(new Date(d.year, 0, 1)))
+            	.style("top", yScale(d.y));	
+           
+
+			// gets the color of the bar that was already there
+			// because of the way stacked bars are set up
+			previousBarColor = d3.select(this.parentNode).attr("style");
+			var curr = d3.select(this).attr("fill", '#63666A');
+			console.log(previousBarColor);
+			
+            })					
+		.on("mousemove", function(){
+			console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
+			return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+
+        .on("mouseout", function(d) {		
+            divStack.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+            // resets to the previous color of the bar that was hovered over
+			var curr = d3.select(this).attr("fill", previousBarColor.substring(6));
+    	});			
+
+	   //  .on('mouseover', mouseOverStackedBar)
+	  	// .on('mouseout', mouseOutStackedBar);
 
 	// svg.append("g")
 	// 	.attr("class","x axis")
@@ -166,19 +199,3 @@ key.append("svg:image")
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)
     .attr("height", sizeOfLegendIcons - 5); 
-
-// bar hovering stuff
-var previousBarColor;
-
-var mouseOverStackedBar = function() {
-	// gets the color of the bar that was already there
-	// because of the way stacked bars are set up
-	previousBarColor = d3.select(this.parentNode).attr("style");
-	var curr = d3.select(this).attr("fill", 'lightsteelblue');
-	console.log(previousBarColor);
-}
-
-var mouseOutStackedBar = function() {
-	var curr = d3.select(this).attr("fill", previousBarColor.substring(6));
-	console.log(curr);
-}

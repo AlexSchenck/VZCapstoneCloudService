@@ -1,10 +1,10 @@
-var sizeOfImages = 20;
-var spaceBetween = 30;
-var heightOfImages = 20;
-
-var outerW = window.outerWidth * .42 * .47;
-console.log(outerW);
+var outerW = window.outerWidth * .42 * .49;
 var pedH = window.outerHeight * .43 * .477 * .35;
+console.log(pedH);
+
+var sizeOfImages = outerW / 30 * 2.3;
+var spaceBetween = outerW / 9.8;
+var heightOfImages = pedH / 2.5;
 
 //47 of 42 percent
 var pedImages = d3.select("#pedImages").append("svg")
@@ -33,8 +33,8 @@ for (var i = pedSurvive; i < 10; i++) {
 }
 
 var bikeSurvive = 7;
-sizeOfImages = 20;
-spaceBetween = 30;
+sizeOfImages = outerW / 30 * 2;
+spaceBetween = outerW / 9.8;
 
 var bikeImages = d3.select("#bikeImages").append("svg")
 				.attr("preserveAspectRatio", "xMinYMin meet")

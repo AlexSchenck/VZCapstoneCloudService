@@ -1,13 +1,3 @@
-var mouseOver = function() {
-	var curr = d3.select(this).attr("stroke", "blue");
-	console.log(d3.select(this));
-}
-
-var mouseOut = function() {
-	var curr = d3.select(this).attr("stroke", "#00A3E0");
-	console.log(curr);
-}
-
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 
@@ -45,6 +35,11 @@ svg.append("g")
 var start = 0;
 var yScale;
 
+// Define the div for the tooltip
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")			
+    .style("opacity", 0);
+
 d3.json("./Data/progress.json", function(error, result) {
 	console.log(error);
 	data = result;
@@ -60,9 +55,10 @@ d3.json("./Data/progress.json", function(error, result) {
 	}
 
 	var max = d3.max(data[1], function(d) { return d.y; });
+	max = (Math.round(max / 100)) * 100
 	// console.log(max);
 	yScale = d3.scale.linear()
-		.domain([0, max + 5])
+		.domain([0, max])
  		.range([heightProgress - paddingProgress.bottom - paddingProgress.top, -20]);
 
 	// draws the y axis
@@ -94,20 +90,30 @@ d3.json("./Data/progress.json", function(error, result) {
 		.attr('d', line(targetLine))
 	  	.attr('stroke', 'grey')
 	  	.attr('stroke-width', 2)
-	  	.attr('fill', 'none');
+	  	.attr('fill', 'none')
+	  	.on("mouseover", function(d) {		
+            div.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            div.html("Goal number of collisions");
+        })					
+        .on("mouseout", function(d) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+    	});
 
-	var colors = ["#006b94", "#87a96b"]
+	var colors = ["#006b94", "#87a96b"];
+
 	for (var i = 0; i < data.length; i++) {
 		// draws actual trend line of progress
 		svg.append('path')
 		  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
 			.attr('d', line(data[i]))
 		  	.attr('stroke', colors[i])
-		  	.attr('stroke-width', 3)
+		  	.attr('stroke-width', 1.5)
 		  	.attr('fill', 'none')
 		  	.style('opacity', .9);
-		  	// .on('mouseover', mouseOver)
-		  	// .on('mouseout', mouseOut);
 
 
 		// Add the dots
@@ -117,23 +123,30 @@ d3.json("./Data/progress.json", function(error, result) {
 	    	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
 	        .attr("r", 3)		
 	        .attr("cx", function(d) { return xScale(d.year); })		 
-	        .attr("cy", function(d) { return yScale(d.y); });	
+	        .attr("cy", function(d) { return yScale(d.y); })
+	        .attr("fill", "#63666A")
+	        .on("mouseover", function(d) {		
+	        	var duration = 200; 
+	            div.transition()		
+	                .duration(duration)		
+	                .style("opacity", .9);		
+	            div.html(d.y + " collisions")
+	            	.style("left", xScale(d.year))
+	            	.style("top", yScale(d.y));	
+	            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
+	            })	
+			.on("mousemove", function(){
+				console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
+				return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+	        .on("mouseout", function(d) {
+	        	var duration = 500;		
+	            div.transition()		
+	                .duration(duration)		
+	                .style("opacity", 0);	
+	    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 3);
+			});	
 	}
-
-
-        // .on("mouseover", function(d) {		
-        //     div.transition()		
-        //         .duration(200)		
-        //         .style("opacity", .9);		
-        //     div	.html(formatTime(d.date) + "<br/>"  + d.close)	
-        //         .style("left", (d3.event.pageX) + "px")		
-        //         .style("top", (d3.event.pageY - 28) + "px");	
-        //     })					
-        // .on("mouseout", function(d) {		
-        //     div.transition()		
-        //         .duration(500)		
-        //         .style("opacity", 0);	
-    	// });
+        
 
 	// adding in titles and axis labels
 	svg.append("text")
@@ -157,8 +170,20 @@ d3.json("./Data/progress.json", function(error, result) {
 		.attr('d', line(visionZeroStartDate))
 	  	.attr('stroke',  "#00A3E0")
 	  	.attr('stroke-width', 3)
-	  	.attr('fill', 'none');
-
+	  	.attr('fill', 'none')
+	  	.on("mouseover", function(d) {		
+            div.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            div.html("Vision Zero Seattle Start Date")
+            	.style("left", xScale(2015))
+            	.style("top", yScale(0));	
+            })					
+        .on("mouseout", function(d) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+    	});	
 })
 
 
@@ -192,3 +217,51 @@ d3.json("./Data/progress.json", function(error, result) {
 
 // tooltip.append('div')                        // NEW
 //   .attr('class', 'percent');                 // NEW
+
+
+// var mouseOver = function() {
+// 	var curr = d3.select(this).attr("stroke", "blue");
+// 	console.log(d3.select(this));
+// }
+
+// var mouseOut = function() {
+// 	var curr = d3.select(this).attr("stroke", "#00A3E0");
+// 	console.log(curr);
+// }
+
+
+// // Detect if the browser is IE or not.
+// // If it is not IE, we assume that the browser is NS.
+// var IE = document.all?true:false
+
+// // If NS -- that is, !IE -- then set up for mouse capture
+// if (!IE) document.captureEvents(Event.MOUSEMOVE)
+
+// // Set-up to use getMouseXY function onMouseMove
+// document.onmousemove = getMouseXY;
+
+// // Temporary variables to hold mouse x-y pos.s
+// var tempX = 0
+// var tempY = 0
+
+// // Main function to retrieve mouse x-y pos.s
+
+// function getMouseXY(e) {
+//   if (IE) { // grab the x-y pos.s if browser is IE
+//     tempX = event.clientX + document.body.scrollLeft
+//     tempY = event.clientY + document.body.scrollTop
+//   } else {  // grab the x-y pos.s if browser is NS
+//     tempX = e.pageX
+//     tempY = e.pageY
+//   }  
+//   // catch possible negative values in NS4
+//   if (tempX < 0){tempX = 0}
+//   if (tempY < 0){tempY = 0}  
+//   return true
+// }
+
+
+
+
+
+
