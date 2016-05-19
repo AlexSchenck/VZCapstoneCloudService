@@ -18,6 +18,7 @@ body {
 .section {
 	width: 31%;
 	height: 37%;
+	min-height: 250px;
 	float: left;
 	/*min-height: 300px;*/
 }
@@ -38,7 +39,9 @@ body {
 	/*don't touch*/
 	width: 54%;
 	height: 44.5%;
+	min-height: 330px;
 	float: right;
+	margin-right: 1%;
 	
 }
 
@@ -53,7 +56,7 @@ body {
 	float: left;
 	width: 47%;
 	height: 47.7%;
-
+	min-height: 150px;
 	padding: 1%;
 	/*margin: 2.25%;*/
 	background-color: #ffffff;
@@ -99,12 +102,6 @@ body {
 	box-shadow: 0 0 3px #ccc;
 }
 
-.progressSection {
-		/*don't touch*/
-	margin-right: 1%;
-	/*min-height: 325px;
-	max-height: 400px;*/
-}
 
 h1 {
 	font-size: 1.25vw;
@@ -141,7 +138,7 @@ h3 {
 p {
 	text-align: center;
 	font-size: 2.75vw;
-	margin-top: 5%;
+	margin-top: 3%;
 	margin-bottom: 0px;
 }
 

@@ -105,7 +105,7 @@ function drawBulletCharts(name) {
 	    	.enter().append("svg")
 	    	  	.attr("class", "bullet")
 	            .attr("preserveAspectRatio", "xMinYMin meet")
-	            .attr("viewBox", "0 0 " + (width + margin.left + margin.right + 3) + " " + (height + 10))
+	            .attr("viewBox", "0 0 " + (width + margin.left + margin.right + 5) + " " + (height + 10))
 	            .classed("svg-content", true); 
 	    	
 	    	// adds the title to the left side of each bullet chart
@@ -134,7 +134,7 @@ function drawBulletCharts(name) {
 	    // adds the scale at the bottom with ticks 
 	    d3.select("#" + name + "Axis").append("svg")
 	            .attr("preserveAspectRatio", "xMinYMin meet")
-	            .attr("viewBox", "-" + (margin.left + margin.right) + " 0 " + (widthFull + 5) + " 50")
+	            .attr("viewBox", "-" + (margin.left + margin.right - 1) + " 0 " + (widthFull + 5) + " 50")
 	            .classed("svg-content", true)
 	        .append("g")
 	            .attr("class", "axis")

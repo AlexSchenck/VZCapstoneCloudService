@@ -4,7 +4,7 @@ console.log(pedH);
 
 var sizeOfImages = outerW / 30 * 2.3;
 var spaceBetween = outerW / 9.8;
-var heightOfImages = pedH / 2.5;
+var heightOfImages = pedH / 4;
 
 //47 of 42 percent
 var pedImages = d3.select("#pedImages").append("svg")

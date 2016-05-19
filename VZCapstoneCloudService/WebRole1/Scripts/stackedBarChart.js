@@ -144,8 +144,8 @@ d3.json("./Data/stackedBar.json", function(error, result){
 
 	svg.append("g") 	
 			.attr("class","x axis")
-			// adds x axis and moves to correct height
-			.attr("transform","translate(" + (padding.left + ((w + 10) / 13 /2)) + "," + (h - padding.bottom) + ")")
+			// adds x axis and moves to correct height - might need to get rid of -2
+			.attr("transform","translate(" + (padding.left + 15 + w / 13 / 4 - 2) + "," + (h - padding.bottom) + ")")
 			.call(xAxis)
 	  	.selectAll("text")
 	    	.style("text-anchor", "middle");
