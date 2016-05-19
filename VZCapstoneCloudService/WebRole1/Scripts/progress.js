@@ -35,15 +35,23 @@ svg.append("g")
 var start = 0;
 var yScale;
 
+var runningTotalSoFar = 0; 
+
 // Define the div for the tooltip
 var div = d3.select("body").append("div")	
     .attr("class", "tooltip")			
     .style("opacity", 0);
 
-d3.json("./Data/progress.json", function(error, result) {
+d3.json("./Data/progress.json", function(error, data) {
 	console.log(error);
-	data = result;
-	console.log(data[0]);
+
+	// sets the running total of collisions in seattle. 
+	// Does not pertain to progress bar	
+	var temp = data[0];
+	console.log(temp[temp.length - 1].y);
+	runningTotalSoFar = temp[temp.length - 1].y;
+	d3.select("#runningTotal").html(runningTotalSoFar);
+
 	start = data[0][0].y;
 
 	for (var i = 0; i < data.length; i++) {
@@ -94,10 +102,12 @@ d3.json("./Data/progress.json", function(error, result) {
 	  	.on("mouseover", function(d) {		
             div.transition()		
                 .duration(200)		
-                .style("opacity", .9);		
+                .style("opacity", 1);		
             div.html("Goal number of collisions");
         })					
-        .on("mouseout", function(d) {		
+        .on("mousemove", function(){
+			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+		.on("mouseout", function(d) {		
             div.transition()		
                 .duration(500)		
                 .style("opacity", 0);	
@@ -129,7 +139,7 @@ d3.json("./Data/progress.json", function(error, result) {
 	        	var duration = 200; 
 	            div.transition()		
 	                .duration(duration)		
-	                .style("opacity", .9);		
+	                .style("opacity", 1);		
 	            div.html(d.y + " collisions")
 	            	.style("left", xScale(d.year))
 	            	.style("top", yScale(d.y));	
@@ -174,11 +184,14 @@ d3.json("./Data/progress.json", function(error, result) {
 	  	.on("mouseover", function(d) {		
             div.transition()		
                 .duration(200)		
-                .style("opacity", .9);		
+                .style("opacity", 1);		
             div.html("Vision Zero Seattle Start Date")
             	.style("left", xScale(2015))
             	.style("top", yScale(0));	
             })					
+	  	.on("mousemove", function(){
+			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
+			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
         .on("mouseout", function(d) {		
             div.transition()		
                 .duration(500)		

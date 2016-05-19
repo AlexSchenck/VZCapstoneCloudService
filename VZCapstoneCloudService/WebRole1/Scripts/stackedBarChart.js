@@ -8,6 +8,7 @@ var dataset;
 var w = outerW / 3 - 60;       
 var h = outerH / 3 - 60;     
 var previousBarColor;
+console.log(w / 13 / 2.5);
 
 //Set up stack method
 var stack = d3.layout.stack();
@@ -64,7 +65,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	var svg = d3.select("#stackedBarChart")
 				.append("svg")
 	    		.attr("preserveAspectRatio", "xMinYMin meet")
-				.attr("viewBox", "0 20 " + w + " " + (h))
+				.attr("viewBox", "0 20 " + (w + 10) + " " + (h))
 				.classed("svg-content", true); 
 
 	// Add a group for each row of data
@@ -82,9 +83,9 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	var rects = groups.selectAll("rect")
 		.data(function(d) { return d; })
 		.enter()
-		.append("rect")
-		.attr("width", 2)
-		.style("fill-opacity",1e-6);
+		.append("rect");
+		// .attr("width", 2)
+		// .style("fill-opacity",1e-6);
 
 	rects.attr("x", function(d) {
 			return xScale(new Date(d.year));
@@ -96,12 +97,12 @@ d3.json("./Data/stackedBar.json", function(error, result){
 			return -yScale(d.y) + (h - padding.top - padding.bottom);
 		})
 		// width of bars
-		.attr("width", 10)
-		.style("fill-opacity", 0.9)
+		.attr("width", w / 13 / 2.5)
+		.style("fill-opacity", 1)
 		.on("mouseover", function(d) {		
             divStack.transition()		
                 .duration(200)		
-                .style("opacity", .9);		
+                .style("opacity", 1);		
             divStack.html(d.y + " collisions")
             .style("left", xScale(new Date(d.year, 0, 1)))
             	.style("top", yScale(d.y));	
@@ -144,7 +145,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	svg.append("g") 	
 			.attr("class","x axis")
 			// adds x axis and moves to correct height
-			.attr("transform","translate(" + (padding.left + 20) + "," + (h - padding.bottom) + ")")
+			.attr("transform","translate(" + (padding.left + ((w + 10) / 13 /2)) + "," + (h - padding.bottom) + ")")
 			.call(xAxis)
 	  	.selectAll("text")
 	    	.style("text-anchor", "middle");
@@ -188,7 +189,7 @@ key.append("svg:image")
     .on("mouseover", function(d) {		
         divStack.transition()		
             .duration(200)		
-            .style("opacity", .9);		
+            .style("opacity", 1);		
         divStack.html("Collisions resulting in fatalities and serious injuries involving vehicles only.")
         .style("left", 0)
         .style("top", yPosition);	
@@ -210,7 +211,7 @@ key.append("svg:image")
     .on("mouseover", function(d) {		
         divStack.transition()		
             .duration(200)		
-            .style("opacity", .9);		
+            .style("opacity", 1);		
         divStack.html("Collisions resulting in fatalities and serious injuries involving cyclists.")
         .style("left", 0)
         .style("top", yPosition);	
@@ -232,7 +233,7 @@ key.append("svg:image")
     .on("mouseover", function(d) {		
         divStack.transition()		
             .duration(200)		
-            .style("opacity", .9);		
+            .style("opacity", 1);		
         divStack.html("Collisions resulting in fatalities and serious injuries involving pedestrians.")
         .style("left", 0)
         .style("top", yPosition);	

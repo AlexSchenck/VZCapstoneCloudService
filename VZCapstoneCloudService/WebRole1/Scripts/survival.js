@@ -13,6 +13,7 @@ var pedImages = d3.select("#pedImages").append("svg")
 	            .classed("svg-content", true); 
 
 var pedSurvive = 9;
+d3.select("#pedSurvivalRatio").html(pedSurvive + "/10");
 
 for (var i = 0; i < pedSurvive; i++) {
 	pedImages.append("svg:image")
@@ -35,6 +36,8 @@ for (var i = pedSurvive; i < 10; i++) {
 var bikeSurvive = 7;
 sizeOfImages = outerW / 30 * 2;
 spaceBetween = outerW / 9.8;
+
+d3.select("#bikeSurvivalRatio").html(bikeSurvive + "/10");
 
 var bikeImages = d3.select("#bikeImages").append("svg")
 				.attr("preserveAspectRatio", "xMinYMin meet")

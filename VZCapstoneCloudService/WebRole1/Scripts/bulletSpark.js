@@ -1,5 +1,6 @@
 var names = ["age", "contributingFactors"];
 var titles = ["Age (Years)", "Contributing Factors"];
+var headers = ["Number of Drivers", "Number of Occurrences"];
 // console.log(names[0]);
 
 var margin = {top: 5, right: 40, bottom: 5, left: 80};
@@ -15,33 +16,31 @@ drawBulletKey();
 
 for (var i = 0; i < names.length; i++) {
 	drawBulletCharts(names[i]);
-	drawTitles(names[i], titles[i]);
+	drawTitles(names[i], titles[i], headers[i]);
 	drawSparkLines(names[i]);
 }
 
 // draws the title of the spark lines 
-function drawTitles(name, title) {
-	// for (var i = 0; i < names.length; i++) {
-	// 	var name = names[i];
-	    d3.select("#" + name + "BulletTitle").append("svg")
-	            .attr("preserveAspectRatio", "xMinYMin meet")
-	            .attr("viewBox", "-12 -15 250 40")
-	            .classed("svg-content", true)
-	        .append("text")
-		        .style("font-size", 10)
-		        .style("font-family", "Open Sans Condensed")
-		        .text(title);
+function drawTitles(name, title, header) {
+    d3.select("#" + name + "BulletTitle").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-12 -15 250 40")
+            .classed("svg-content", true)
+        .append("text")
+	        .style("font-size", 10)
+	        .style("font-family", "Open Sans Condensed")
+	        .text(title);
 
-	    d3.select("#" + name + "BulletTitle").append("svg")
-	            .attr("preserveAspectRatio", "xMinYMin meet")
-	            .attr("viewBox", "-100 -15 250 40")
-	            .classed("svg-content", true)
-	        .append("text")
-		        .style("font-size", 10)
-		        .style("font-family", "Open Sans Condensed")
-		        .text("Number of Drivers");
+    d3.select("#" + name + "BulletTitle").append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "-100 -15 250 40")
+            .classed("svg-content", true)
+        .append("text")
+	        .style("font-size", 10)
+	        .style("font-family", "Open Sans Condensed")
+	        .text(header);
 
-	    d3.select("#" + name + "SparkTitle").append("svg")
+    d3.select("#" + name + "SparkTitle").append("svg")
 	        .attr("preserveAspectRatio", "xMinYMin meet")
 	        .attr("viewBox", "0 -15 100 50")
 	        .classed("svg-content", true)
@@ -49,7 +48,6 @@ function drawTitles(name, title) {
 		    .style("font-size", 10)
 		    .style("font-family", "Open Sans Condensed")
 		    .text("Past 5 years");
-	// }
 }
 
 
@@ -68,8 +66,7 @@ function drawBulletKey() {
         .attr("transform", "translate(" + (margin.right - 20) + "," + (margin.top * 5 - 2) + ")")
         .attr("width", 30)
         .attr("height", heightOfKey + 3)
-        .style("fill", "#00A3E0")
-        .attr("opacity", 0.7);
+        .style("fill", "#00A3E0");
 
     key.append("text")
         .attr("transform", "translate(" + (margin.right + 17) + "," + (margin.top * 5) + ")")
