@@ -86,20 +86,6 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.enter()
 		.append("rect");
 
-	// var textTip = ""; 
-
-	function componentToHex(c) {
-	    var hex = c.toString(16);
-	    return hex.length == 1 ? "0" + hex : hex;
-	}
-
-	function rgbToHex(r, g, b) {
-	    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-	}
-
-	// alert( rgbToHex(135, 169, 107) ); // #0033ff
-
-	// console.log(color_hash[0][1] == "#00A3E0"	);
 
 	rects.attr("x", function(d) {
 			return xScale(new Date(d.year));
@@ -119,20 +105,21 @@ d3.json("./Data/stackedBar.json", function(error, result){
 			previousBarColor = d3.select(this.parentNode).attr("style");
 			var curr = d3.select(this).attr("fill", '#63666A');
 
+			// gets individual components of the rbg
 			var hexComponents = previousBarColor.split(', ');
 			var first = hexComponents[0].split('(')[1];
 			var middle = hexComponents[1];
 			var last = hexComponents[2].split(')')[0];
 
-			// alert(rgbToHex(parseInt(first), parseInt(middle), parseInt(last)) + " " + previousBarColor);
-
-			var textTip = " people"; 
+			var textTip = "people"; // default if can't be found 
 			var convertedRBG = rgbToHex(parseInt(first), parseInt(middle), parseInt(last));
 
 			// alert(convertedRBG);
             divStack.transition()		
                 .duration(200)		
                 .style("opacity", 1);
+
+            // checks to see which title to display
             if (convertedRBG == color_hash[2][1]) {
             	textTip = color_hash[2][0];
             } else if (convertedRBG == color_hash[1][1]) {
@@ -142,8 +129,8 @@ d3.json("./Data/stackedBar.json", function(error, result){
             }
 
             divStack.html(d.y + " " + textTip)
-            .style("left", xScale(new Date(d.year, 0, 1)))
-            .style("top", yScale(d.y));	
+	            .style("left", xScale(new Date(d.year, 0, 1)))
+	            .style("top", yScale(d.y));	
 			
             })					
 		.on("mousemove", function(){
@@ -276,3 +263,13 @@ key.append("svg:image")
             .duration(500)		
             .style("opacity", 0);
 	});	  
+
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
