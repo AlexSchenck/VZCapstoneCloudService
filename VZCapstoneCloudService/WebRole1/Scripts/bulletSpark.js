@@ -110,11 +110,13 @@ function drawBulletCharts(name) {
 	    	
 	    	// adds the title to the left side of each bullet chart
 	      	svg.append("g")
+	          	// .attr("width", "50")
 	          	.style("text-anchor", "start")
 	          	.attr("transform", "translate(15," + ((height / 2) + 7) + ")")
 	      	.append("text")
 	          	.attr("class", "title")
 	            .style("font-size", 14)
+	            .style("text-overflow", 'ellipsis')
 	          	.text(function(d) { return d.title; });
 
 	        svg.append("g")
