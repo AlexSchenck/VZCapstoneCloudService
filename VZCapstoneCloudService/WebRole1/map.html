@@ -6,6 +6,8 @@
         <script src="https://js.arcgis.com/3.16/"></script>
 
         <script src="Packages/jQuery/jquery-2.2.2.min.js"></script>
+        <link href="Packages/css/horizontal_selector.css" rel="stylesheet">
+        <script src="Packages/js/horizontal_selector.js"></script>
 
         <script src="Scripts/map.js"></script>
         <link rel="stylesheet" href="Styles/map.css" type="text/css" ></link>
@@ -27,11 +29,26 @@
         <div id="mapid"></div>
         <div id="search"></div>
         <div id="filters">
-            <div id="vehicle">V</div>
-            <div id="bike">B</div>
-            <div id="ped">P</div>
-            <div id="seriousInjury">SI</div>
-            <div id="fatality">F</div>
+            <div id="vehicle"><img src="./Images/car-trip.svg" x="0" y="15" width="35" height="35"/></div>
+            <div id="bike"><img src="./Images/bicycle.svg" x="0" y="15" width="35" height="35"/></div>
+            <div id="ped"><img src="./Images/pedestrian-walking.svg" x="0" y="15" width="35" height="35"/></div>
+            <div id="seriousInjury"><p>SI</p></div>
+            <div id="fatality"><p>F</p></div>
         </div>
+        <select id="yearSelector">
+            <option value="2004">2004</option>
+            <option value="2005">2005</option>
+            <option value="2006">2006</option>
+            <option value="2007">2007</option>
+            <option value="2008">2008</option>
+            <option value="2009">2009</option>
+            <option value="2010" >2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015" selected>2015</option>
+            <option value="2015">2016</option>
+        </select>
     </body>
 </html>
