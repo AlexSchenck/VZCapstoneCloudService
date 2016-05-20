@@ -25,10 +25,11 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	//Data, stacked
 	stack(dataset);
 
+	// these must be lower case letters
 	var color_hash = {
-	    0 : ["Pedestrian","#00A3E0"],
-		1 : ["Bicycle","#006b94"],
-		2 : ["Vehicle","#87a96b"]
+	    0 : ["pedestrians","#00a3e0"],
+		1 : ["cyclists","#006b94"],
+		2 : ["drivers","#87a96b"]
 
 	};
 
@@ -85,6 +86,21 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.enter()
 		.append("rect");
 
+	// var textTip = ""; 
+
+	function componentToHex(c) {
+	    var hex = c.toString(16);
+	    return hex.length == 1 ? "0" + hex : hex;
+	}
+
+	function rgbToHex(r, g, b) {
+	    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+	}
+
+	// alert( rgbToHex(135, 169, 107) ); // #0033ff
+
+	// console.log(color_hash[0][1] == "#00A3E0"	);
+
 	rects.attr("x", function(d) {
 			return xScale(new Date(d.year));
 		})
@@ -97,20 +113,37 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		// width of bars
 		.attr("width", w / 13 / 2.5)
 		.style("fill-opacity", 1)
-		.on("mouseover", function(d) {		
-            divStack.transition()		
-                .duration(200)		
-                .style("opacity", 1);		
-            divStack.html(d.y + " people")
-            .style("left", xScale(new Date(d.year, 0, 1)))
-            .style("top", yScale(d.y));	
-           
-
+		.on("mouseover", function(d) {	
 			// gets the color of the bar that was already there
 			// because of the way stacked bars are set up
 			previousBarColor = d3.select(this.parentNode).attr("style");
 			var curr = d3.select(this).attr("fill", '#63666A');
-			console.log(previousBarColor);
+
+			var hexComponents = previousBarColor.split(', ');
+			var first = hexComponents[0].split('(')[1];
+			var middle = hexComponents[1];
+			var last = hexComponents[2].split(')')[0];
+
+			// alert(rgbToHex(parseInt(first), parseInt(middle), parseInt(last)) + " " + previousBarColor);
+
+			var textTip = " people"; 
+			var convertedRBG = rgbToHex(parseInt(first), parseInt(middle), parseInt(last));
+
+			// alert(convertedRBG);
+            divStack.transition()		
+                .duration(200)		
+                .style("opacity", 1);
+            if (convertedRBG == color_hash[2][1]) {
+            	textTip = color_hash[2][0];
+            } else if (convertedRBG == color_hash[1][1]) {
+            	textTip = color_hash[1][0];
+            } else if (convertedRBG == color_hash[0][1]) {
+            	textTip = color_hash[0][0];
+            }
+
+            divStack.html(d.y + " " + textTip)
+            .style("left", xScale(new Date(d.year, 0, 1)))
+            .style("top", yScale(d.y));	
 			
             })					
 		.on("mousemove", function(){
