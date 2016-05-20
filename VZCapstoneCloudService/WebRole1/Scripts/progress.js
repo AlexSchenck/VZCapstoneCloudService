@@ -47,22 +47,22 @@ d3.json("./Data/progress.json", function(error, data) {
 
 	// sets the running total of collisions in seattle. 
 	// Does not pertain to progress bar	
-	var temp = data[0];
-	console.log(temp[temp.length - 1].y);
-	runningTotalSoFar = temp[temp.length - 1].y;
+	// var temp = data[0];
+	// console.log(temp[temp.length - 1].y);
+	runningTotalSoFar = data[data.length - 1].y;	
 	d3.select("#runningTotal").html(runningTotalSoFar);
 
-	start = data[0][0].y;
+	start = data[0].y;
 
 	for (var i = 0; i < data.length; i++) {
 		// coerce the data given into integers
-		data[i].forEach(function(d) {
+		data.forEach(function(d) {
 		    d.date = +d.date;
 		    d.y = +d.y;
 		});
 	}
 
-	var max = d3.max(data[1], function(d) { return d.y; });
+	var max = d3.max(data, function(d) { return d.y; });
 	max = (Math.round(max / 100)) * 100
 	// console.log(max);
 	yScale = d3.scale.linear()
@@ -97,7 +97,7 @@ d3.json("./Data/progress.json", function(error, data) {
 	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
 		.attr('d', line(targetLine))
 	  	.attr('stroke', 'grey')
-	  	.attr('stroke-width', 2)
+	  	.attr('stroke-width', 3)
 	  	.attr('fill', 'none')
 	  	.on("mouseover", function(d) {		
             div.transition()		
@@ -116,28 +116,25 @@ d3.json("./Data/progress.json", function(error, data) {
 	var colors = ["#006b94", "#87a96b"];
 
 
-	drawCollisionDots(data[0]);
-	drawFatalDots(data[1]);
 
+	// draws actual trend line of progress
+	svg.append('path')
+	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
+		.attr('d', line(data))
+	  	.attr('stroke', "#87a96b")
+	  	.attr('stroke-width', 3)
+	  	.attr('fill', 'none')
+	  	.style('opacity', .9);
 
-	for (var i = 0; i < data.length; i++) {
-		// draws actual trend line of progress
-		svg.append('path')
-		  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
-			.attr('d', line(data[i]))
-		  	.attr('stroke', colors[i])
-		  	.attr('stroke-width', 1.5)
-		  	.attr('fill', 'none')
-		  	.style('opacity', .9);
-	}
-
+	drawFatalDots(data);
+	
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
-		.attr("x", 0- svgHeight / 2)
+		.attr("x", 0- svgHeight / 2 - 60)
 		.attr("y", -2)
 		.attr("dy","1em")
-		.text("Frequency");
+		.text("Number of fatalities or serious injuries");
 
 	svg.append("text")
 	   .attr("class","xtext")
@@ -178,7 +175,7 @@ function drawFatalDots(data) {
         .data(data)			
     .enter().append("circle")
     	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
-        .attr("r", 3)		
+        .attr("r", 4)		
         .attr("cx", function(d) { return xScale(d.year); })		 
         .attr("cy", function(d) { return yScale(d.y); })
         .attr("fill", "#63666A")
@@ -190,7 +187,7 @@ function drawFatalDots(data) {
             div.html("" + d.y + " fatalities and serious injuries in " + d.year)
             	.style("left", xScale(d.year))
             	.style("top", yScale(d.y));	
-            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
+            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 6);
             })	
 		.on("mousemove", function(){
 			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
@@ -200,39 +197,7 @@ function drawFatalDots(data) {
             div.transition()		
                 .duration(duration)		
                 .style("opacity", 0);	
-    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 3);
-		});	
-}
-
-function drawCollisionDots(data) {
-	// Add the dots
-    svg.selectAll("dot")	
-        .data(data)			
-    .enter().append("circle")
-    	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
-        .attr("r", 3)		
-        .attr("cx", function(d) { return xScale(d.year); })		 
-        .attr("cy", function(d) { return yScale(d.y); })
-        .attr("fill", "#63666A")
-        .on("mouseover", function(d) {		
-        	var duration = 200; 
-            div.transition()		
-                .duration(duration)		
-                .style("opacity", 1);		
-            div.html("" + d.y + " collisions in " + d.year)
-            	.style("left", xScale(d.year))
-            	.style("top", yScale(d.y));	
-            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 5);
-            })	
-		.on("mousemove", function(){
-			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
-			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
-        .on("mouseout", function(d) {
-        	var duration = 500;		
-            div.transition()		
-                .duration(duration)		
-                .style("opacity", 0);	
-    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 3);
+    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 4);
 		});	
 }
 

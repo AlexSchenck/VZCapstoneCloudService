@@ -1,5 +1,5 @@
 var names = ["age", "contributingFactors"];
-var titles = ["Age (Years)", "Contributing Factors"];
+var titles = ["Age (Years)", "Contributing Factor"];
 var headers = ["Number of Drivers", "Number of Occurrences"];
 // console.log(names[0]);
 

@@ -26,7 +26,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	stack(dataset);
 
 	var color_hash = {
-	    0 : ["Ped","#00A3E0"],
+	    0 : ["Pedestrian","#00A3E0"],
 		1 : ["Bicycle","#006b94"],
 		2 : ["Vehicle","#87a96b"]
 
@@ -84,8 +84,6 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.data(function(d) { return d; })
 		.enter()
 		.append("rect");
-		// .attr("width", 2)
-		// .style("fill-opacity",1e-6);
 
 	rects.attr("x", function(d) {
 			return xScale(new Date(d.year));
@@ -172,7 +170,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 });
 
 
-var sizeOfLegendIcons = 45;
+var sizeOfLegendIcons = 55;
 var yPosition = 15;
 
 var key = d3.select("#stackedKey").append("svg")
@@ -181,9 +179,9 @@ var key = d3.select("#stackedKey").append("svg")
         .classed("svg-content", true);
 
 key.append("svg:image")
-	.attr("xlink:href", "./Images/car-trip.svg")
+	.attr("xlink:href", "./Images/vehicle-green.svg")
 	.attr("x", 0)
-    .attr("y", yPosition)
+    .attr("y", yPosition - 3)
     .attr("width", sizeOfLegendIcons)
     .attr("height", sizeOfLegendIcons)
     .on("mouseover", function(d) {		
@@ -203,9 +201,9 @@ key.append("svg:image")
 	});	 
 
 key.append("svg:image")
-	.attr("xlink:href", "./Images/bicycle.svg")
+	.attr("xlink:href", "./Images/cyclist-turquoise.svg")
 	.attr("x", 50)
-    .attr("y", yPosition)
+    .attr("y", yPosition - 1)
     .attr("width", sizeOfLegendIcons)
     .attr("height", sizeOfLegendIcons)
     .on("mouseover", function(d) {		
@@ -225,7 +223,7 @@ key.append("svg:image")
 	});	 
 
 key.append("svg:image")
-	.attr("xlink:href", "./Images/pedestrian-walking.svg")
+	.attr("xlink:href", "./Images/pedestrian-blue.svg")
 	.attr("x", 90)
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)

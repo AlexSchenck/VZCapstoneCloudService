@@ -2,7 +2,7 @@ var outerW = window.outerWidth * .42 * .49;
 var pedH = window.outerHeight * .43 * .477 * .35;
 console.log(pedH);
 
-var sizeOfImages = outerW / 30 * 2.3;
+var sizeOfImages = outerW / 30 * 3;
 var spaceBetween = outerW / 9.8;
 var heightOfImages = pedH / 4;
 
@@ -12,50 +12,58 @@ var pedImages = d3.select("#pedImages").append("svg")
 	            .attr("viewBox", "0 0 " + outerW + " " + pedH)
 	            .classed("svg-content", true); 
 
-var pedSurvive = 9;
-d3.select("#pedSurvivalRatio").html(pedSurvive + "/10");
+var pedSurvive = 330;
+var pedTotal = 500;
 
-for (var i = 0; i < pedSurvive; i++) {
+var fatalSIRatio = Math.round(pedSurvive / pedTotal * 10);
+
+d3.select("#pedSurvivalRatio").html(pedSurvive + "/" + pedTotal);
+
+for (var i = 0; i < fatalSIRatio; i++) {
 	pedImages.append("svg:image")
-		.attr("xlink:href", "./Images/pedestrian-walking-green.svg")
+		.attr("xlink:href", "./Images/pedestrian-black.svg")
 		.attr("x", (spaceBetween * i))
 	    .attr("y", heightOfImages)
 	    .attr("width", sizeOfImages)
 	    .attr("height", sizeOfImages); 
 }
 
-for (var i = pedSurvive; i < 10; i++) {
+for (var i = fatalSIRatio; i < 10; i++) {
 	pedImages.append("svg:image")
-		.attr("xlink:href", "./Images/pedestrian-walking-black.svg")
+		.attr("xlink:href", "./Images/pedestrian-green.svg")
 		.attr("x", (spaceBetween * i))
 	    .attr("y", heightOfImages)
 	    .attr("width", sizeOfImages)
 	    .attr("height", sizeOfImages); 
 }
 
-var bikeSurvive = 7;
-sizeOfImages = outerW / 30 * 2;
-spaceBetween = outerW / 9.8;
+var bikeSurvive = 408;
+var bikeTotal = 1000;
+sizeOfImages = outerW / 30 * 3;
+spaceBetween = outerW / 10;
 
-d3.select("#bikeSurvivalRatio").html(bikeSurvive + "/10");
+fatalSIRatio = Math.round(bikeSurvive / bikeTotal * 10);
+
+
+d3.select("#bikeSurvivalRatio").html(bikeSurvive + "/" + bikeTotal);
 
 var bikeImages = d3.select("#bikeImages").append("svg")
 				.attr("preserveAspectRatio", "xMinYMin meet")
 	            .attr("viewBox", "0 0 " + outerW + " " + pedH)
 	            .classed("svg-content", true); 
 	            
-for (var i = 0; i < bikeSurvive; i++) {
+for (var i = 0; i < fatalSIRatio; i++) {
 	bikeImages.append("svg:image")
-		.attr("xlink:href", "./Images/bicycle-rider-green.svg")
+		.attr("xlink:href", "./Images/cyclist-black.svg")
 		.attr("x", (spaceBetween * i))
 	    .attr("y", heightOfImages)
 	    .attr("width", sizeOfImages)
 	    .attr("height", sizeOfImages); 
 }
 
-for (var i = bikeSurvive; i < 10; i++) {
+for (var i = fatalSIRatio; i < 10; i++) {
 	bikeImages.append("svg:image")
-		.attr("xlink:href", "./Images/bicycle-rider.svg")
+		.attr("xlink:href", "./Images/cyclist-green.svg")
 		.attr("x", (spaceBetween * i))
 	    .attr("y", heightOfImages)
 	    .attr("width", sizeOfImages)
