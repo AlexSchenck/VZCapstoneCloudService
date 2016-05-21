@@ -176,10 +176,10 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
-		.attr("x", 0- h / 2 - 50)
+		.attr("x", 0- h / 2 - 70)
 		.attr("y", -3)
 		.attr("dy","1em")
-		.text("Number of Individuals");
+		.text("Fatalities or Serious Injuries");
 
 	svg.append("text")
 	   .attr("class","xtext")
@@ -208,7 +208,7 @@ key.append("svg:image")
         divStack.transition()		
             .duration(200)		
             .style("opacity", 1);		
-        divStack.html("Collisions resulting in fatalities and serious injuries involving vehicles only.")
+        divStack.html("Fatalities and serious injuries of vehicular drivers and passengers.")
         .style("left", 0)
         .style("top", yPosition);	
     })					
@@ -230,7 +230,7 @@ key.append("svg:image")
         divStack.transition()		
             .duration(200)		
             .style("opacity", 1);		
-        divStack.html("Collisions resulting in fatalities and serious injuries involving cyclists.")
+        divStack.html("Fatalities and serious injuries of cyclist drivers and passengers.")
         .style("left", 0)
         .style("top", yPosition);	
     })					
@@ -252,7 +252,7 @@ key.append("svg:image")
         divStack.transition()		
             .duration(200)		
             .style("opacity", 1);		
-        divStack.html("Collisions resulting in fatalities and serious injuries involving pedestrians.")
+        divStack.html("Fatalities and serious injuries of pedestrians.")
         .style("left", 0)
         .style("top", yPosition);	
     })					

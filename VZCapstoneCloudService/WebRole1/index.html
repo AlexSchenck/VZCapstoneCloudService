@@ -5,17 +5,27 @@
 		<script src="Scripts/dashboard.js"></script>
 		<script src="Scripts/app.js"></script>
 		<script src="Packages/d3/d3.min.js"></script>
+		<!-- <link rel="stylesheet" type="text/css" href="..\Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap.min.css"> -->
 		<link rel="stylesheet" type="text/css" href="Styles/stackedBarChartStyle.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/bulletSpark.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/dashboard.css"/>
+		<link rel="stylesheet" type="text/css" href="Styles/header.css"/>
 		<script src="Packages/d3/bullet.js"></script>
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
-		<iframe id="header" src="Views/header.html" frameBorder="0"></iframe>
-
-		<!-- <div id="chart"></div> -->
+		<!-- <iframe id="header" src="Views/header.html" frameBorder="0"></iframe> -->
+		<div class="header">
+			<img src="../Images/vzheader-title.jpg"/>
+			<img src="../Images/vzheader-icons.jpg" id="header-icons"/>
+			<a target="_parent" href="..\index.html">
+		        <button id="btnDashboard" class="hover active" type="button">Dashboard</button>
+		    </a>
+		    <a target="_parent" href="..\map.html">
+		        <button id="btnMap" class="hover active" type="button">Map</button>
+		    </a>
+		</div>
 
 		<div id="full"> 
 			<div id="top">
@@ -77,7 +87,7 @@
 			</div>
 
 			<div class="section">
-				<h1>Collisions by Type<div id="stackedKey" class="svg-container-key"></div></h1>
+				<h1>Mode of Travel<div id="stackedKey" class="svg-container-key"></div></h1>
 				<h2>Breakdown of fatalities and serious injuries by mode of travel.</h2>
 				<div id="stackedBarChart" class="svg-container">
 				</div>

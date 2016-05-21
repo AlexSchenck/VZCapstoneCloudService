@@ -134,7 +134,7 @@ d3.json("./Data/progress.json", function(error, data) {
 		.attr("x", 0- svgHeight / 2 - 60)
 		.attr("y", -2)
 		.attr("dy","1em")
-		.text("Number of fatalities or serious injuries");
+		.text("Fatalities or Serious Injuries");
 
 	svg.append("text")
 	   .attr("class","xtext")

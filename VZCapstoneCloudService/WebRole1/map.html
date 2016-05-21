@@ -13,10 +13,22 @@
 
         <script src="Scripts/map.js"></script>
         <link href="Styles/map.css" rel="stylesheet" type="text/css" ></link>
-       <!-- <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script> -->
+        <link rel="stylesheet" type="text/css" href="Styles/header.css"/>
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
     </head>
     <body>
-        <iframe id="header" src="Views/header.html" frameBorder="0"></iframe>
+        <div class="header">
+            <img src="../Images/vzheader-title.jpg"/>
+            <img src="../Images/vzheader-icons.jpg" id="header-icons"/>
+            <a target="_parent" href="..\index.html">
+                <button id="btnDashboard" class="hover active" type="button">Dashboard</button>
+            </a>
+            <a target="_parent" href="..\map.html">
+                <button id="btnMap" class="hover active" type="button">Map</button>
+            </a>
+        </div>
+
+        <!-- <iframe id="header" src="Views/header.html" frameBorder="0"></iframe> -->
         <div id="mapid"></div>
         <div id="search"></div>
     </body>

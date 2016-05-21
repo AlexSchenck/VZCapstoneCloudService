@@ -1,36 +1,4 @@
-/*body {
-    margin: 0px;
-    height:100px;
-}
-
-#btnMap {
-    position: absolute;
-    bottom: 5px;
-    left: 255px;
-}
-
-#btnDashboard {
-    position: absolute;
-    bottom: 5px;
-    left: 150px;
-}
-
-#divHeader {
-    background-image: url("../Images/vzheader.jpg");
-    background-size: 2000px 100px;
-    height: 100px;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-}
-
-#headerTitle {
-    color: white;
-    font-family: sans-serif;
-    margin-left: 25px;
-}*/
-
-.header {
+/*.header {
     height: 12%;
     background-color: #188FD1;
 }
@@ -83,4 +51,4 @@ button:hover {
 
 button:active {
   background-color: #7e7e7e;
-}
+}*/
