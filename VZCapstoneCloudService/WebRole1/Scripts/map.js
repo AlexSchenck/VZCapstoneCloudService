@@ -4,13 +4,15 @@ require([
     "esri/InfoTemplate",
     "esri/dijit/Search",
     "esri/geometry/Extent", 
-    "esri/SpatialReference"
-], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference) {
+    "esri/SpatialReference",
+    "esri/geometry/Point"
+], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point) {
     var map = new Map("mapid", {
         basemap: 'gray',
         sliderOrientation : "horizontal",
         center: [-122.3321, 47.6062],
-        zoom: 16
+        zoom: 16,
+        minZoom: 12
     });
 
     $("select").horizontalSelector();
@@ -31,6 +33,28 @@ require([
         map: map
     }, "search");
     search.startup();
+
+    var mapExtentChange = map.on("extent-change", changeHandler);
+
+    function changeHandler(evt){
+        if(map.getZoom() < 16) {
+            $('#zoom').css("display", "block");
+        } else {
+            $('#zoom').css("display", "none");
+        }
+      // var extent = evt.extent,
+      //     zoomed = evt.levelChange;
+      // ... Do something ... 
+
+      // in some cases, you may want to disconnect the event listener
+      // mapExtentChange.remove();
+    }
+
+    dojo.connect(map, "onClick", center);
+
+    function center(evt) {
+        map.centerAndZoom(new Point(evt.mapPoint.x, evt.mapPoint.y - 200, evt.mapPoint.spatialReference),16);
+    }
 });
 
 function getData(id) {
