@@ -7,9 +7,16 @@ var dataset;
 
 var w = outerW / 3 - 60;       
 var h = outerH / 3 - 60;     
+var previousBarColor;
+console.log(w / 13 / 2.5);
 
 //Set up stack method
 var stack = d3.layout.stack();
+// Define the div for the tooltip
+
+var divStack = d3.select("body").append("div")	
+    .attr("class", "tooltip")	
+    .style("opacity", 0);
 
 d3.json("./Data/stackedBar.json", function(error, result){
 	console.log(error);
@@ -18,10 +25,11 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	//Data, stacked
 	stack(dataset);
 
+	// these must be lower case letters
 	var color_hash = {
-	    0 : ["Ped","#00A3E0"],
-		1 : ["Bicycle","#006b94"],
-		2 : ["Vehicle","#87a96b"]
+	    0 : ["pedestrians","#00a3e0"],
+		1 : ["cyclists","#006b94"],
+		2 : ["drivers","#87a96b"]
 
 	};
 
@@ -34,7 +42,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 		.domain([0,				
 			d3.max(dataset, function(d) {
 				return d3.max(d, function(d) {
-					return d.y0 + d.y;
+					return Math.round((d.y0 + d.y) / 100) * 100;
 				});
 			})
 		])
@@ -58,7 +66,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	var svg = d3.select("#stackedBarChart")
 				.append("svg")
 	    		.attr("preserveAspectRatio", "xMinYMin meet")
-				.attr("viewBox", "0 20 " + w + " " + (h))
+				.attr("viewBox", "0 20 " + (w + 10) + " " + (h))
 				.classed("svg-content", true); 
 
 	// Add a group for each row of data
@@ -76,9 +84,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	var rects = groups.selectAll("rect")
 		.data(function(d) { return d; })
 		.enter()
-		.append("rect")
-		.attr("width", 2)
-		.style("fill-opacity",1e-6);
+		.append("rect");
 
 
 	rects.attr("x", function(d) {
@@ -91,10 +97,56 @@ d3.json("./Data/stackedBar.json", function(error, result){
 			return -yScale(d.y) + (h - padding.top - padding.bottom);
 		})
 		// width of bars
-		.attr("width", 10)
-		.style("fill-opacity", 0.9)
-		.on('mouseover', mouseOverStackedBar)
-	  	.on('mouseout', mouseOutStackedBar);
+		.attr("width", w / 13 / 2.5)
+		.style("fill-opacity", 1)
+		.on("mouseover", function(d) {	
+			// gets the color of the bar that was already there
+			// because of the way stacked bars are set up
+			previousBarColor = d3.select(this.parentNode).attr("style");
+			var curr = d3.select(this).attr("fill", '#63666A');
+
+			// gets individual components of the rbg
+			var hexComponents = previousBarColor.split(', ');
+			var first = hexComponents[0].split('(')[1];
+			var middle = hexComponents[1];
+			var last = hexComponents[2].split(')')[0];
+
+			var textTip = "people"; // default if can't be found 
+			var convertedRBG = rgbToHex(parseInt(first), parseInt(middle), parseInt(last));
+
+			// alert(convertedRBG);
+            divStack.transition()		
+                .duration(200)		
+                .style("opacity", 1);
+
+            // checks to see which title to display
+            if (convertedRBG == color_hash[2][1]) {
+            	textTip = color_hash[2][0];
+            } else if (convertedRBG == color_hash[1][1]) {
+            	textTip = color_hash[1][0];
+            } else if (convertedRBG == color_hash[0][1]) {
+            	textTip = color_hash[0][0];
+            }
+
+            divStack.html(d.y + " " + textTip)
+	            .style("left", xScale(new Date(d.year, 0, 1)))
+	            .style("top", yScale(d.y));	
+			
+            })					
+		.on("mousemove", function(){
+			console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
+			return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+
+        .on("mouseout", function(d) {		
+            divStack.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+            // resets to the previous color of the bar that was hovered over
+			var curr = d3.select(this).attr("fill", previousBarColor.substring(6));
+    	});			
+
+	   //  .on('mouseover', mouseOverStackedBar)
+	  	// .on('mouseout', mouseOutStackedBar);
 
 	// svg.append("g")
 	// 	.attr("class","x axis")
@@ -110,8 +162,8 @@ d3.json("./Data/stackedBar.json", function(error, result){
 
 	svg.append("g") 	
 			.attr("class","x axis")
-			// adds x axis and moves to correct height
-			.attr("transform","translate(" + (padding.left + 20) + "," + (h - padding.bottom) + ")")
+			// adds x axis and moves to correct height - might need to get rid of -2
+			.attr("transform","translate(" + (padding.left + 15 + w / 13 / 4 - 2) + "," + (h - padding.bottom) + ")")
 			.call(xAxis)
 	  	.selectAll("text")
 	    	.style("text-anchor", "middle");
@@ -124,10 +176,10 @@ d3.json("./Data/stackedBar.json", function(error, result){
 	// adding in titles and axis labels
 	svg.append("text")
 		.attr("transform","rotate(-90)")
-		.attr("x", 0- h / 2 - 50)
+		.attr("x", 0- h / 2 - 70)
 		.attr("y", -3)
 		.attr("dy","1em")
-		.text("Number of Individuals");
+		.text("Fatalities or Serious Injuries");
 
 	svg.append("text")
 	   .attr("class","xtext")
@@ -138,7 +190,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 });
 
 
-var sizeOfLegendIcons = 45;
+var sizeOfLegendIcons = 55;
 var yPosition = 15;
 
 var key = d3.select("#stackedKey").append("svg")
@@ -147,38 +199,77 @@ var key = d3.select("#stackedKey").append("svg")
         .classed("svg-content", true);
 
 key.append("svg:image")
-	.attr("xlink:href", "./Images/car-trip.svg")
+	.attr("xlink:href", "./Images/vehicle-green.svg")
 	.attr("x", 0)
-    .attr("y", yPosition)
+    .attr("y", yPosition - 3)
     .attr("width", sizeOfLegendIcons)
-    .attr("height", sizeOfLegendIcons); 
+    .attr("height", sizeOfLegendIcons)
+    .on("mouseover", function(d) {		
+        divStack.transition()		
+            .duration(200)		
+            .style("opacity", 1);		
+        divStack.html("Fatalities and serious injuries of vehicular drivers and passengers.")
+        .style("left", 0)
+        .style("top", yPosition);	
+    })					
+	.on("mousemove", function(){
+		return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+    .on("mouseout", function(d) {		
+        divStack.transition()		
+            .duration(500)		
+            .style("opacity", 0);
+	});	 
 
 key.append("svg:image")
-	.attr("xlink:href", "./Images/bicycle.svg")
+	.attr("xlink:href", "./Images/cyclist-turquoise.svg")
 	.attr("x", 50)
-    .attr("y", yPosition)
+    .attr("y", yPosition - 1)
     .attr("width", sizeOfLegendIcons)
-    .attr("height", sizeOfLegendIcons); 
+    .attr("height", sizeOfLegendIcons)
+    .on("mouseover", function(d) {		
+        divStack.transition()		
+            .duration(200)		
+            .style("opacity", 1);		
+        divStack.html("Fatalities and serious injuries of cyclist drivers and passengers.")
+        .style("left", 0)
+        .style("top", yPosition);	
+    })					
+	.on("mousemove", function(){
+		return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+    .on("mouseout", function(d) {		
+        divStack.transition()		
+            .duration(500)		
+            .style("opacity", 0);
+	});	 
 
 key.append("svg:image")
-	.attr("xlink:href", "./Images/pedestrian-walking.svg")
+	.attr("xlink:href", "./Images/pedestrian-blue.svg")
 	.attr("x", 90)
     .attr("y", yPosition)
     .attr("width", sizeOfLegendIcons)
-    .attr("height", sizeOfLegendIcons - 5); 
+    .attr("height", sizeOfLegendIcons - 5)
+    .on("mouseover", function(d) {		
+        divStack.transition()		
+            .duration(200)		
+            .style("opacity", 1);		
+        divStack.html("Fatalities and serious injuries of pedestrians.")
+        .style("left", 0)
+        .style("top", yPosition);	
+    })					
+	.on("mousemove", function(){
+		return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+    .on("mouseout", function(d) {		
+        divStack.transition()		
+            .duration(500)		
+            .style("opacity", 0);
+	});	  
 
-// bar hovering stuff
-var previousBarColor;
 
-var mouseOverStackedBar = function() {
-	// gets the color of the bar that was already there
-	// because of the way stacked bars are set up
-	previousBarColor = d3.select(this.parentNode).attr("style");
-	var curr = d3.select(this).attr("fill", 'lightsteelblue');
-	console.log(previousBarColor);
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
 }
 
-var mouseOutStackedBar = function() {
-	var curr = d3.select(this).attr("fill", previousBarColor.substring(6));
-	console.log(curr);
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
