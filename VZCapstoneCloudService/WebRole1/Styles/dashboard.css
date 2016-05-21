@@ -12,6 +12,7 @@ html, body {
 
 body {
 	background-color: rgba(99, 102, 106, .05);
+	overflow-y: hidden;
 }
 
 /*each section is for the bottom 3 charts*/
