@@ -131,12 +131,9 @@ namespace WebRole1
         private String getProgressChartJSON(String collisionJSON)
         {
             List<JObject> objects = convertToList(collisionJSON);
-            List<JArray> result = new List<JArray>();
-            JArray collisionTotal = new JArray(); // JArray representing all collisions
-            JArray fatalTotal = new JArray(); // JArray representing serious/fatal collisions
+            JArray result = new JArray(); // JArray representing serious/fatal collisions
 
             // Key: year as int, Value: number of serious injuries/fatalities for that year as int
-            SortedDictionary<int, int> collisionsPerYear = new SortedDictionary<int, int>();
             SortedDictionary<int, int> fatalitiesPerYear = new SortedDictionary<int, int>();
 
             // Iterate through each collision and find year
@@ -152,21 +149,8 @@ namespace WebRole1
                     int fatalities = (int)jo.GetValue("fatalities");
                     int seriousInjuries = (int)jo.GetValue("seriousinjuries");
 
-                    AddCountToSortedDictionary(collisionsPerYear, year, 1);
                     AddCountToSortedDictionary(fatalitiesPerYear, year, fatalities + seriousInjuries);
                 }
-            }
-
-            // Create formatted JArray for collisions
-            foreach (KeyValuePair<int, int> pair in collisionsPerYear)
-            {
-                JObject temp = JObject.FromObject(new
-                {
-                    y = pair.Value,
-                    year = pair.Key
-                });
-
-                collisionTotal.Add(temp);
             }
 
             // Create formatted JArray for fatalities and serious injuries
@@ -178,11 +162,8 @@ namespace WebRole1
                     year = pair.Key
                 });
 
-                fatalTotal.Add(temp);
+                result.Add(temp);
             }
-
-            result.Add(collisionTotal);
-            result.Add(fatalTotal);
             
             // Return list of JObjects as JSON string
             return JsonConvert.SerializeObject(result);
@@ -260,10 +241,12 @@ namespace WebRole1
             Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
 
             // Define age ranges
-            // Current format is: 10-19, 20-29, and so on until 90-99
+            // Current format is: 16-29, 30-39 and so on until 69, then 70+
             List<AgeRange> ageRanges = new List<AgeRange>();
+            ageRanges.Add(new AgeRange(16, 29));
+            ageRanges.Add(new AgeRange(70, 99).setTitle("70+"));
 
-            for (int i = 10; i < 100; i += 10)
+            for (int i = 30; i < 70; i += 10)
             {
                 ageRanges.Add(new AgeRange(i, i + 9));
             }
@@ -325,6 +308,9 @@ namespace WebRole1
                 max = Math.Max(max, Math.Max(num1, num2));
             }
 
+            // Round to nearest 20
+            max = roundUpToNearestN(20, max + 5);
+
             // Construct JSON for age chart
             List<JObject> ageList = new List<JObject>();
             List<JArray> sparkList = new List<JArray>();
@@ -337,7 +323,7 @@ namespace WebRole1
                 JObject newJ = JObject.FromObject(new
                 {
                     title = range.getTitle(),
-                    ranges = new int[] { 0, max + 5 },
+                    ranges = new int[] { 0, max },
                     measures = new int[] { range.collisionsPerYear.Values.Last() },
                     markers = new int[] { range.collisionsPerYear.Values.Reverse().Skip(1).First() }
                 });
@@ -456,6 +442,9 @@ namespace WebRole1
                 max = Math.Max(max, Math.Max(num1, num2));
             }
 
+            // Round to nearest 20
+            max = roundUpToNearestN(20, max + 5);
+
             List<JObject> factorList = new List<JObject>();
             List<JArray> sparkList = new List<JArray>();
 
@@ -467,7 +456,7 @@ namespace WebRole1
                 JObject newJ = JObject.FromObject(new
                 {
                     title = factor.getTitle(),
-                    ranges = new int[] { 0, max + 5 },
+                    ranges = new int[] { 0, max },
                     measures = new int[] { factor.collisionsPerYear.Values.Last() },
                     markers = new int[] { factor.collisionsPerYear.Values.Reverse().Skip(1).First() }
                 });
@@ -554,6 +543,17 @@ namespace WebRole1
             return date.Split('/')[2].Substring(0, 4);
         }
 
+        // Returns number closest multiple of n rounded up from given number
+        private int roundUpToNearestN(int n, int num)
+        {
+            if (num % n != 0)
+            {
+                return num + n - (num % n);
+            }
+
+            return num;
+        }
+
         // An implementation of an age range of drivers involved in serious/fatal
         // collisions over a certain span of years
         // Can be compared to other age ranges by amount of collisions in most recent year
@@ -589,6 +589,13 @@ namespace WebRole1
 
             // Returns maximum age to be considered part of this group
             public int getMaximumAge() { return maximumAge; }
+
+            // Sets this age range's title to given and returns this AgeRange
+            public AgeRange setTitle(String newTitle) 
+            { 
+                plainTextTitle = newTitle;
+                return this;
+            }
 
             // Adds one collision to the value of the given year key in local dictionary
             public void AddCollision(int year)
