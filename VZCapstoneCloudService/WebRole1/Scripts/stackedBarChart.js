@@ -3,8 +3,6 @@ var outerH = window.outerHeight;
 
 var padding = {top: 40, right: 40, bottom: 60, left:40};
 var dataset;
-var isIE = /*@cc_on!@*/false || !!document.documentMode;
-// alert(isIE);
 
 
 var w = outerW / 3 - 60;       
@@ -105,23 +103,16 @@ d3.json("./Data/stackedBar.json", function(error, result){
 			// gets the color of the bar that was already there
 			// because of the way stacked bars are set up
 			previousBarColor = d3.select(this.parentNode).attr("style");
-			// alert( window.navigator.userAgent);
 			var curr = d3.select(this).attr("fill", '#63666A');
-			var textTip = "people"; // default if can't be found 
-			// console.log(previousBarColor + "  " + pre viousBarColor.includes("rgb"));
-			if (!isIE) {
-				// alert(hi);
-				// gets individual components of the rbg
-				var hexComponents = previousBarColor.split(', ');
-				var first = hexComponents[0].split('(')[1];
-				var middle = hexComponents[1];
-				var last = hexComponents[2].split(')')[0];
 
-				previousBarColor = rgbToHex(parseInt(first), parseInt(middle), parseInt(last));
-				console.log(previousBarColor);
-			} else {
-				previousBarColor = previousBarColor.substring(6, 13);
-			}
+			// gets individual components of the rbg
+			var hexComponents = previousBarColor.split(', ');
+			var first = hexComponents[0].split('(')[1];
+			var middle = hexComponents[1];
+			var last = hexComponents[2].split(')')[0];
+
+			var textTip = "people"; // default if can't be found 
+			var convertedRBG = rgbToHex(parseInt(first), parseInt(middle), parseInt(last));
 
 			// alert(convertedRBG);
             divStack.transition()		
@@ -129,11 +120,11 @@ d3.json("./Data/stackedBar.json", function(error, result){
                 .style("opacity", 1);
 
             // checks to see which title to display
-            if (previousBarColor == color_hash[2][1]) {
+            if (convertedRBG == color_hash[2][1]) {
             	textTip = color_hash[2][0];
-            } else if (previousBarColor == color_hash[1][1]) {
+            } else if (convertedRBG == color_hash[1][1]) {
             	textTip = color_hash[1][0];
-            } else if (previousBarColor == color_hash[0][1]) {
+            } else if (convertedRBG == color_hash[0][1]) {
             	textTip = color_hash[0][0];
             }
 
@@ -143,7 +134,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 			
             })					
 		.on("mousemove", function(){
-			// alert(xScale(2006) + " " + event.pageX + " " + event.pageY);
+			console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
 			return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
 
         .on("mouseout", function(d) {		
@@ -151,7 +142,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
                 .duration(500)		
                 .style("opacity", 0);	
             // resets to the previous color of the bar that was hovered over
-			var curr = d3.select(this).attr("fill", previousBarColor);
+			var curr = d3.select(this).attr("fill", previousBarColor.substring(6));
     	});			
 
 	   //  .on('mouseover', mouseOverStackedBar)
@@ -217,7 +208,7 @@ key.append("svg:image")
         divStack.transition()		
             .duration(200)		
             .style("opacity", 1);		
-        divStack.html("Collisions resulting in fatalities and serious injuries involving vehicles.")
+        divStack.html("Collisions resulting in fatalities and serious injuries involving vehicles only.")
         .style("left", 0)
         .style("top", yPosition);	
     })					
