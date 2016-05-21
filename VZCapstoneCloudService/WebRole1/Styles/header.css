@@ -5,20 +5,19 @@ body {
 
 #btnMap {
     position: absolute;
-    bottom: 0px;
-    right: 25px;
+    bottom: 5px;
+    left: 255px;
 }
 
 #btnDashboard {
     position: absolute;
-    bottom: 0px;
-    right: 71px;
+    bottom: 5px;
+    left: 150px;
 }
 
 #divHeader {
-    background-image: url("../Images/seattle2.jpg");
-    background-position: 15% 35%;
-    background-size: 1920px 1076px;
+    background-image: url("../Images/vzheader.jpg");
+    background-size: 2000px 100px;
     height: 100px;
     overflow: hidden;
     position: relative;
