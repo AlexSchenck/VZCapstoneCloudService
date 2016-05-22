@@ -29,10 +29,10 @@
         </PerformanceCounters>
       </DiagnosticMonitorConfiguration>
     </WadCfg>
-    <StorageAccount>devstoreaccount1</StorageAccount>
+    <StorageAccount>vzcapstonestorageaccount</StorageAccount>
   </PublicConfig>
   <PrivateConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
-    <StorageAccount name="devstoreaccount1" key="Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==" />
+    <StorageAccount name="vzcapstonestorageaccount" key="zIe34jVxbC6lWYx+HeyucO8I26YIsGHwNnLkKyU0kqSN0hlqWfxKJ4Fh4e7al15NHtk8zkDkQn0oSXcbgAlyxQ==" endpoint="https://core.windows.net" />
   </PrivateConfig>
   <IsEnabled>true</IsEnabled>
 </DiagnosticsConfiguration>

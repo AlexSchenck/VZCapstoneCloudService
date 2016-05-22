@@ -3,13 +3,7 @@
   <Role name="WebRole1">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
-    </ConfigurationSettings>
-  </Role>
-  <Role name="WorkerRole1">
-    <Instances count="1" />
-    <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=vzcapstonestorageaccount;AccountKey=zIe34jVxbC6lWYx+HeyucO8I26YIsGHwNnLkKyU0kqSN0hlqWfxKJ4Fh4e7al15NHtk8zkDkQn0oSXcbgAlyxQ==" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>
