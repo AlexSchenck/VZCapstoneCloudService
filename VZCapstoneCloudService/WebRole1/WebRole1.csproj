@@ -93,22 +93,22 @@
     <Content Include="Data\age.json" />
     <Content Include="Data\ageSpark.json" />
     <Content Include="Data\COLLISION_PERSONS.csv" />
-    <Content Include="Data\COLLISION_VEHICLES.csv" />
     <Content Include="Data\contributingFactors.json" />
     <Content Include="Data\contributingFactorsSpark.json" />
     <Content Include="Data\progress.json" />
     <Content Include="Data\SDOT_INCIDENT_WSDOT_CRCMSTNCCODE.csv" />
     <Content Include="Data\stackedBar.json" />
-    <Content Include="Images\bicycle-rider-green.svg" />
-    <Content Include="Images\bicycle-rider-red.svg" />
-    <Content Include="Images\bicycle-rider.svg" />
-    <Content Include="Images\bicycle.svg" />
-    <Content Include="Images\car-trip.png" />
-    <Content Include="Images\car-trip.svg" />
-    <Content Include="Images\pedestrian-walking-black.svg" />
-    <Content Include="Images\pedestrian-walking-green.svg" />
-    <Content Include="Images\pedestrian-walking.svg" />
-    <Content Include="Images\seattle2.jpg" />
+    <Content Include="Images\cyclist-black.svg" />
+    <Content Include="Images\cyclist-green.svg" />
+    <Content Include="Images\cyclist-turquoise.svg" />
+    <Content Include="Images\pedestrian-black.svg" />
+    <Content Include="Images\pedestrian-blue.svg" />
+    <Content Include="Images\pedestrian-green.svg" />
+    <Content Include="Images\vehicle-black.svg" />
+    <Content Include="Images\vehicle-green.svg" />
+    <Content Include="Images\vzheader-icons.jpg" />
+    <Content Include="Images\vzheader-title.jpg" />
+    <Content Include="Images\vzheader.jpg" />
     <Content Include="index.html" />
     <Content Include="map.html" />
     <Content Include="Images\Thumbs.db" />
@@ -123,11 +123,9 @@
     <Content Include="Packages\d3\LICENSE" />
     <Content Include="Packages\leaflet\leaflet-src.map" />
     <Content Include="packages.config" />
-    <Content Include="Scripts\age.js" />
     <Content Include="Scripts\ajax.js" />
     <Content Include="Scripts\app.js" />
-    <Content Include="Scripts\bullet.js" />
-    <Content Include="Scripts\contributingFactors.js" />
+    <Content Include="Scripts\bulletSpark.js" />
     <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\map.js" />
     <Content Include="Scripts\progress.js" />
@@ -135,6 +133,7 @@
     <Content Include="Scripts\survival.js" />
     <Content Include="Styles\bulletSpark.css" />
     <Content Include="WebService.asmx" />
+    <Content Include="Data\inuryrates.json" />
     <None Include="Properties\PublishProfiles\VisionZeroCapstonePublishProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -168,7 +167,6 @@
     <Content Include="Styles\header.css" />
     <Content Include="Styles\map.css" />
     <Content Include="Styles\stackedBarChartStyle.css" />
-    <Content Include="Views\header.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
