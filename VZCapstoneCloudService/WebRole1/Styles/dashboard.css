@@ -13,6 +13,7 @@ html, body {
 body {
 	background-color: rgba(99, 102, 106, .05);
 	/*overflow-y: hidden;*/
+	/*overflow: scroll;*/
 }
 
 /*each section is for the bottom 3 charts*/
@@ -121,6 +122,7 @@ h2 {
 	margin-bottom: 0px;
 	font-family: Lato, sans-serif;
 	font-weight: normal;
+	
 }
 
 h3 {
@@ -135,6 +137,13 @@ h3 {
 
 /*.currentYear text {
 	font-size: 60px;
+}*/
+
+/*.bullet .title {
+	width: 100px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }*/
 
 p {
