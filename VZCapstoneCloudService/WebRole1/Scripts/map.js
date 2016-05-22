@@ -1,31 +1,118 @@
+var modeFilter = 0;
+var injuryFilter = 0;
+var yearFilter = 2015;
+
 require([
     "esri/map",
     "esri/layers/FeatureLayer",
     "esri/InfoTemplate",
     "esri/dijit/Search",
     "esri/geometry/Extent", 
-    "esri/SpatialReference"
-], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference) {
+    "esri/SpatialReference",
+    "esri/geometry/Point",
+    "esri/tasks/QueryTask",
+    "esri/tasks/query"
+], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point, QueryTask, Query) {
     var map = new Map("mapid", {
-        basemap: 'streets-navigation-vector',
+        basemap: 'gray',
         sliderOrientation : "horizontal",
         center: [-122.3321, 47.6062],
-        zoom: 15
+        zoom: 16,
+        minZoom: 12
     });
 
+    //Dom manipulation
+    $("select").horizontalSelector();
+
+    var classname = document.getElementsByClassName("filterButton");
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', updateClass, false);
+    }
+
+    //Feature Later    
     var featureLayer = new FeatureLayer("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51", {
         infoTemplate: new InfoTemplate("Collision:", "${OBJECTID:getData}")
     });
+
+    featureLayer.setDefinitionExpression("INCDATE > date'1-1-2015' AND INCDATE < date'1-1-2016'");
     map.addLayer(featureLayer);
 
-    // var extent = new Extent(1249026.1158677936,184059.089008525,1293046.6773208678,271525.40346609056, new SpatialReference({ wkid:2926 }));
-    // http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?searchExtent={%22xmin%22:1249026.1158677936,%22ymin%22:184059.089008525,%22xmax%22:1293046.6773208678,%22ymax%22:271525.40346609056,%22spatialReference%22:{%22wkid%22:2926}}&outSR=102100&f=pjson
+    function executeQueryTask() {
+        var queryString = "";
+        
+        //SI & F
+        if (injuryFilter > 0) {
+            queryString += "(SERIOUSINJURIES > 0 OR FATALITIES > 0) AND "
+        }
 
+        //MODE
+        if (modeFilter == 1) {
+            queryString += "VEHCOUNT > 0 AND "
+        } else if (modeFilter == 2) {
+            queryString += "PEDCYLCOUNT > 0 AND "
+        } else if (modeFilter == 3) {
+            queryString += "PEDCOUNT > 0 AND "
+        } 
+
+        queryString += "INCDATE > date'1-1-" + yearFilter + "' AND INCDATE < date'1-1-" + (yearFilter + 1) +"'";
+
+        map.removeLayer(featureLayer);
+        featureLayer.setDefinitionExpression(queryString);
+        map.addLayer(featureLayer);
+    }
+
+    function updateClass() {
+        var val = $(this).val();
+        //mode case
+        if (val > 0) {
+            if (modeFilter == val) {
+                modeFilter = 0;
+            } else {
+                modeFilter = val;
+            }
+        } else {
+            if (injuryFilter == 1) {
+                injuryFilter = 0;
+            } else {
+                injuryFilter = 1;
+            }
+        }
+
+        if (!$(this).hasClass('activeButton') && $(this).hasClass('radio')) {
+            $('.radio').each(function() {
+                if($(this).hasClass('activeButton')) {
+                    $(this).removeClass('activeButton');
+                }
+            });
+        }
+        $(this).toggleClass('activeButton');
+        executeQueryTask();
+    }
+
+    //Search Bar
     var search = new Search({
         enableInfoWindow: false,
         map: map
     }, "search");
     search.startup();
+
+    //Zoom handling
+    var mapExtentChange = map.on("extent-change", changeHandler);
+
+    function changeHandler(evt){
+        if(map.getZoom() < 16) {
+            $('#zoom').css("display", "block");
+        } else {
+            $('#zoom').css("display", "none");
+        }
+    }
+
+    //Centering
+    dojo.connect(map, "onClick", center);
+
+    function center(evt) {
+        map.centerAndZoom(new Point(evt.mapPoint.x, evt.mapPoint.y - 200, evt.mapPoint.spatialReference),16);
+    }
 });
 
 function getData(id) {
