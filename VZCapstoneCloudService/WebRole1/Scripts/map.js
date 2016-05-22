@@ -1,3 +1,7 @@
+var modeFilter = 0;
+var injuryFilter = 0;
+var yearFilter = 2015;
+
 require([
     "esri/map",
     "esri/layers/FeatureLayer",
@@ -33,21 +37,56 @@ require([
     featureLayer.setDefinitionExpression("INCDATE > date'1-1-2015' AND INCDATE < date'1-1-2016'");
     map.addLayer(featureLayer);
 
-    //Query
-    var queryTask = new QueryTask("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51");
-    
-    var query = new Query();
-    query.returnGeometry = true;
-    query.outFields = ["INCDATE", "VEHCOUNT", "PEDCOUNT", "PEDCYLCOUNT", "SERIOUSINJURIES", "FATALITIES"];
+    function executeQueryTask() {
+        var queryString = "";
+        
+        //SI & F
+        if (injuryFilter > 0) {
+            queryString += "(SERIOUSINJURIES > 0 OR FATALITIES > 0) AND "
+        }
 
-    function executeQueryTask(population) {
-      //set query based on what user typed in for population;
-      var year = $('#yearSelector').find(":selected").text();
-      // var 
-      query.where = "POP04 > " + population;
+        //MODE
+        if (modeFilter == 1) {
+            queryString += "VEHCOUNT > 0 AND "
+        } else if (modeFilter == 2) {
+            queryString += "PEDCYLCOUNT > 0 AND "
+        } else if (modeFilter == 3) {
+            queryString += "PEDCOUNT > 0 AND "
+        } 
 
-      //execute query
-      queryTask.execute(query,showResults);
+        queryString += "INCDATE > date'1-1-" + yearFilter + "' AND INCDATE < date'1-1-" + (yearFilter + 1) +"'";
+
+        map.removeLayer(featureLayer);
+        featureLayer.setDefinitionExpression(queryString);
+        map.addLayer(featureLayer);
+    }
+
+    function updateClass() {
+        var val = $(this).val();
+        //mode case
+        if (val > 0) {
+            if (modeFilter == val) {
+                modeFilter = 0;
+            } else {
+                modeFilter = val;
+            }
+        } else {
+            if (injuryFilter == 1) {
+                injuryFilter = 0;
+            } else {
+                injuryFilter = 1;
+            }
+        }
+
+        if (!$(this).hasClass('activeButton') && $(this).hasClass('radio')) {
+            $('.radio').each(function() {
+                if($(this).hasClass('activeButton')) {
+                    $(this).removeClass('activeButton');
+                }
+            });
+        }
+        $(this).toggleClass('activeButton');
+        executeQueryTask();
     }
 
     //Search Bar
@@ -74,23 +113,6 @@ require([
     function center(evt) {
         map.centerAndZoom(new Point(evt.mapPoint.x, evt.mapPoint.y - 200, evt.mapPoint.spatialReference),16);
     }
-});
-
-function updateClass() {
-
-    if (!$(this).hasClass('activeButton') && $(this).hasClass('radio')) {
-        $('.radio').each(function() {
-            if($(this).hasClass('activeButton')) {
-                $(this).removeClass('activeButton');
-            }
-        });
-    }
-    $(this).toggleClass('activeButton');
-    //run query
-}
-
-$("table").on("change", function() {
-    console.log("blah", $("#yearSelector").val());
 });
 
 function getData(id) {
