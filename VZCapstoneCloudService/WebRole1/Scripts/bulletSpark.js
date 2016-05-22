@@ -1,6 +1,6 @@
 var names = ["age", "contributingFactors"];
 var titles = ["Age (Years)", "Contributing Factor"];
-var headers = ["Number of Drivers", "Number of Occurrences"];
+var headers = ["Drivers", "Frequency"];
 // console.log(names[0]);
 
 var margin = {top: 5, right: 40, bottom: 5, left: 80};
@@ -24,25 +24,25 @@ for (var i = 0; i < names.length; i++) {
 function drawTitles(name, title, header) {
     d3.select("#" + name + "BulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-12 -15 250 40")
+            .attr("viewBox", "-5 -5 100 10")
             .classed("svg-content", true)
         .append("text")
-	        .style("font-size", 10)
+	        .style("font-size", 4)
 	        .style("font-family", "Open Sans Condensed")
 	        .text(title);
 
     d3.select("#" + name + "BulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "-100 -15 250 40")
+            .attr("viewBox", "-40 -5 100 10")
             .classed("svg-content", true)
         .append("text")
-	        .style("font-size", 10)
+	        .style("font-size", 4)
 	        .style("font-family", "Open Sans Condensed")
 	        .text(header);
 
     d3.select("#" + name + "SparkTitle").append("svg")
 	        .attr("preserveAspectRatio", "xMinYMin meet")
-	        .attr("viewBox", "0 -15 100 50")
+	        .attr("viewBox", "0 -12 100 20")
 	        .classed("svg-content", true)
 	    .append("text")
 		    .style("font-size", 10)
