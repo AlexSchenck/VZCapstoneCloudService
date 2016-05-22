@@ -78,6 +78,7 @@ namespace WebRole1
             Trace.TraceInformation("" + sw.Elapsed);
             sw.Restart();
 
+            // Makes obects for boxes containing injury ratios for bicylists and pedestrians
             Trace.TraceInformation("Start injury rates");
             String injuryRate = getBikeAndPedInjuryRates(String.Copy(collisions)); ;
             System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryrates.json"), injuryRate);
@@ -528,7 +529,7 @@ namespace WebRole1
                             pedParticipants++;
                             
                             // Received at least a possible injury
-                            if (numInjury > 1 && numInjury < 7)
+                            if (numInjury > 1 && numInjury < 8)
                             {
                                 pedInjuries++;
                             }
@@ -538,7 +539,7 @@ namespace WebRole1
                             bicParticipants++;
 
                             // Received at least a possible injury
-                            if (numInjury> 1 && numInjury < 7)
+                            if (numInjury> 1 && numInjury < 8)
                             {
                                 bicInjuries++;
                             }
