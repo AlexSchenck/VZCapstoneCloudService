@@ -6,7 +6,6 @@ html, body {
 }
 
 #header {
-	height: 150px;
 	width: 100%;
 }
 
@@ -44,6 +43,10 @@ html, body {
     text-align:center; 
     vertical-align: middle;
     font-family: Lato, sans-serif;
+}
+
+.activeButton {
+    background-color: buttonhighlight;
 }
 
 #seriousInjury {
