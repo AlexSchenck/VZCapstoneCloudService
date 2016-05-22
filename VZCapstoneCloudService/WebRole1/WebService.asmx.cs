@@ -76,6 +76,12 @@ namespace WebRole1
             System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactors.json"), factors);
             System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactorsSpark.json"), factorsSpark);
             Trace.TraceInformation("" + sw.Elapsed);
+            sw.Restart();
+
+            Trace.TraceInformation("Start injury rates");
+            String injuryRate = getBikeAndPedInjuryRates(String.Copy(collisions)); ;
+            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryrates.json"), injuryRate);
+            Trace.TraceInformation("" + sw.Elapsed);
             sw.Stop();
 
             return "done";
@@ -173,7 +179,6 @@ namespace WebRole1
         private String getStackedBarChartJSON(String collisionJSON)
         {
             var reader = new StreamReader(File.OpenRead(personFile)); // Read local PERSONS csv
-            List<JObject> objects = convertToList(collisionJSON);
             Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
             List<JArray> result = new List<JArray>();
 
@@ -480,6 +485,85 @@ namespace WebRole1
             // Return list of JObjects and list of JArrays as JSON string
             chart = JsonConvert.SerializeObject(factorList);
             spark = JsonConvert.SerializeObject(sparkList);
+        }
+
+        // Creates and returns JSON used for biciclyst and pedestrian injury rate boxes
+        private String getBikeAndPedInjuryRates(String collisionJSON)
+        {
+            var reader = new StreamReader(File.OpenRead(personFile)); // Read local PERSONS csv
+            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
+            List<JObject> result = new List<JObject>();
+
+            // Counts of total particpants and total injuries for bicicysts and injuries
+            int bicParticipants = 0;
+            int pedParticipants = 0;
+            int bicInjuries = 0;
+            int pedInjuries = 0;
+
+            String thisYear = "" + (lastYear + 1);
+
+            // Read every line, except the first
+            reader.ReadLine();
+
+            while (!reader.EndOfStream)
+            {
+                String[] line = reader.ReadLine().Split(',');
+                String type = line[19]; // type of participant (driver, etc.)
+                String injury = line[15]; // type of injury
+                String collisionKey = line[12]; // key tieing this person to a certain collision
+                JObject collision; // corresponding collision object
+
+                // Check there is no missing information, collision key exists, collision is in current year
+                if (type != String.Empty && injury != String.Empty && collisionKey != String.Empty
+                    && collisions.TryGetValue(collisionKey, out collision)
+                    && getCollisionYear(collision).Equals(thisYear))
+                {
+                    int numType = Convert.ToInt32(type);
+                    int numInjury = Convert.ToInt32(injury);
+
+                    // Person is either a pedestrian or a bicycle rider
+                    switch (numType)
+                    {
+                        case 7:
+                            pedParticipants++;
+                            
+                            // Received at least a possible injury
+                            if (numInjury > 1 && numInjury < 7)
+                            {
+                                pedInjuries++;
+                            }
+                            break;
+                        case 8:
+                        case 9:
+                            bicParticipants++;
+
+                            // Received at least a possible injury
+                            if (numInjury> 1 && numInjury < 7)
+                            {
+                                bicInjuries++;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            // Add object for bicycles
+            result.Add(JObject.FromObject(new
+            {
+                bicInjury = bicInjuries,
+                bicParticipant = bicParticipants
+            }));
+
+            // Add object for pedestrians
+            result.Add(JObject.FromObject(new
+            {
+                pedInjury = pedInjuries,
+                pedParticipant = pedParticipants
+            }));
+
+            return JsonConvert.SerializeObject(result);
         }
 
         // Adds given count value to given key value (int) in given SortedDictionary<int, int>
