@@ -11,6 +11,7 @@
 
         <script src="Scripts/map.js"></script>
         <link href="Styles/map.css" rel="stylesheet" type="text/css" ></link>
+        <link href="Styles/header.css" rel="stylesheet" type="text/css" ></link>
 
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
         <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
@@ -34,11 +35,13 @@
         </div>
         <div id="search"></div>
         <div id="filters">
-            <button class="filterButton activeButton" id="vehicle"><img src="./Images/car-trip.svg" x="0" y="15" width="35" height="35"/></button>
-            <button class="filterButton activeButton" id="bike"><img src="./Images/bicycle.svg" x="0" y="15" width="35" height="35"/></button>
-            <button class="filterButton activeButton" id="ped"><img src="./Images/pedestrian-walking.svg" x="0" y="15" width="35" height="35"/></button>
-            <button class="filterButton activeButton" id="seriousInjury"><p>Serious<br />Injuries</p></button>
-            <button class="filterButton activeButton" id="fatality"><p>Fatalities</p></button>
+            <button class="filterButton tooltip" id="seriousInjury">
+                <p>F & SI</p>
+                <span class="tooltiptext">Fatalities & Serious Injuries</span>
+            </button>
+            <button class="filterButton radio" id="vehicle"><img src="./Images/vehicle-green.svg" x="0" y="15" width="35" height="35"/></button>
+            <button class="filterButton radio" id="bike"><img src="./Images/cyclist-turquoise.svg" x="0" y="15" width="35" height="35"/></button>
+            <button class="filterButton radio" id="ped"><img src="./Images/pedestrian-blue.svg" x="0" y="15" width="35" height="35"/></button>
         </div>
         <select id="yearSelector">
             <option value="2004">2004</option>

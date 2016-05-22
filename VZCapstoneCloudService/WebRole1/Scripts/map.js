@@ -77,7 +77,14 @@ require([
 });
 
 function updateClass() {
-    // $(this).not(this).removeClass('click');
+
+    if (!$(this).hasClass('activeButton') && $(this).hasClass('radio')) {
+        $('.radio').each(function() {
+            if($(this).hasClass('activeButton')) {
+                $(this).removeClass('activeButton');
+            }
+        });
+    }
     $(this).toggleClass('activeButton');
     //run query
 }

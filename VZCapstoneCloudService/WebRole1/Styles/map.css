@@ -12,7 +12,8 @@ html, body {
 #mapid {
 	bottom: 0px;
 	position: absolute;
-    top: 100px;
+    height: 88%;
+    top: 12%;
     width: 100%; 
 } 
 
@@ -32,25 +33,32 @@ html, body {
     z-index: 2;
     top: 170px;
     right: 25px;
+    width: 283px;
 }
 
 #filters button {
-    margin-left: 5px;
     float: left;
+    background-color: #fff;
 }
 
 #filters button p {
     text-align:center; 
     vertical-align: middle;
     font-family: Lato, sans-serif;
+    font-size: 13px;
 }
 
 .activeButton {
-    background-color: buttonhighlight;
+    border: 2px solid #188FD1;
+}
+
+#vehicle, #bike, #ped {
+    margin-left: 10px;
 }
 
 #seriousInjury {
-    height: 40px;
+    height: 44px;
+    margin-right: 25px;
 }
 
 #seriousInjury p {
@@ -102,4 +110,36 @@ h6 {
     margin-top: -25px;
     text-align: center;
     box-shadow: 3px 3px 10px gray;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    top: 45px;
+    left: 50%; 
+    margin-left: -100px;
+    background-color: white;
+    color: black;
+    font: Lato, sans-serif;     
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 9;
+}
+
+button:focus {
+    outline: 0;
 }
