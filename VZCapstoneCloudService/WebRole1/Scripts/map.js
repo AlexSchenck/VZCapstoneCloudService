@@ -1,6 +1,16 @@
 var modeFilter = 0;
 var injuryFilter = 0;
 var yearFilter = 2015;
+var descriptions = [
+    {key:"INCDATE", value:"Incident Date"}, 
+    {key:"COLLISIONTYPE", value:"Collision Type"}, 
+    {key:"SERIOUSINJURIES", value:"Serious Injuries"},
+    {key:"PERSONCOUNT", value:"Total People Involved"}, 
+    {key:"PEDCOUNT", value:"Pedestrian Count"}, 
+    {key:"PEDCYLCOUNT", value:"Cyclist Count"},
+    {key:"VEHCOUNT", value:"Vehicle Count"}, 
+    {key:"LIGHTCOND", value:"Light Condition"}
+];
 
 require([
     "esri/map",
@@ -39,7 +49,7 @@ require([
 
     function executeQueryTask() {
         var queryString = "";
-        
+
         //SI & F
         if (injuryFilter > 0) {
             queryString += "(SERIOUSINJURIES > 0 OR FATALITIES > 0) AND "
@@ -111,7 +121,7 @@ require([
     dojo.connect(map, "onClick", center);
 
     function center(evt) {
-        map.centerAndZoom(new Point(evt.mapPoint.x, evt.mapPoint.y - 200, evt.mapPoint.spatialReference),16);
+        map.centerAndZoom(new Point(evt.mapPoint.x, evt.mapPoint.y - 115, evt.mapPoint.spatialReference),16);
     }
 });
 
@@ -120,9 +130,15 @@ function getData(id) {
         + "LOCATION%2C+INCDATE%2C+COLLISIONTYPE%2C+FATALITIES%2C+INJURIES%2C+SERIOUSINJURIES%2C+PERSONCOUNT%2C+PEDCOUNT%2C+PEDCYLCOUNT%2C+VEHCOUNT%2C+LIGHTCOND%2C+WEATHER" + 
         "&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&f=pjson";
     getResults(url, function(resultData) {
-        var html = ""
+        var html = "";
         for (var key in resultData) {
-            html += "<strong>" + capitalizeFirstLetter(key.toLowerCase()) + "</strong>: ";
+            var newKey = key;
+            for(var object in descriptions) {
+                if (descriptions[object].key == key) {
+                    newKey = descriptions[object].value;
+                }
+            }
+            html += "<strong>" + capitalizeFirstLetter(newKey.toLowerCase()) + "</strong>: ";
             if (typeof resultData[key] == "string") {
                 html += toTitleCase(resultData[key]) + "<br />";
             } else if (key === "INCDATE") {
