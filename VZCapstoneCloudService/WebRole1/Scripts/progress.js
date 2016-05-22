@@ -1,5 +1,30 @@
+window.onresize = function() {
+	// location.reload();
+
+	// console.log(outer)
+	// console.log(window.outerW / window.outerH  < 1.0);
+	// if (window.outerW / window.outerH  < 1.0) {
+	// 	d3.select(".progressSection").style("max-height", "100px");
+	// 	location.reload();
+	// }
+}
+
+// setInterval(function() {
+// 	console.log(window.outerW / window.outerH  < 1.0);
+// 		if (window.outerW / window.outerH  < 1.0) {
+// 		d3.select(".progressSection").style("max-height", "100px");
+// 	}
+// } , 1000);
+
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
+console.log(outerW + " " + outerH);
+
+
+d3.select(".progressSection").style("min-height", screen.height * .36);
+d3.selectAll(".section").style("min-height", screen.height * .3);
+
+
 // d3.select(".progressSection").attr("width", "700px").attr("height", "300px");
 
 var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
@@ -271,7 +296,6 @@ function drawFatalDots(data) {
 //   if (tempY < 0){tempY = 0}  
 //   return true
 // }
-
 
 
 

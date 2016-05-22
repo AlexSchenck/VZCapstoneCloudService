@@ -12,16 +12,17 @@ html, body {
 
 body {
 	background-color: rgba(99, 102, 106, .05);
-	overflow-y: hidden;
+	/*overflow-y: hidden;*/
 }
 
 /*each section is for the bottom 3 charts*/
 .section {
 	width: 31%;
 	height: 37%;
-	min-height: 250px;
+	/*min-height: 250px;*/
 	float: left;
-	/*min-height: 300px;*/
+	/*overflow: hidden;*/
+	/*min-height: 31%;*/
 }
 
 /* top right 4 squares total area*/
@@ -57,7 +58,7 @@ body {
 	float: left;
 	width: 47%;
 	height: 47.7%;
-	min-height: 150px;
+	/*min-height: 150px;*/
 	padding: 1%;
 	/*margin: 2.25%;*/
 	background-color: #ffffff;
@@ -132,9 +133,9 @@ h3 {
     font-family: Lato, sans-serif;
 }
 
-.currentYear text {
+/*.currentYear text {
 	font-size: 60px;
-}
+}*/
 
 p {
 	text-align: center;

@@ -1,3 +1,12 @@
+var outerW = screen.width;
+var outerH = screen.height;
+
+d3.select("#topLeft").style("min-height", outerH * .47 * .35);
+d3.select("#topRight").style("min-height", outerH * .47 * .35);
+d3.select("#bottomLeft").style("min-height", outerH * .47 * .35);
+d3.select("#bottomRight").style("min-height", outerH * .47 * .35);
+
+
 d3.json("./Data/injuryRates.json", function(error, data) {
 	console.log(error);
 
