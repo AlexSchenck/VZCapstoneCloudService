@@ -120,6 +120,7 @@
     <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Packages\d3\bullet.js" />
     <Content Include="Packages\d3\LICENSE" />
     <Content Include="Packages\leaflet\leaflet-src.map" />
     <Content Include="packages.config" />
@@ -134,7 +135,7 @@
     <Content Include="Styles\bulletSpark.css" />
     <Content Include="WebService.asmx" />
     <Content Include="Data\inuryrates.json" />
-    <None Include="Properties\PublishProfiles\VisionZeroCapstonePublishProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\SeattleVisionZero.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

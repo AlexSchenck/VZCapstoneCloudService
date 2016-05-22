@@ -38,7 +38,9 @@ namespace WebRole1
             personFile = personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
 
             Stopwatch sw = new Stopwatch();
+            Stopwatch swTotal = new Stopwatch();
             sw.Start();
+            swTotal.Start();
 
             // Final JSON list of collisions as string
             Trace.TraceInformation("Started data get");
@@ -47,47 +49,58 @@ namespace WebRole1
             sw.Restart();
 
             // Make objects for progress bar and save to file
-            Trace.TraceInformation("Started progress");
-            String progress = getProgressChartJSON(String.Copy(collisions));
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\progress.json"), progress);
-            Trace.TraceInformation("" + sw.Elapsed);
-            sw.Restart();
+            {
+                Trace.TraceInformation("Started progress");
+                String progress = getProgressChartJSON(String.Copy(collisions));
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\progress.json"), progress);
+                Trace.TraceInformation("" + sw.Elapsed);
+                sw.Restart();
+            }
 
             // Make objects for stacked bar chart and save to file
-            Trace.TraceInformation("Started stacked");
-            String stacked = getStackedBarChartJSON(String.Copy(collisions));
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\stackedBar.json"), stacked);
-            Trace.TraceInformation("" + sw.Elapsed);
-            sw.Restart();
+            {
+                Trace.TraceInformation("Started stacked");
+                String stacked = getStackedBarChartJSON(String.Copy(collisions));
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\stackedBar.json"), stacked);
+                Trace.TraceInformation("" + sw.Elapsed);
+                sw.Restart();
+            }
 
             // Make objects for age chart and save to file
-            Trace.TraceInformation("Started age");
-            String age = "", ageSpark = "";
-            getAgeChartJSON(String.Copy(collisions), out age, out ageSpark);
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
-            Trace.TraceInformation("" + sw.Elapsed);
-            sw.Restart();
+            {
+                Trace.TraceInformation("Started age");
+                String age = "", ageSpark = "";
+                getAgeChartJSON(String.Copy(collisions), out age, out ageSpark);
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
+                Trace.TraceInformation("" + sw.Elapsed);
+                sw.Restart();
+            }
 
             // Make objects for contributing factors chart and save to file
-            Trace.TraceInformation("Start contributing factors");
-            String factors = "", factorsSpark = "";
-            getContributingFactorsChartJSON(String.Copy(collisions), out factors, out factorsSpark);
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactors.json"), factors);
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactorsSpark.json"), factorsSpark);
-            Trace.TraceInformation("" + sw.Elapsed);
-            sw.Restart();
+            {
+                Trace.TraceInformation("Start contributing factors");
+                String factors = "", factorsSpark = "";
+                getContributingFactorsChartJSON(String.Copy(collisions), out factors, out factorsSpark);
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactors.json"), factors);
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactorsSpark.json"), factorsSpark);
+                Trace.TraceInformation("" + sw.Elapsed);
+                sw.Restart();
+            }
 
-            // Makes obects for boxes containing injury ratios for bicylists and pedestrians
-            Trace.TraceInformation("Start injury rates");
-            String injuryRate = getBikeAndPedInjuryRates(String.Copy(collisions)); ;
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryrates.json"), injuryRate);
-            Trace.TraceInformation("" + sw.Elapsed);
-            sw.Stop();
+            {
+                // Makes obects for boxes containing injury ratios for bicylists and pedestrians
+                Trace.TraceInformation("Start injury rates");
+                String injuryRate = getBikeAndPedInjuryRates(String.Copy(collisions)); ;
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryrates.json"), injuryRate);
+                Trace.TraceInformation("" + sw.Elapsed);
+                sw.Stop();
+                swTotal.Stop();
+            }
 
-            return "done";
+            return "" + swTotal.Elapsed;
         }
-
+        
         // Returns a String representing the full JSON of SDOT collision data
         private String getAllCollisions()
         {
