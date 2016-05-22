@@ -35,7 +35,7 @@ namespace WebRole1
         {
             openDataURL = "https://data.seattle.gov/resource/v7k9-7dn4.json";
             lastYear = DateTime.Today.AddYears(-1).Year;
-            personFile = personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
+            personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
 
             Stopwatch sw = new Stopwatch();
             Stopwatch swTotal = new Stopwatch();
