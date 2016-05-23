@@ -116,13 +116,45 @@ function drawBulletCharts(name) {
 	      	.append("text")
 	          	.attr("class", "title")
 	            .style("font-size", 14)
-	            .style("text-overflow", 'ellipsis')
-	          	.text(function(d) { return d.title; });
+	          	.text(function(d) {
+	          		var title = d.title; 
+	          		if(title.length > 14) {
+	          			title = title.substring(0, 13) + "..."
+	          		}
+	          		return title; 
+	          	})
+	          	.on("mouseover", function(d) {		
+		            div.transition()		
+		                .duration(200)		
+		                .style("opacity", 1);		
+		            div.html(d.title);
+		        })					
+		        .on("mousemove", function(){
+					return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+				.on("mouseout", function(d) {		
+		            div.transition()		
+		                .duration(500)		
+		                .style("opacity", 0);	
+		    	});
 
-	        svg.append("g")
-	            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
-	            .call(chart);
-	    }	
+
+		        svg.append("g")
+		            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
+		            .call(chart)
+		        .on("mouseover", function(d) {		
+		            div.transition()		
+		                .duration(200)		
+		                .style("opacity", 1);		
+		            div.html(d.measures + " in 2015, " + d.markers + " in 2014");
+		        })					
+		        .on("mousemove", function(){
+					return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+				.on("mouseout", function(d) {		
+		            div.transition()		
+		                .duration(500)		
+		                .style("opacity", 0);	
+		    	});
+		    }	
 
 	    // get the range of the bullets for the scale at the bottom
 	    var range = data[0].ranges[1];

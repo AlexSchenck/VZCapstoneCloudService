@@ -41,6 +41,7 @@ body {
 .progressSection {
 	/*don't touch*/
 	width: 54%;
+	/*width: 53vw;*/
 	height: 44.5%;
 	/*min-height: 330px;*/
 	float: right;
