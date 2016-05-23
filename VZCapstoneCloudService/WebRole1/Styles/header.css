@@ -1,5 +1,5 @@
 .header {
-    height: 12%;
+    height: 7vw;
     background-color: #188FD1;
 }
 
@@ -14,11 +14,11 @@
 }
 
 #btnMap {
-    top: 6.5%;
+    top: 3.75vw;
 }
 
 #btnDashboard {
-    top: 1.5%;
+    top: .75vw;
 }
 
 #header-icons {
@@ -27,21 +27,21 @@
 
 .header button {
     color: #3f3f3f;
-    height: 4%;
+    height: 2.5vw;
     font-family: Lato, sans-serif;    
     background-color: #fff;
-    padding-bottom: .5%;
-    padding-top: .5%;
-    padding-left: .77%;
-    padding-right: .77%;
+    padding-bottom: .5vw;
+    padding-top: .5vw;
+    padding-left: .77vw;
+    padding-right: .77vw;
     margin-bottom: 0;
     font-size: 1vw;
     font-weight: 600;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
-    border: 1px solid #a8a8a8;
-    border-radius: 4px;
+    border: .15vw solid #a8a8a8;
+    border-radius: .25vw;
 }
 
 .header button:hover {

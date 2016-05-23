@@ -5,13 +5,16 @@ function sleepFor( sleepDuration ){
 
 var screenW = screen.width;
 var screenH = screen.height; 
+	// d3.select(".progressSection").style("height", "25vw");
+	// d3.select(".progressSection").style("width", "52vw")
 
 window.onresize = function() {
 	// console.log(window.outerW + " " + window.outerH);
 	// alert("hi");
 	// location.reload();
 	console.log(screenH + " " + screenW);
-	// d3.select(".progressSection").style("height", "44vh");
+	// d3.select(".progressSection").style("height", "25vw");
+	// d3.select(".progressSection").style("width", "52vw")
 
 	// console.log(outer)
 	// console.log(window.outerW / window.outerH  < 1.0);
@@ -83,7 +86,7 @@ d3.json("./Data/progress.json", function(error, data) {
 	console.log(error);
 
 	// chill for a second until the progress data is loaded
-	sleepFor(1000);
+	// sleepFor(2000);
 
 	// sets the running total of collisions in seattle. 
 	// Does not pertain to progress bar	

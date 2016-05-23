@@ -140,20 +140,43 @@ function drawBulletCharts(name) {
 
 		        svg.append("g")
 		            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
-		            .call(chart)
-		        .on("mouseover", function(d) {		
-		            div.transition()		
-		                .duration(200)		
-		                .style("opacity", 1);		
-		            div.html(d.measures + " in 2015, " + d.markers + " in 2014");
-		        })					
-		        .on("mousemove", function(){
-					return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
-				.on("mouseout", function(d) {		
-		            div.transition()		
-		                .duration(500)		
-		                .style("opacity", 0);	
-		    	});
+		            .call(chart);
+
+		        // creates tooltip for each of the blue lines
+		        d3.selectAll("#" + name + "Bullets .bullet .measure.s0")
+			        .on("mouseover", function(d) {	
+			        	var node = d3.select(this).attr("width");
+			        	var rectWidth = d3.selectAll(".bullet .range.s0").attr("width");
+			            div.transition()		
+			                .duration(200)		
+			                .style("opacity", 1);		
+			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])));
+			        })					
+			        .on("mousemove", function(){
+						return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+					.on("mouseout", function(d) {		
+			            div.transition()		
+			                .duration(500)		
+			                .style("opacity", 0);	
+			    	});
+
+				// creates tooltip for each of the black markers for previous year
+			    d3.selectAll("#" + name + "Bullets .bullet .marker")
+			        .on("mouseover", function(d) {	
+			        	var node = d3.select(this).attr("x1");
+			        	var rectWidth = d3.selectAll(".bullet .range.s0").attr("width");
+			            div.transition()		
+			                .duration(200)		
+			                .style("opacity", 1);		
+			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])));
+			        })					
+			        .on("mousemove", function(){
+						return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+					.on("mouseout", function(d) {		
+			            div.transition()		
+			                .duration(500)		
+			                .style("opacity", 0);	
+			    	});
 		    }	
 
 	    // get the range of the bullets for the scale at the bottom
@@ -261,7 +284,7 @@ function drawSparkLines(name) {
 	    }
 
 	    var years = d3.time.scale()
-	        .domain([new Date(2012, 0, 1), new Date(2016, 0, 1)])
+	        .domain([new Date(startDate, 0, 1), new Date(startDate + 4, 0, 1)])
 	        .rangeRound([0, width / 2]);
 
 	    var svgContainer = d3.select("#" + name + "SparkKey").append("svg")
@@ -273,7 +296,7 @@ function drawSparkLines(name) {
 	        .call(d3.svg.axis()
 	            .scale(years)
 	            .orient("bottom")
-	            .ticks(3)
+	            .ticks(2)
 	            .tickFormat(d3.time.format("'%y")));
 	})
 }
