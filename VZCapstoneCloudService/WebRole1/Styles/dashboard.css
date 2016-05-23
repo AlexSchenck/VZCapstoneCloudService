@@ -7,12 +7,12 @@ html, body {
 
 body {
 	background-color: rgba(99, 102, 106, .05);
-	overflow-y: hidden;
+	/*overflow-y: hidden;*/
 }
 
 /*each section is for the bottom 3 charts*/
 .section {
-	width: 31vw;
+	width: 30.7vw;
 	height: 22vw;
 	float: left;
 }
@@ -32,7 +32,7 @@ body {
 .progressSection {
 	/*don't touch*/
 	/*width: 54%;*/
-	width: 54.25vw;
+	width: 53vw;
 	height: 25.65vw;
 	/*height: 44.5%;*/
 	/*min-height: 330px;*/
@@ -155,12 +155,12 @@ div.tooltip {
     position: absolute;			
     text-align: center;			
     				
-    padding: 3px;				
+    padding: .3vw;				
     font: Lato, sans-serif;		
-    font-size: 12px;
+    font-size: .8vw;
     color: white;
     background: #63666A;	
-    border: 1px solid white;		
+    border: .1vw solid white;		
     border-radius: .25vw;			
     pointer-events: none;
     z-index: 100;	
