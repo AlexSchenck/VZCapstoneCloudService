@@ -1,7 +1,7 @@
 var names = ["age", "contributingFactors"];
 var titles = ["Age (Years)", "Contributing Factor"];
 var headers = ["Drivers", "Frequency"];
-// console.log(names[0]);
+var labels = ["drivers", "collisions involving fatatilies and serious injuries"]
 
 var margin = {top: 5, right: 40, bottom: 5, left: 80};
 var widthFull = 300;
@@ -15,7 +15,7 @@ var chart = d3.bullet()
 drawBulletKey();
 
 for (var i = 0; i < names.length; i++) {
-	drawBulletCharts(names[i]);
+	drawBulletCharts(names[i], labels[i]);
 	drawTitles(names[i], titles[i], headers[i]);
 	drawSparkLines(names[i]);
 }
@@ -92,7 +92,7 @@ function drawBulletKey() {
         .text("2014");
 }
 
-function drawBulletCharts(name) {
+function drawBulletCharts(name, label) {
 	// var name = "age";
 	d3.json("./Data/" + name + ".json", function(error, data) {
 		if (error) throw error;
@@ -150,7 +150,7 @@ function drawBulletCharts(name) {
 			            div.transition()		
 			                .duration(200)		
 			                .style("opacity", 1);		
-			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])));
+			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])) + " " + label);
 			        })					
 			        .on("mousemove", function(){
 						return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
@@ -168,7 +168,7 @@ function drawBulletCharts(name) {
 			            div.transition()		
 			                .duration(200)		
 			                .style("opacity", 1);		
-			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])));
+			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])) + " " + label);
 			        })					
 			        .on("mousemove", function(){
 						return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				

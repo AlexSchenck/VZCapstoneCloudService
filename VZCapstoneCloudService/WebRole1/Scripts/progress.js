@@ -3,44 +3,9 @@ function sleepFor( sleepDuration ){
     while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
 
-var screenW = screen.width;
-var screenH = screen.height; 
-	// d3.select(".progressSection").style("height", "25vw");
-	// d3.select(".progressSection").style("width", "52vw")
-
-window.onresize = function() {
-	// console.log(window.outerW + " " + window.outerH);
-	// alert("hi");
-	// location.reload();
-	console.log(screenH + " " + screenW);
-	// d3.select(".progressSection").style("height", "25vw");
-	// d3.select(".progressSection").style("width", "52vw")
-
-	// console.log(outer)
-	// console.log(window.outerW / window.outerH  < 1.0);
-	// if (window.outerW / window.outerH  < 1.0) {
-	// 	d3.select(".progressSection").style("max-height", "100px");
-	// 	location.reload();
-	// }
-}
-
-// setInterval(function() {
-// 	console.log(window.outerW / window.outerH  < 1.0);
-// 		if (window.outerW / window.outerH  < 1.0) {
-// 		d3.select(".progressSection").style("max-height", "100px");
-// 	}
-// } , 1000);
-
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
 console.log(outerW + " " + outerH);
-
-
-// d3.select(".progressSection").style("min-height", screen.height * .36);
-// d3.selectAll(".section").style("min-height", screen.height * .3);
-
-
-// d3.select(".progressSection").attr("width", "700px").attr("height", "300px");
 
 var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
 var widthProgress = outerW * .55;
@@ -86,7 +51,7 @@ d3.json("./Data/progress.json", function(error, data) {
 	console.log(error);
 
 	// chill for a second until the progress data is loaded
-	// sleepFor(2000);
+	sleepFor(2000);
 
 	// sets the running total of collisions in seattle. 
 	// Does not pertain to progress bar	
@@ -198,7 +163,7 @@ d3.json("./Data/progress.json", function(error, data) {
             div.transition()		
                 .duration(200)		
                 .style("opacity", 1);		
-            div.html("Vision Zero Seattle Start Date")
+            div.html("Vision Zero Seattle start date")
             	.style("left", xScale(2015))
             	.style("top", yScale(0));	
             })					
