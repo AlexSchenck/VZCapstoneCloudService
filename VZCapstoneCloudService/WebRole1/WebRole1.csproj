@@ -112,14 +112,6 @@
     <Content Include="index.html" />
     <Content Include="map.html" />
     <Content Include="Images\Thumbs.db" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap-theme.css.map" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap-theme.min.css.map" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap.css.map" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap.min.css.map" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Packages\css\horizontal_selector.css" />
     <Content Include="Packages\d3\bullet.js" />
     <Content Include="Packages\d3\LICENSE" />
@@ -153,14 +145,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap-theme.css" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap-theme.min.css" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap.css" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\css\bootstrap.min.css" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\js\bootstrap.js" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\js\bootstrap.min.js" />
-    <Content Include="Packages\Bootstrap\bootstrap-3.3.6-dist\js\npm.js" />
     <Content Include="Packages\d3\d3.js" />
     <Content Include="Packages\d3\d3.min.js" />
     <Content Include="Packages\jQuery\jquery-2.2.2.min.js" />

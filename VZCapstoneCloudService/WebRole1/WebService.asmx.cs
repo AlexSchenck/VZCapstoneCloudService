@@ -38,78 +38,64 @@ namespace WebRole1
             personFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\COLLISION_PERSONS.csv");
 
             Stopwatch sw = new Stopwatch();
-            Stopwatch swTotal = new Stopwatch();
             sw.Start();
-            swTotal.Start();
 
-            // Final JSON list of collisions as string
+            // Final JSON list of collisions as List of JObjects
             Trace.TraceInformation("Started data get");
-            String collisions = getAllCollisions();
-            Trace.TraceInformation("" + sw.Elapsed);
-            sw.Restart();
+            List<JObject> collisions = getAllCollisionsAsObjects();
 
             // Make objects for progress bar and save to file
             {
                 Trace.TraceInformation("Started progress");
-                String progress = getProgressChartJSON(String.Copy(collisions));
+                String progress = getProgressChartJSON(collisions);
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\progress.json"), progress);
-                Trace.TraceInformation("" + sw.Elapsed);
-                sw.Restart();
             }
+
+            Dictionary<String, JObject> collisionsDictionary = convertToDictionary(collisions);
+            collisions = null; // No longer needed, save memory
 
             // Make objects for stacked bar chart and save to file
             {
                 Trace.TraceInformation("Started stacked");
-                String stacked = getStackedBarChartJSON(String.Copy(collisions));
+                String stacked = getStackedBarChartJSON(collisionsDictionary);
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\stackedBar.json"), stacked);
-                Trace.TraceInformation("" + sw.Elapsed);
-                sw.Restart();
             }
 
             // Make objects for age chart and save to file
             {
                 Trace.TraceInformation("Started age");
                 String age = "", ageSpark = "";
-                getAgeChartJSON(String.Copy(collisions), out age, out ageSpark);
+                getAgeChartJSON(collisionsDictionary, out age, out ageSpark);
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\age.json"), age);
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\ageSpark.json"), ageSpark);
-                Trace.TraceInformation("" + sw.Elapsed);
-                sw.Restart();
             }
 
             // Make objects for contributing factors chart and save to file
             {
                 Trace.TraceInformation("Start contributing factors");
                 String factors = "", factorsSpark = "";
-                getContributingFactorsChartJSON(String.Copy(collisions), out factors, out factorsSpark);
+                getContributingFactorsChartJSON(collisionsDictionary, out factors, out factorsSpark);
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactors.json"), factors);
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\contributingFactorsSpark.json"), factorsSpark);
-                Trace.TraceInformation("" + sw.Elapsed);
-                sw.Restart();
             }
 
             {
                 // Makes obects for boxes containing injury ratios for bicylists and pedestrians
                 Trace.TraceInformation("Start injury rates");
-                String injuryRate = getBikeAndPedInjuryRates(String.Copy(collisions)); ;
+                String injuryRate = getBikeAndPedInjuryRates(collisionsDictionary); ;
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryrates.json"), injuryRate);
-                Trace.TraceInformation("" + sw.Elapsed);
-                sw.Stop();
-                swTotal.Stop();
             }
 
-            return "" + swTotal.Elapsed;
+            return "" + sw.Elapsed;
         }
         
-        // Returns a String representing the full JSON of SDOT collision data
-        private String getAllCollisions()
+        // Returns a List of JObjects representing the full JSON of SDOT collision data
+        private List<JObject> getAllCollisionsAsObjects()
         {
-            StringBuilder builder = new StringBuilder("[");
-
-            //Determine total records
             String url = openDataURL + "?$select=count(reportno)";
             var totalRecordsJSON = new WebClient().DownloadString(url);
             int totalRecords = Convert.ToInt32(totalRecordsJSON.Split('"')[3].Trim());
+            List<JObject> result = new List<JObject>();
 
             // Get all records from SODA endpoint
             for (int i = 0; i < totalRecords; i += 49999)
@@ -117,27 +103,19 @@ namespace WebRole1
                 // Get next block of 50k records
                 url = openDataURL + "?$limit=49999&$offset=" + i;
                 String response = new WebClient().DownloadString(url);
-                builder.Append(response.Substring(2, response.Length - 3));
-                builder.Append(",");
+                List<JObject> temp = JsonConvert.DeserializeObject<List<JObject>>(response);
+                result.AddRange(temp);
+                Trace.TraceInformation("Completed one get iteration");
             }
 
-            builder.Append("]");
-
-            return builder.ToString();
-        }
-
-        // Returns collision JSON string as list of JObjects
-        private List<JObject> convertToList(String collisionJSON)
-        {
-            return JsonConvert.DeserializeObject<List<JObject>>(collisionJSON);
+            return result;
         }
 
         // Returns collision JSON string as a Dictionary 
         // with "coldetkey" (collision key) as String key and the corresponding JObject as the value
-        private Dictionary<String, JObject> convertToDictionary(String collisionJSON)
+        private Dictionary<String, JObject> convertToDictionary(List<JObject> JObjects)
         {
-            Dictionary<String, JObject> result = new Dictionary<String,JObject>();
-            List<JObject> JObjects = convertToList(collisionJSON);
+            Dictionary<String, JObject> result = new Dictionary<String, JObject>();
 
             foreach (JObject jo in JObjects)
             {
@@ -148,9 +126,8 @@ namespace WebRole1
         }
 
         // Creates and returns JSON for use in VZ progress chart
-        private String getProgressChartJSON(String collisionJSON)
+        private String getProgressChartJSON(List<JObject> objects)
         {
-            List<JObject> objects = convertToList(collisionJSON);
             JArray result = new JArray(); // JArray representing serious/fatal collisions
 
             // Key: year as int, Value: number of serious injuries/fatalities for that year as int
@@ -184,16 +161,15 @@ namespace WebRole1
 
                 result.Add(temp);
             }
-            
+
             // Return list of JObjects as JSON string
             return JsonConvert.SerializeObject(result);
         }
 
         // Creates and returns JSON used for stacked bar chart
-        private String getStackedBarChartJSON(String collisionJSON)
+        private String getStackedBarChartJSON(Dictionary<String, JObject> collisions)
         {
             var reader = new StreamReader(File.OpenRead(personFile)); // Read local PERSONS csv
-            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
             List<JArray> result = new List<JArray>();
 
             // Key: year as String, Value: number of participants in serious/fatal collisions for that year as int
@@ -224,7 +200,7 @@ namespace WebRole1
                     // Check the person was seriously injured or killed
                     if (numInjury > 1 && numInjury < 6)
                     {
-                        switch (numType) 
+                        switch (numType)
                         {
                             case 5:
                             case 6:
@@ -254,10 +230,9 @@ namespace WebRole1
         }
 
         // Creates and returns JSON used for age chart and corresponding sparklines into out variables
-        private void getAgeChartJSON(String collisionJSON, out String chart, out String spark)
+        private void getAgeChartJSON(Dictionary<String, JObject> collisions, out String chart, out String spark)
         {
             var reader = new StreamReader(File.OpenRead(personFile)); // Read local PERSONS csv
-            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
 
             // Define age ranges
             // Current format is: 16-29, 30-39 and so on until 69, then 70+
@@ -369,12 +344,11 @@ namespace WebRole1
         }
 
         // Creates and returns JSON used for contributing factors chart and corresponding sparklines into out variables
-        private void getContributingFactorsChartJSON(String collisionJSON, out String chart, out String spark)
+        private void getContributingFactorsChartJSON(Dictionary<String, JObject> collisions, out String chart, out String spark)
         {
             String codeFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\SDOT_INCIDENT_WSDOT_CRCMSTNCCODE.csv");
             var reader = new StreamReader(File.OpenRead(personFile)); // Read PERSONS csv
             var codeReader = new StreamReader(File.OpenRead(codeFile)); // Read SRCMSTNCCODE csv
-            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
             Dictionary<String, Factor> factors = new Dictionary<String, Factor>();
 
             // Set of factors to be omitted from comparison
@@ -502,10 +476,9 @@ namespace WebRole1
         }
 
         // Creates and returns JSON used for biciclyst and pedestrian injury rate boxes
-        private String getBikeAndPedInjuryRates(String collisionJSON)
+        private String getBikeAndPedInjuryRates(Dictionary<String, JObject> collisions)
         {
             var reader = new StreamReader(File.OpenRead(personFile)); // Read local PERSONS csv
-            Dictionary<String, JObject> collisions = convertToDictionary(collisionJSON);
             List<JObject> result = new List<JObject>();
 
             // Counts of total particpants and total injuries for bicicysts and injuries
@@ -540,7 +513,7 @@ namespace WebRole1
                     {
                         case 7:
                             pedParticipants++;
-                            
+
                             // Received at least a possible injury
                             if (numInjury > 1 && numInjury < 8)
                             {
@@ -552,7 +525,7 @@ namespace WebRole1
                             bicParticipants++;
 
                             // Received at least a possible injury
-                            if (numInjury> 1 && numInjury < 8)
+                            if (numInjury > 1 && numInjury < 8)
                             {
                                 bicInjuries++;
                             }
