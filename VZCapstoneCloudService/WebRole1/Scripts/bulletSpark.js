@@ -1,7 +1,9 @@
 var names = ["age", "contributingFactors"];
 var titles = ["Age (Years)", "Contributing Factor"];
 var headers = ["Drivers", "Frequency"];
-var labels = ["drivers", "collisions involving fatatilies and serious injuries"]
+var labels = ["drivers", "collisions involving fatatilies and serious injuries"];
+
+// alert(10vw + " " );
 
 var margin = {top: 5, right: 40, bottom: 5, left: 80};
 var widthFull = 300;
@@ -142,6 +144,8 @@ function drawBulletCharts(name, label) {
 		            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
 		            .call(chart);
 
+		        var currentYear = 2015;
+
 		        // creates tooltip for each of the blue lines
 		        d3.selectAll("#" + name + "Bullets .bullet .measure.s0")
 			        .on("mouseover", function(d) {	
@@ -150,7 +154,7 @@ function drawBulletCharts(name, label) {
 			            div.transition()		
 			                .duration(200)		
 			                .style("opacity", 1);		
-			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])) + " " + label);
+			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])) + " " + label + " in " + currentYear);
 			        })					
 			        .on("mousemove", function(){
 						return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
@@ -160,6 +164,8 @@ function drawBulletCharts(name, label) {
 			                .style("opacity", 0);	
 			    	});
 
+			    var lastYear = currentYear - 1;
+
 				// creates tooltip for each of the black markers for previous year
 			    d3.selectAll("#" + name + "Bullets .bullet .marker")
 			        .on("mouseover", function(d) {	
@@ -168,7 +174,7 @@ function drawBulletCharts(name, label) {
 			            div.transition()		
 			                .duration(200)		
 			                .style("opacity", 1);		
-			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])) + " " + label);
+			            div.html(parseInt(node / rectWidth * parseInt(data[0].ranges[1])) + " " + label + " in " + lastYear);
 			        })					
 			        .on("mousemove", function(){
 						return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
@@ -246,7 +252,20 @@ function drawSparkLines(name) {
 	        var svgContainer = d3.select("#" + name + "Spark" + i).append("svg")
 	            .attr("preserveAspectRatio", "xMinYMin meet")
 	            .attr("viewBox", "0 0 110 40")
-	            .classed("svg-content", true); 
+	            .classed("svg-content", true)
+	             .on("mouseover", function(d) {	
+		            div.transition()		
+		                .duration(200)		
+		                .style("opacity", 1);		
+		            div.html("Trend line of the last 5 years");
+		        })					
+		        .on("mousemove", function(){
+					return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+				.on("mouseout", function(d) {		
+		            div.transition()		
+		                .duration(500)		
+		                .style("opacity", 0);	
+		    	});
 	        containers.push(svgContainer);
 	    }
 
@@ -270,7 +289,7 @@ function drawSparkLines(name) {
 	            .attr("stroke", "black")
 	            .attr("stroke-width", 1)
 	            .attr("fill", "none");
-
+			   
 	        svgContainer.append("circle")
 	            .attr("cx", xCircle)
 	            .attr("cy", yCircle)
