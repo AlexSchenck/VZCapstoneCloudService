@@ -312,7 +312,7 @@ function drawSparkLines(name) {
 	            .attr("viewBox", "-5 0 200 30")
 	            .classed("svg-content", true)
 	        .append("g")
-	        	.attr("transform", "translate(" + 0 + ", -5" + ")")
+	        	.attr("transform", "translate(0, 0)")
 	            .attr("class", "axis")
 	        .call(d3.svg.axis()
 	            .scale(years)

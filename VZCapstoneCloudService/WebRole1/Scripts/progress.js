@@ -1,71 +1,7 @@
-console.log(d3.selectAll(".section"));
-
 function sleepFor( sleepDuration ){
     var now = new Date().getTime();
     while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
-resize();
-
-d3.select(window).on('resize', resize);
-
-	// var view = d3.select("#progress").html();
-	// console.log(d3.select("#progress"));
-	// console.log(	d3.select("#runningTotal").html());
-var i;
-function resize() {
-	i = i + 1;
-	var view = d3.select("#progress").html();
-		var outerW = window.outerWidth;
-	var outerH = window.outerHeight;
-	console.log(outerW + " " + outerH + " " + screen.width + " " + screen.height);
-
-	var screenCssPixelRatio = (window.outerWidth - 8) / window.innerWidth;
-if (screenCssPixelRatio >= .46 && screenCssPixelRatio <= .54) {
-  zoomLevel = "-4";
-} else if (screenCssPixelRatio <= .64) {
-  zoomLevel = "-3";
-} else if (screenCssPixelRatio <= .76) {
-  zoomLevel = "-2";
-} else if (screenCssPixelRatio <= .92) {
-  zoomLevel = "-1";
-} else if (screenCssPixelRatio <= 1.10) {
-  zoomLevel = "0";
-} else if (screenCssPixelRatio <= 1.32) {
-  zoomLevel = "1";
-} else if (screenCssPixelRatio <= 1.58) {
-  zoomLevel = "2";
-} else if (screenCssPixelRatio <= 1.90) {
-  zoomLevel = "3";
-} else if (screenCssPixelRatio <= 2.28) {
-  zoomLevel = "4";
-} else if (screenCssPixelRatio <= 2.70) {
-  zoomLevel = "5";
-} else {
-  zoomLevel = "unknown";
-}
-
-console.log(screenCssPixelRatio + " " + i);
-
-}
-
-	// console.log(d3.select("#progress") + " " + view);
-
-	// var outerW = window.outerWidth;
-	// var outerH = window.outerHeight;
-
-	// var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
-	// var widthProgress = outerW * .55;
-	// var heightProgress = outerH * .35;
-	// console.log(widthProgress + " " + heightProgress);
-
-	// // alert("hi");
-	// // d3.select("#progress")
-	// // 		.attr("width", widthProgress)
-	// // 		.attr("height", heightProgress);
-	// var width = parseInt(d3.select("#progress").style('width'), 10);
-	// console.log(xScale.range);
-	// xScale.range([0, widthProgress - paddingProgress.left - 10 - paddingProgress.right]);
-	// console.log(xScale);
 
 
 var outerW = window.outerWidth;
