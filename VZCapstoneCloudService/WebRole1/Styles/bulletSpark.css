@@ -38,6 +38,12 @@
 	font-weight: normal;
 }
 
+
+#ageAxis .axis .tick text, #contributingFactorsAxis .axis .tick text {
+	font-size: 8px;
+	font-weight: normal;
+}
+
 .svg-container-block { 
 	width: 70%;
 	height: 70%;
@@ -51,7 +57,11 @@
 .svg-container-spark { 
 	width: 100%;
 	padding-top: 30.5%; 
-	margin: 2.75%;
+	margin-top: 6%;
+}
+
+#ageSparkKey, #contributingFactorsSparkKey {
+	margin: 0px;
 }
 
 .svg-container-title { 

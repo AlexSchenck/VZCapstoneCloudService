@@ -104,29 +104,36 @@ d3.json("./Data/stackedBar.json", function(error, result){
 			// because of the way stacked bars are set up
 			previousBarColor = d3.select(this.parentNode).attr("style");
 			var curr = d3.select(this).attr("fill", '#63666A');
-
-			// gets individual components of the rbg
-			var hexComponents = previousBarColor.split(', ');
-			var first = hexComponents[0].split('(')[1];
-			var middle = hexComponents[1];
-			var last = hexComponents[2].split(')')[0];
-
+			// alert(typeof(previousBarColor));
 			var textTip = "people"; // default if can't be found 
-			var convertedRBG = rgbToHex(parseInt(first), parseInt(middle), parseInt(last));
+			var convertedRGB;
+			if (previousBarColor.indexOf("#") < 0) {
+				// gets individual components of the rbg
+				var hexComponents = previousBarColor.split(', ');
+				var first = hexComponents[0].split('(')[1];
+				var middle = hexComponents[1];
+				var last = hexComponents[2].split(')')[0];
 
-			// alert(convertedRBG);
+				convertedRGB = rgbToHex(parseInt(first), parseInt(middle), parseInt(last));
+
+			} else {
+	        	previousBarColor = previousBarColor.substring(6, 13);
+	        	convertedRGB = previousBarColor;
+	        }
+
             divStack.transition()		
                 .duration(200)		
                 .style("opacity", 1);
 
             // checks to see which title to display
-            if (convertedRBG == color_hash[2][1]) {
+            if (convertedRGB == color_hash[2][1]) {
             	textTip = color_hash[2][0];
-            } else if (convertedRBG == color_hash[1][1]) {
+            } else if (convertedRGB == color_hash[1][1]) {
             	textTip = color_hash[1][0];
-            } else if (convertedRBG == color_hash[0][1]) {
+            } else if (convertedRGB == color_hash[0][1]) {
             	textTip = color_hash[0][0];
             }
+        
 
             divStack.html(d.y + " " + textTip)
 	            .style("left", xScale(new Date(d.year, 0, 1)))
@@ -134,7 +141,7 @@ d3.json("./Data/stackedBar.json", function(error, result){
 			
             })					
 		.on("mousemove", function(){
-			console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
+			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
 			return divStack.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
 
         .on("mouseout", function(d) {		
@@ -142,23 +149,8 @@ d3.json("./Data/stackedBar.json", function(error, result){
                 .duration(500)		
                 .style("opacity", 0);	
             // resets to the previous color of the bar that was hovered over
-			var curr = d3.select(this).attr("fill", previousBarColor.substring(6));
+			var curr = d3.select(this).attr("fill", previousBarColor);
     	});			
-
-	   //  .on('mouseover', mouseOverStackedBar)
-	  	// .on('mouseout', mouseOutStackedBar);
-
-	// svg.append("g")
-	// 	.attr("class","x axis")
-	// 	// adds x axis and moves to correct height
-	// 	.attr("transform","translate(" + (padding.left + 5) + "," + (h - padding.bottom) + ")")
-	// 	.call(xAxis)
-	//   .selectAll("text")
-	//     .attr("y", 0)
-	//     .attr("x", 9)
-	//     .attr("dy", ".35em")
-	//     .attr("transform", "rotate(90)")
-	//     .style("text-anchor", "start");
 
 	svg.append("g") 	
 			.attr("class","x axis")
