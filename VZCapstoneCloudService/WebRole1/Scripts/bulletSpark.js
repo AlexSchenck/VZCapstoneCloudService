@@ -1,3 +1,20 @@
+
+
+// var tooltip = d3.select('#top')            // NEW 
+//   .append('div')                             // NEW
+//   .attr('class', 'tooltip');                 // NEW
+
+// tooltip.append('div')                        // NEW
+//   .attr('class', 'label');                   // NEW
+
+// tooltip.append('div')                        // NEW
+//   .attr('class', 'count');                   // NEW
+
+// tooltip.append('div')                        // NEW
+//   .attr('class', 'percent');                 // NEW
+
+
+
 var names = ["age", "contributingFactors"];
 var titles = ["Age (Years)", "Contributing Factor"];
 var headers = ["Drivers", "Frequency"];
