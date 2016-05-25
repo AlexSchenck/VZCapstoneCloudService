@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace WebRole1
 {
@@ -30,8 +31,16 @@ namespace WebRole1
         int lastYear; // Most previous year
         String personFile; // Local filepath of PERSONS data table
 
+        // Web method to call pull asynchronously to not run into scheduler timeout time
         [System.Web.Services.WebMethod()]
-        public String PullDataAndSave()
+        public String startPull()
+        {
+            new Task(PullDataAndSave).Start();
+            return "done";
+        }
+
+        // Called by asynchronous web method, pulls data from SODA endpoint and saves as formatted JSON locally
+        private void PullDataAndSave()
         {
             openDataURL = "https://data.seattle.gov/resource/v7k9-7dn4.json";
             lastYear = DateTime.Today.AddYears(-1).Year;
@@ -86,7 +95,7 @@ namespace WebRole1
                 System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryrates.json"), injuryRate);
             }
 
-            return "" + sw.Elapsed;
+            Trace.TraceInformation("" + sw.Elapsed);
         }
         
         // Returns a List of JObjects representing the full JSON of SDOT collision data
