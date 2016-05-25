@@ -1,6 +1,6 @@
 var modeFilter = 0;
 var injuryFilter = 0;
-var yearFilter = 2015;
+var yearFilter = new Date().getFullYear() - 1;
 var descriptions = [
     {key:"INCDATE", value:"Incident Date"}, 
     {key:"COLLISIONTYPE", value:"Collision Type"}, 
@@ -21,8 +21,12 @@ require([
     "esri/SpatialReference",
     "esri/geometry/Point",
     "esri/tasks/QueryTask",
-    "esri/tasks/query"
-], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point, QueryTask, Query) {
+    "esri/tasks/query",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/Color",
+    "esri/renderers/SimpleRenderer",
+
+], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point, QueryTask, Query, SimpleMarkerSymbol, Color, SimpleRenderer) {
     var map = new Map("mapid", {
         basemap: 'gray',
         sliderOrientation : "horizontal",
@@ -32,12 +36,31 @@ require([
     });
 
     //Dom manipulation
-    $("select").horizontalSelector();
-
     var classname = document.getElementsByClassName("filterButton");
     for (var i = 0; i < classname.length; i++) {
         classname[i].addEventListener('click', updateClass, false);
     }
+
+    var currentYear = new Date().getFullYear();
+    for (var i = 2004; i <= currentYear; i++) {
+        if (i == currentYear - 1) {
+            $('#yearSelector').append('<option value="' + i + '" selected>' + i + '</option>');
+        } else {
+            $('#yearSelector').append('<option value="' + i + '">' + i + '</option>');
+        }
+    }
+
+    $("#yearSelector").selectmenu({
+        position: { my : "left bottom", at: "left bottom" },
+        select: function(item) {
+            yearFilter = $('.ui-selectmenu-text')[0].innerHTML;
+            executeQueryTask();
+        }
+    });
+
+    $('#yearSelector-button').unbind('mouseout keyup mouseup hover');
+    $('#yearSelector-button').click(function(ev){ ev.preventDefault(); });
+
 
     //Feature Later    
     var featureLayer = new FeatureLayer("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51", {
@@ -45,7 +68,9 @@ require([
     });
 
     featureLayer.setDefinitionExpression("INCDATE > date'1-1-2015' AND INCDATE < date'1-1-2016'");
+    
     map.addLayer(featureLayer);
+
 
     function executeQueryTask() {
         var queryString = "";
@@ -57,17 +82,18 @@ require([
 
         //MODE
         if (modeFilter == 1) {
-            queryString += "VEHCOUNT > 0 AND "
+            queryString += "VEHCOUNT > 0 AND PEDCYLCOUNT < 1 and PEDCOUNT < 1 AND "
         } else if (modeFilter == 2) {
             queryString += "PEDCYLCOUNT > 0 AND "
         } else if (modeFilter == 3) {
             queryString += "PEDCOUNT > 0 AND "
         } 
 
-        queryString += "INCDATE > date'1-1-" + yearFilter + "' AND INCDATE < date'1-1-" + (yearFilter + 1) +"'";
+        queryString += "INCDATE > date'1-1-" + yearFilter + "' AND INCDATE < date'1-1-" + (parseInt(yearFilter) + 1) +"'";
 
         map.removeLayer(featureLayer);
         featureLayer.setDefinitionExpression(queryString);
+        setIcons(modeFilter);
         map.addLayer(featureLayer);
     }
 
@@ -97,6 +123,16 @@ require([
         }
         $(this).toggleClass('activeButton');
         executeQueryTask();
+    }
+
+    function setIcons(index) {
+        var colors = [new Color([255, 170, 0, 1]), new Color([135, 169, 107, 1]), new Color([0, 107, 148, 1]), new Color([0, 163, 224, 1])]
+        var symbol = new SimpleMarkerSymbol();
+        symbol.style = SimpleMarkerSymbol.STYLE_CIRCLE;
+        symbol.setSize(8);
+        symbol.setColor(colors[index]);
+        var renderer = new SimpleRenderer(symbol);
+        featureLayer.setRenderer(renderer);
     }
 
     //Search Bar

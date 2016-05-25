@@ -56,6 +56,16 @@ html, body {
     margin-left: 10px;
 }
 
+#bike img, #ped img {
+    top: 4px;
+    position: relative;
+}
+
+#vehicle img {
+    top: 2px;
+    position: relative;
+}
+
 #seriousInjury {
     height: 44px;
     margin-right: 50px;
@@ -91,8 +101,15 @@ h6 {
     z-index: 3;
 }
 
-#yearSelector {
-    display: none;
+#yearSelector-button {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 97px !important;
+    border: 1px solid #ccc !important;
+    background: #f6f6f6 url("../Packages/jquery-ui-1.11.4/images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x !important;
+    font-weight: bold !important;
+    color: #1c94c4 !important;
 }
 
 #zoom {
@@ -123,23 +140,41 @@ h6 {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 200px;
+    width: 170px;
     top: 45px;
     left: 50%; 
-    margin-left: -100px;
+    margin-left: -85px;
     background-color: white;
     color: black;
-    font: Lato, sans-serif;     
+    font-family: Lato, sans-serif;     
     border: 1px solid black;
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
  
-    /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 9;
 }
 
+#ped .tooltiptext {
+    margin-left: -125px;
+}
+
 button:focus {
     outline: 0;
+}
+
+.ui-selectmenu-text {
+    color: #188FD1;
+}
+
+.ui-widget {
+    font-family: Lato, sans-serif !important;
+}
+
+.ui-widget .ui-state-focus, .ui-widget .ui-state-hover {
+    border: none;
+    background: none;
+    margin: 0;
+    color: #188FD1;
 }
