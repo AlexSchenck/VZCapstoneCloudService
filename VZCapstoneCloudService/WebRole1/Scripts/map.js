@@ -22,13 +22,11 @@ require([
     "esri/geometry/Point",
     "esri/tasks/QueryTask",
     "esri/tasks/query",
-    "esri/renderers/ClassBreaksRenderer",
-    "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/Color",
-      "esri/renderers/SimpleRenderer",
+    "esri/renderers/SimpleRenderer",
 
-], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point, QueryTask, Query, ClassBreaksRenderer, SimpleFillSymbol, SimpleMarkerSymbol, Color, SimpleRenderer) {
+], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point, QueryTask, Query, SimpleMarkerSymbol, Color, SimpleRenderer) {
     var map = new Map("mapid", {
         basemap: 'gray',
         sliderOrientation : "horizontal",
@@ -59,6 +57,10 @@ require([
             executeQueryTask();
         }
     });
+
+    $('#yearSelector-button').unbind('mouseout keyup mouseup hover');
+    $('#yearSelector-button').click(function(ev){ ev.preventDefault(); });
+
 
     //Feature Later    
     var featureLayer = new FeatureLayer("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51", {
@@ -124,7 +126,7 @@ require([
     }
 
     function setIcons(index) {
-        var colors = [new Color([255, 170, 0, .5]), new Color([135, 169, 107, .5]), new Color([0, 107, 148, .5]), new Color([0, 163, 224, .5])]
+        var colors = [new Color([255, 170, 0, 1]), new Color([135, 169, 107, 1]), new Color([0, 107, 148, 1]), new Color([0, 163, 224, 1])]
         var symbol = new SimpleMarkerSymbol();
         symbol.style = SimpleMarkerSymbol.STYLE_CIRCLE;
         symbol.setSize(8);
