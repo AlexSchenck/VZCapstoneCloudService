@@ -172,10 +172,10 @@ h6 {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 200px;
+    width: 170px;
     top: 45px;
     left: 50%; 
-    margin-left: -100px;
+    margin-left: -85px;
     background-color: white;
     color: black;
     font: Lato, sans-serif;     
@@ -187,6 +187,10 @@ h6 {
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 9;
+}
+
+#ped .tooltiptext {
+    margin-left: -125px;
 }
 
 button:focus {

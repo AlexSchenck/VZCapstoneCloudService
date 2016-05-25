@@ -60,44 +60,6 @@ require([
         }
     });
 
-
-
-    // var renderer = new ClassBreaksRenderer();
-    // renderer.attributeField = rendererField;
-
-    //----------------------
-    // Fill symbol
-    //----------------------
-
-    // // (1) Define a FILL symbol used to draw county polygons.
-    // var fillSymbol = new SimpleFillSymbol();
-    // fillSymbol.setStyle("esriSMSCircle");
-    // fillSymbol.setColor(new Color([0, 0, 0, 0]));
-    // fillSymbol.outline.setColor(new Color([133, 133, 133, .5]));
-    // fillSymbol.outline.setWidth(1);
-
-    // renderer.backgroundFillSymbol = fillSymbol;
-
-    // //----------------------
-    // // Circle marker symbol
-    // //----------------------
-
-    // // (2.A) Define circle MARKER symbol to be drawn at the centroid
-    // // of each polygon.
-    // var markerSymbol = new SimpleMarkerSymbol();
-    // markerSymbol.setColor(new Color([227, 139, 79, 1]));
-    // markerSymbol.setSize(12);
-    // markerSymbol.outline.setColor(new Color([51, 51, 51, 1]));
-    // markerSymbol.outline.setWidth(1);
-
-    // // (2.B) Make sure the MARKER symbol defined above is used to
-    // // draw polygons that have valid numeric field value.
-    // renderer.addBreak({
-    //     minValue: -9007199254740991,
-    //     maxValue: 9007199254740991,
-    //     symbol: markerSymbol
-    // });
-
     //Feature Later    
     var featureLayer = new FeatureLayer("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51", {
         infoTemplate: new InfoTemplate("Collision:", "${OBJECTID:getData}")
@@ -118,7 +80,7 @@ require([
 
         //MODE
         if (modeFilter == 1) {
-            queryString += "VEHCOUNT > 0 AND "
+            queryString += "VEHCOUNT > 0 AND PEDCYLCOUNT < 1 and PEDCOUNT < 1 AND "
         } else if (modeFilter == 2) {
             queryString += "PEDCYLCOUNT > 0 AND "
         } else if (modeFilter == 3) {
@@ -129,11 +91,8 @@ require([
 
         map.removeLayer(featureLayer);
         featureLayer.setDefinitionExpression(queryString);
-        console.log(modeFilter);
         setIcons(modeFilter);
         map.addLayer(featureLayer);
-
-
     }
 
     function updateClass() {
@@ -166,7 +125,6 @@ require([
 
     function setIcons(index) {
         var colors = [new Color([255, 170, 0, .5]), new Color([135, 169, 107, .5]), new Color([0, 107, 148, .5]), new Color([0, 163, 224, .5])]
-        console.log(colors[index]);
         var symbol = new SimpleMarkerSymbol();
         symbol.style = SimpleMarkerSymbol.STYLE_CIRCLE;
         symbol.setSize(8);
