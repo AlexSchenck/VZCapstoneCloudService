@@ -92,7 +92,7 @@ namespace WebRole1
                 // Makes obects for boxes containing injury ratios for bicylists and pedestrians
                 Trace.TraceInformation("Start injury rates");
                 String injuryRate = getBikeAndPedInjuryRates(collisionsDictionary); ;
-                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryrates.json"), injuryRate);
+                System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\inuryRates.json"), injuryRate);
             }
 
             Trace.TraceInformation("" + sw.Elapsed);
