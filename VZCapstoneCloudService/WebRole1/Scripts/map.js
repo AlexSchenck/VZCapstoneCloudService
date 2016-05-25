@@ -21,8 +21,14 @@ require([
     "esri/SpatialReference",
     "esri/geometry/Point",
     "esri/tasks/QueryTask",
-    "esri/tasks/query"
-], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point, QueryTask, Query) {
+    "esri/tasks/query",
+    "esri/renderers/ClassBreaksRenderer",
+    "esri/symbols/SimpleFillSymbol",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/Color",
+      "esri/renderers/SimpleRenderer",
+
+], function (Map, FeatureLayer, InfoTemplate, Search, Extent, SpatialReference, Point, QueryTask, Query, ClassBreaksRenderer, SimpleFillSymbol, SimpleMarkerSymbol, Color, SimpleRenderer) {
     var map = new Map("mapid", {
         basemap: 'gray',
         sliderOrientation : "horizontal",
@@ -32,8 +38,6 @@ require([
     });
 
     //Dom manipulation
-    // $("select").horizontalSelector();
-
     var classname = document.getElementsByClassName("filterButton");
     for (var i = 0; i < classname.length; i++) {
         classname[i].addEventListener('click', updateClass, false);
@@ -56,13 +60,53 @@ require([
         }
     });
 
+
+
+    // var renderer = new ClassBreaksRenderer();
+    // renderer.attributeField = rendererField;
+
+    //----------------------
+    // Fill symbol
+    //----------------------
+
+    // // (1) Define a FILL symbol used to draw county polygons.
+    // var fillSymbol = new SimpleFillSymbol();
+    // fillSymbol.setStyle("esriSMSCircle");
+    // fillSymbol.setColor(new Color([0, 0, 0, 0]));
+    // fillSymbol.outline.setColor(new Color([133, 133, 133, .5]));
+    // fillSymbol.outline.setWidth(1);
+
+    // renderer.backgroundFillSymbol = fillSymbol;
+
+    // //----------------------
+    // // Circle marker symbol
+    // //----------------------
+
+    // // (2.A) Define circle MARKER symbol to be drawn at the centroid
+    // // of each polygon.
+    // var markerSymbol = new SimpleMarkerSymbol();
+    // markerSymbol.setColor(new Color([227, 139, 79, 1]));
+    // markerSymbol.setSize(12);
+    // markerSymbol.outline.setColor(new Color([51, 51, 51, 1]));
+    // markerSymbol.outline.setWidth(1);
+
+    // // (2.B) Make sure the MARKER symbol defined above is used to
+    // // draw polygons that have valid numeric field value.
+    // renderer.addBreak({
+    //     minValue: -9007199254740991,
+    //     maxValue: 9007199254740991,
+    //     symbol: markerSymbol
+    // });
+
     //Feature Later    
     var featureLayer = new FeatureLayer("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51", {
         infoTemplate: new InfoTemplate("Collision:", "${OBJECTID:getData}")
     });
 
     featureLayer.setDefinitionExpression("INCDATE > date'1-1-2015' AND INCDATE < date'1-1-2016'");
+    
     map.addLayer(featureLayer);
+
 
     function executeQueryTask() {
         var queryString = "";
@@ -85,17 +129,14 @@ require([
 
         map.removeLayer(featureLayer);
         featureLayer.setDefinitionExpression(queryString);
+        console.log(modeFilter);
+        setIcons(modeFilter);
         map.addLayer(featureLayer);
+
+
     }
 
     function updateClass() {
-        $("circle").each(function() {
-            // console.log($(this)[0].style.fill);
-
-            $(this).css("fill", "rgb(0,107,148)") //;"rgb(0,107,148)";
-            // console.log($(this)[0].style.fill);
-
-        });
         var val = $(this).val();
         //mode case
         if (val > 0) {
@@ -121,6 +162,17 @@ require([
         }
         $(this).toggleClass('activeButton');
         executeQueryTask();
+    }
+
+    function setIcons(index) {
+        var colors = [new Color([255, 170, 0, .5]), new Color([135, 169, 107, .5]), new Color([0, 107, 148, .5]), new Color([0, 163, 224, .5])]
+        console.log(colors[index]);
+        var symbol = new SimpleMarkerSymbol();
+        symbol.style = SimpleMarkerSymbol.STYLE_CIRCLE;
+        symbol.setSize(8);
+        symbol.setColor(colors[index]);
+        var renderer = new SimpleRenderer(symbol);
+        featureLayer.setRenderer(renderer);
     }
 
     //Search Bar
