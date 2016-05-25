@@ -113,18 +113,9 @@
     <Content Include="index.html" />
     <Content Include="map.html" />
     <Content Include="Images\Thumbs.db" />
-    <Content Include="Packages\css\horizontal_selector.css" />
     <Content Include="Packages\d3\bullet.js" />
     <Content Include="Packages\d3\LICENSE" />
     <Content Include="packages.config" />
-    <Content Include="Packages\img\size_me.png" />
-    <Content Include="Packages\img\slider_1_off.png" />
-    <Content Include="Packages\img\slider_1_on.png" />
-    <Content Include="Packages\img\slider_2_off.png" />
-    <Content Include="Packages\img\slider_2_on.png" />
-    <Content Include="Packages\img\slider_5_off.png" />
-    <Content Include="Packages\img\slider_5_on.png" />
-    <Content Include="Packages\img\slider_repeat.png" />
     <Content Include="Packages\jquery-ui-1.11.4\external\jquery\jquery.js" />
     <Content Include="Packages\jquery-ui-1.11.4\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Packages\jquery-ui-1.11.4\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
@@ -149,7 +140,6 @@
     <Content Include="Packages\jquery-ui-1.11.4\jquery-ui.structure.min.css" />
     <Content Include="Packages\jquery-ui-1.11.4\jquery-ui.theme.css" />
     <Content Include="Packages\jquery-ui-1.11.4\jquery-ui.theme.min.css" />
-    <Content Include="Packages\js\horizontal_selector.js" />
     <Content Include="Scripts\ajax.js" />
     <Content Include="Scripts\bulletSpark.js" />
     <Content Include="Scripts\dashboard.js" />
