@@ -1,6 +1,6 @@
 var modeFilter = 0;
 var injuryFilter = 0;
-var yearFilter = 2015;
+var yearFilter = new Date().getFullYear() - 1;
 var descriptions = [
     {key:"INCDATE", value:"Incident Date"}, 
     {key:"COLLISIONTYPE", value:"Collision Type"}, 
@@ -32,12 +32,29 @@ require([
     });
 
     //Dom manipulation
-    $("select").horizontalSelector();
+    // $("select").horizontalSelector();
 
     var classname = document.getElementsByClassName("filterButton");
     for (var i = 0; i < classname.length; i++) {
         classname[i].addEventListener('click', updateClass, false);
     }
+
+    var currentYear = new Date().getFullYear();
+    for (var i = 2004; i <= currentYear; i++) {
+        if (i == currentYear - 1) {
+            $('#yearSelector').append('<option value="' + i + '" selected>' + i + '</option>');
+        } else {
+            $('#yearSelector').append('<option value="' + i + '">' + i + '</option>');
+        }
+    }
+
+    $("#yearSelector").selectmenu({
+        position: { my : "left bottom", at: "left bottom" },
+        select: function(item) {
+            yearFilter = $('.ui-selectmenu-text')[0].innerHTML;
+            executeQueryTask();
+        }
+    });
 
     //Feature Later    
     var featureLayer = new FeatureLayer("http://gisrevprxy.seattle.gov/arcgis/rest/services/SDOT_EXT/DSG_datasharing/MapServer/51", {
@@ -64,7 +81,7 @@ require([
             queryString += "PEDCOUNT > 0 AND "
         } 
 
-        queryString += "INCDATE > date'1-1-" + yearFilter + "' AND INCDATE < date'1-1-" + (yearFilter + 1) +"'";
+        queryString += "INCDATE > date'1-1-" + yearFilter + "' AND INCDATE < date'1-1-" + (parseInt(yearFilter) + 1) +"'";
 
         map.removeLayer(featureLayer);
         featureLayer.setDefinitionExpression(queryString);
@@ -72,6 +89,13 @@ require([
     }
 
     function updateClass() {
+        $("circle").each(function() {
+            // console.log($(this)[0].style.fill);
+
+            $(this).css("fill", "rgb(0,107,148)") //;"rgb(0,107,148)";
+            // console.log($(this)[0].style.fill);
+
+        });
         var val = $(this).val();
         //mode case
         if (val > 0) {

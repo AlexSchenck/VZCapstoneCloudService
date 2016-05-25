@@ -91,9 +91,58 @@ h6 {
     z-index: 3;
 }
 
-#yearSelector {
-    display: none;
+#yearSelector-button {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 97px !important;
 }
+
+/*#timeSelector {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    bottom: 5%;
+    z-index: 4;
+    background-color: #188FD1;
+    height: 60px;
+    border: 1px solid #A9A9B7;
+    border-radius: 10px;
+}
+
+#timeSelector div {
+    left: 5%;
+}
+
+#yearSlider {
+    top: 30%;
+    width: 90%;
+}
+
+#years {
+    display: table;
+}
+
+.year {
+    display: table-cell;
+    color: white;
+}
+
+#years {
+    width: 94%;
+    text-align: justify;
+    min-width: 500px;
+    margin: 0 auto;
+}
+#years:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+#years .year {
+    display: inline;
+    color: white;
+}*/
 
 #zoom {
     display: none;
