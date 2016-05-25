@@ -68,9 +68,8 @@ require([
     });
 
     featureLayer.setDefinitionExpression("INCDATE > date'1-1-2015' AND INCDATE < date'1-1-2016'");
-    
+    setIcons(modeFilter);
     map.addLayer(featureLayer);
-
 
     function executeQueryTask() {
         var queryString = "";
@@ -126,7 +125,11 @@ require([
     }
 
     function setIcons(index) {
-        var colors = [new Color([255, 170, 0, 1]), new Color([135, 169, 107, 1]), new Color([0, 107, 148, 1]), new Color([0, 163, 224, 1])]
+        var colors = [
+            new Color([255, 170, 0, .3]), 
+            new Color([135, 169, 107, .3]), 
+            new Color([0, 107, 148, .3]), 
+            new Color([0, 163, 224, .3])]
         var symbol = new SimpleMarkerSymbol();
         symbol.style = SimpleMarkerSymbol.STYLE_CIRCLE;
         symbol.setSize(8);
