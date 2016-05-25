@@ -1,14 +1,84 @@
+console.log(d3.selectAll(".section"));
+
+function sleepFor( sleepDuration ){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+}
+resize();
+
+d3.select(window).on('resize', resize);
+
+	// var view = d3.select("#progress").html();
+	// console.log(d3.select("#progress"));
+	// console.log(	d3.select("#runningTotal").html());
+var i;
+function resize() {
+	i = i + 1;
+	var view = d3.select("#progress").html();
+		var outerW = window.outerWidth;
+	var outerH = window.outerHeight;
+	console.log(outerW + " " + outerH + " " + screen.width + " " + screen.height);
+
+	var screenCssPixelRatio = (window.outerWidth - 8) / window.innerWidth;
+if (screenCssPixelRatio >= .46 && screenCssPixelRatio <= .54) {
+  zoomLevel = "-4";
+} else if (screenCssPixelRatio <= .64) {
+  zoomLevel = "-3";
+} else if (screenCssPixelRatio <= .76) {
+  zoomLevel = "-2";
+} else if (screenCssPixelRatio <= .92) {
+  zoomLevel = "-1";
+} else if (screenCssPixelRatio <= 1.10) {
+  zoomLevel = "0";
+} else if (screenCssPixelRatio <= 1.32) {
+  zoomLevel = "1";
+} else if (screenCssPixelRatio <= 1.58) {
+  zoomLevel = "2";
+} else if (screenCssPixelRatio <= 1.90) {
+  zoomLevel = "3";
+} else if (screenCssPixelRatio <= 2.28) {
+  zoomLevel = "4";
+} else if (screenCssPixelRatio <= 2.70) {
+  zoomLevel = "5";
+} else {
+  zoomLevel = "unknown";
+}
+
+console.log(screenCssPixelRatio + " " + i);
+
+}
+
+	// console.log(d3.select("#progress") + " " + view);
+
+	// var outerW = window.outerWidth;
+	// var outerH = window.outerHeight;
+
+	// var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
+	// var widthProgress = outerW * .55;
+	// var heightProgress = outerH * .35;
+	// console.log(widthProgress + " " + heightProgress);
+
+	// // alert("hi");
+	// // d3.select("#progress")
+	// // 		.attr("width", widthProgress)
+	// // 		.attr("height", heightProgress);
+	// var width = parseInt(d3.select("#progress").style('width'), 10);
+	// console.log(xScale.range);
+	// xScale.range([0, widthProgress - paddingProgress.left - 10 - paddingProgress.right]);
+	// console.log(xScale);
+
+
 var outerW = window.outerWidth;
 var outerH = window.outerHeight;
-// d3.select(".progressSection").attr("width", "700px").attr("height", "300px");
+console.log(outerW + " " + outerH);
 
 var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
 var widthProgress = outerW * .55;
-var heightProgress = outerH * .35;
+var heightProgress = outerH * .325; // make this based off of the svg that it's in
 
 var xScale = d3.scale.linear()
 	.domain([2004, 2030])
-	.range([0, widthProgress - paddingProgress.left - paddingProgress.right]);
+	.range([0, widthProgress - paddingProgress.left - 10 - paddingProgress.right]);
 
 var xAxis = d3.svg.axis()
 				.scale(xScale)
@@ -16,12 +86,16 @@ var xAxis = d3.svg.axis()
 
 var svgWidth = widthProgress;
 var svgHeight = heightProgress + paddingProgress.top;
+// var svgWidth = d3.selectAll(".progressSection").attr("width");
+console.log(svgWidth);
 
 var svg = d3.select("#progress")
 			.append("svg")
     		.attr("preserveAspectRatio", "xMinYMin meet")
 			.attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
 			.classed("svg-content", true); 
+			// .attr("width", "100%")
+			// .attr("height", "100%");
 
 
 svg.append("g") 	
@@ -44,6 +118,9 @@ var div = d3.select("body").append("div")
 
 d3.json("./Data/progress.json", function(error, data) {
 	console.log(error);
+
+	// chill for a second until the progress data is loaded
+	// sleepFor(2000);
 
 	// sets the running total of collisions in seattle. 
 	// Does not pertain to progress bar	
@@ -155,7 +232,7 @@ d3.json("./Data/progress.json", function(error, data) {
             div.transition()		
                 .duration(200)		
                 .style("opacity", 1);		
-            div.html("Vision Zero Seattle Start Date")
+            div.html("Vision Zero Seattle start date")
             	.style("left", xScale(2015))
             	.style("top", yScale(0));	
             })					
@@ -200,13 +277,6 @@ function drawFatalDots(data) {
     		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 4);
 		});	
 }
-
-
-
-
-
-
-
 
 
 
@@ -271,7 +341,6 @@ function drawFatalDots(data) {
 //   if (tempY < 0){tempY = 0}  
 //   return true
 // }
-
 
 
 

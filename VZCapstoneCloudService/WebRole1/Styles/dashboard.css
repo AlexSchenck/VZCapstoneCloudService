@@ -5,45 +5,9 @@ html, body {
 	font-family: Lato, sans-serif;
 }
 
-#header {
-	width: 100%;
-	height: 11%;
-}
-
 body {
 	background-color: rgba(99, 102, 106, .05);
-	overflow-y: hidden;
-}
-
-/*each section is for the bottom 3 charts*/
-.section {
-	width: 31%;
-	height: 37%;
-	min-height: 250px;
-	float: left;
-	/*min-height: 300px;*/
-}
-
-/* top right 4 squares total area*/
-#full {
-	/*don't touch*/
-	height: 43%;
-	width: 42%;
-	float: left;
-	/*don't touch. this is for the top right section size/positioning overall*/
-	margin-left: 1%;
-	margin-top: 1%;
-}
-
-/*progress chart*/
-.progressSection {
-	/*don't touch*/
-	width: 54%;
-	height: 44.5%;
-	/*min-height: 330px;*/
-	float: right;
-	margin-right: 1%;
-	
+	/*overflow-y: hidden;*/
 }
 
 /*technically the bottom section*/
@@ -57,11 +21,9 @@ body {
 	float: left;
 	width: 47%;
 	height: 47.7%;
-	min-height: 150px;
 	padding: 1%;
-	/*margin: 2.25%;*/
 	background-color: #ffffff;
-	border-radius: 2px;
+	border-radius: .25vw;
 
 	-moz-box-shadow: 0 0 3px #ccc;
 	-webkit-box-shadow: 0 0 3px #ccc;
@@ -70,12 +32,12 @@ body {
 
 /*positioning styling for 4 boxes*/
 #topLeft { 
-	margin-bottom: 2%;
-	margin-right: 2%;
+	margin-bottom: .8vw;
+	margin-right: .8vw;
 }
 
 #bottomRight {
-	margin-left: 2%;
+	margin-left: .8vw;
 }
 
 #bottom {
@@ -90,24 +52,51 @@ body {
 /* styling for each box, border and padding */
 .section, .progressSection {
 	/* maybe just change back to padding*/
-	padding-top: .5%;
-	padding-right: .5%;
-	padding-left: .5%;
-	margin-left: 1%;
-	margin-top: 1%;
+	padding-top: .4vw;
+	padding-right: .4vw;
+	padding-left: .4vw;
+	margin-left: 1vw;
+	margin-top: 1vw;
 	background-color: #ffffff;
-	border-radius: 2px;
+	border-radius: .25vw;
 
 	-moz-box-shadow: 0 0 3px #ccc;
 	-webkit-box-shadow: 0 0 3px #ccc;
 	box-shadow: 0 0 3px #ccc;
 }
 
+/*progress chart*/
+.progressSection {
+	/*don't touch*/
+	width: 53vw;
+	height: 22.65vw;
+	float: left;
+	
+}
+
+/*each section is for the bottom 3 charts*/
+.section {
+	width: 30.7vw;
+	height: 19vw;
+	float: left;
+}
+
+/* top right 4 squares total area*/
+#full {
+	/*don't touch*/
+	height: 21.75vw;
+	width: 41.6vw;
+	float: left;
+	/*don't touch. this is for the top right section size/positioning overall*/
+	margin-left: 1vw; 
+	margin-top: 1vw;
+	/*margin-right: 1vw;*/
+}
 
 h1 {
 	font-size: 1.25vw;
-	margin-top: 5px;
-	margin-left: 5px;
+	margin-top: .5vw;
+	margin-left: .5vw;
 	margin-bottom: 0px;
 	font-family: "Open Sans Condensed", sans-serif;
 }
@@ -115,11 +104,12 @@ h1 {
 h2 {
 	font-size: 1vw;
 	color: #63666A;
-	margin-left: 5px;
+	margin-left: .5vw;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	font-family: Lato, sans-serif;
 	font-weight: normal;
+	
 }
 
 h3 {
@@ -132,14 +122,10 @@ h3 {
     font-family: Lato, sans-serif;
 }
 
-.currentYear text {
-	font-size: 60px;
-}
-
-p {
+#full p {
 	text-align: center;
-	font-size: 2.75vw;
-	margin-top: 3%;
+	font-size: 2vw;
+	margin-top: 1vw;
 	margin-bottom: 0px;
 }
 
@@ -148,7 +134,7 @@ p {
 	display: inline-block;
 	position: relative;
 	width: 100%;
-	padding-bottom: 100%; 
+	padding-bottom: 45%; 
 	vertical-align: middle; 
 	overflow: hidden; 
 }
@@ -161,21 +147,17 @@ p {
 }
 
 
-#pedImages { 
-	/*height: 200px;*/
-}
-
 div.tooltip {	
     position: absolute;			
     text-align: center;			
     				
-    padding: 3px;				
+    padding: .3vw;				
     font: Lato, sans-serif;		
-    font-size: 12px;
+    font-size: .8vw;
     color: white;
     background: #63666A;	
-    border: 1px solid white;		
-    border-radius: 8px;			
+    border: .1vw solid white;		
+    border-radius: .25vw;			
     pointer-events: none;
     z-index: 100;	
     display: inline-block;

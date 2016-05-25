@@ -16,8 +16,8 @@
 }
 
 #ageBullets, #contributingFactorsBullets {
-	padding-top: 4%;
-	margin-right: 3%;
+	padding-top: 2%;
+	margin-right: 3.05%;
 }
 
 .svg-container-bullet {
@@ -44,13 +44,14 @@
 }
 
 .svg-container-spark-block { 
-	padding-top: 4%;
-	width: 27%;
+	padding-top: 2%;
+	width: 24%;
 }
 
 .svg-container-spark { 
 	width: 100%;
-	padding-top: 31.25%; 
+	padding-top: 30.5%; 
+	margin: 2.75%;
 }
 
 .svg-container-title { 
@@ -79,4 +80,26 @@
 	position: relative;
 	vertical-align: middle; 
 	overflow: hidden; 
+}
+
+.svg-container-progress {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
+.svg-container-progress {
+	width: 100%;
+	height: 85%;
+	/*padding: 100%;*/
+
+}
+
+.svg-container-progress-sub {
+	position: relative;
+	width: 100%;
+	padding-bottom: 40%; 
+	vertical-align: middle; 
+	overflow: hidden;
 }
