@@ -47,7 +47,7 @@ function drawTitles(name, title, header) {
 	        .attr("viewBox", "0 -12 100 20")
 	        .classed("svg-content", true)
 	    .append("text")
-		    .style("font-size", 10)
+		    .style("font-size", 11)
 		    .style("font-family", "Open Sans Condensed")
 		    .text("Past 5 years");
 }
@@ -251,7 +251,7 @@ function drawSparkLines(name) {
 	    for (var i = 1; i <= data.length; i++) {
 	        var svgContainer = d3.select("#" + name + "Spark" + i).append("svg")
 	            .attr("preserveAspectRatio", "xMinYMin meet")
-	            .attr("viewBox", "0 0 110 40")
+	            .attr("viewBox", "0 0 95 30")
 	            .classed("svg-content", true)
 	             .on("mouseover", function(d) {	
 		            div.transition()		

@@ -10,38 +10,6 @@ body {
 	/*overflow-y: hidden;*/
 }
 
-/*each section is for the bottom 3 charts*/
-.section {
-	width: 30.7vw;
-	height: 22vw;
-	float: left;
-}
-
-/* top right 4 squares total area*/
-#full {
-	/*don't touch*/
-	height: 24.75vw;
-	width: 41.6vw;
-	float: left;
-	/*don't touch. this is for the top right section size/positioning overall*/
-	margin-left: 1vw; 
-	margin-top: 1vw;
-	/*margin-right: 1vw;*/
-}
-
-/*progress chart*/
-.progressSection {
-	/*don't touch*/
-	/*width: 54%;*/
-	width: 53vw;
-	height: 25.65vw;
-	/*height: 44.5%;*/
-	/*min-height: 330px;*/
-	float: left;
-	/*margin-right: 1vw;*/
-	
-}
-
 /*technically the bottom section*/
 #middle {
 	/* so that the bottom section is on it's own line*/
@@ -97,6 +65,33 @@ body {
 	box-shadow: 0 0 3px #ccc;
 }
 
+/*progress chart*/
+.progressSection {
+	/*don't touch*/
+	width: 53vw;
+	height: 22.65vw;
+	float: left;
+	
+}
+
+/*each section is for the bottom 3 charts*/
+.section {
+	width: 30.7vw;
+	height: 19vw;
+	float: left;
+}
+
+/* top right 4 squares total area*/
+#full {
+	/*don't touch*/
+	height: 21.75vw;
+	width: 41.6vw;
+	float: left;
+	/*don't touch. this is for the top right section size/positioning overall*/
+	margin-left: 1vw; 
+	margin-top: 1vw;
+	/*margin-right: 1vw;*/
+}
 
 h1 {
 	font-size: 1.25vw;
@@ -139,7 +134,7 @@ h3 {
 	display: inline-block;
 	position: relative;
 	width: 100%;
-	padding-bottom: 100%; 
+	padding-bottom: 45%; 
 	vertical-align: middle; 
 	overflow: hidden; 
 }

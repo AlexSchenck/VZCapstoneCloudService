@@ -6,7 +6,7 @@ var dataset;
 
 
 var w = outerW / 3 - 60;       
-var h = outerH / 3 - 60;     
+var h = outerH / 3 - 80;     
 var previousBarColor;
 console.log(w / 13 / 2.5);
 
