@@ -182,6 +182,7 @@ function getData(id) {
                 html += toTitleCase(resultData[key]) + "<br />";
             } else if (key === "INCDATE") {
                 var dateString = new Date(resultData[key]).toString();
+                dateString = dateString.substring(0, dateString.length - 23);
                 html += dateString.split("GMT")[0] + "<br />";
             } else {
                 html += resultData[key] + "<br />";
