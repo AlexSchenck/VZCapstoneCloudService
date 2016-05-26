@@ -1,42 +1,44 @@
 var outerW = screen.width;
 var outerH = screen.height;
 
-// d3.select("#topLeft").style("min-height", outerH * .47 * .35);
-// d3.select("#topRight").style("min-height", outerH * .47 * .35);
-// d3.select("#bottomLeft").style("min-height", outerH * .47 * .35);
-// d3.select("#bottomRight").style("min-height", outerH * .47 * .35);
-
-
+// loads in the data for the pedestrian and cyclist
+// serious injury and fatalities rates
+// bikes are first, pedestrians are second
 d3.json("./Data/injuryRates.json", function(error, data) {
 	console.log(error);
 
+	// manually loads in each data
 	var bike = data[0];
 	var ped = data[1];
 
+	// gets the numerator and denominator for each of the ratios
+	var bikeInjury = bike.bicInjury;
+	var bikeTotal = bike.bicParticipant;
 	var pedInjury = ped.pedInjury;
 	var pedTotal = ped.pedParticipant;
 
-	var bikeInjury = bike.bicInjury;
-	var bikeTotal = bike.bicParticipant;
 
-	var outerW = window.outerWidth * .42 * .49;
-	var pedH = window.outerHeight * .43 * .477 * .35;
+	var pedW = window.outerWidth * .42 * .49;
+	var pedH = window.outerHeight * .43 * .477 * .17;
 
-	var sizeOfImages = outerW / 30 * 3;
-	var spaceBetween = outerW / 9.8;
-	var heightOfImages = pedH / 4;
+	console.log(pedW + " " + pedH);
+
+	var sizeOfImages = pedW / 30 * 3;
+	var spaceBetween = pedW / 9.8;
+	var heightOfImages = 0;
 
 	//47 of 42 percent
 	var pedImages = d3.select("#pedImages").append("svg")
 					.attr("preserveAspectRatio", "xMinYMin meet")
-		            .attr("viewBox", "0 0 " + outerW + " " + pedH)
+		            .attr("viewBox", "0 0 " + pedW + " " + pedH)
 		            .classed("svg-content", true); 
 
-
+    // rounded value of the percentage for the number of images
+    // to display, then displays the actual number
 	var fatalSIRatio = Math.round(pedInjury / pedTotal * 10);
-
 	d3.select("#pedSurvivalRatio").html(pedInjury + "/" + pedTotal);
 
+	// black icons for fatalities and serious injuries
 	for (var i = 0; i < fatalSIRatio; i++) {
 		pedImages.append("svg:image")
 			.attr("xlink:href", "./Images/pedestrian-black.svg")
@@ -46,6 +48,7 @@ d3.json("./Data/injuryRates.json", function(error, data) {
 		    .attr("height", sizeOfImages); 
 	}
 
+	// green icons for no injuries 
 	for (var i = fatalSIRatio; i < 10; i++) {
 		pedImages.append("svg:image")
 			.attr("xlink:href", "./Images/pedestrian-green.svg")
@@ -55,18 +58,16 @@ d3.json("./Data/injuryRates.json", function(error, data) {
 		    .attr("height", sizeOfImages); 
 	}
 
-
-	sizeOfImages = outerW / 30 * 3;
-	spaceBetween = outerW / 10;
+	// same for the cyclists
+	sizeOfImages = pedW / 30 * 3;
+	spaceBetween = pedW / 10;
 
 	fatalSIRatio = Math.round(bikeInjury / bikeTotal * 10);
-
-
 	d3.select("#bikeSurvivalRatio").html(bikeInjury + "/" + bikeTotal);
 
 	var bikeImages = d3.select("#bikeImages").append("svg")
 					.attr("preserveAspectRatio", "xMinYMin meet")
-		            .attr("viewBox", "0 0 " + outerW + " " + pedH)
+		            .attr("viewBox", "0 0 " + pedW + " " + pedH)
 		            .classed("svg-content", true); 
 		            
 	for (var i = 0; i < fatalSIRatio; i++) {
@@ -86,5 +87,4 @@ d3.json("./Data/injuryRates.json", function(error, data) {
 		    .attr("width", sizeOfImages)
 		    .attr("height", sizeOfImages); 
 	}
-
 });

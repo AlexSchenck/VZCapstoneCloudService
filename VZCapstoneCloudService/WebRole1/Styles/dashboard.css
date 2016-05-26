@@ -7,90 +7,6 @@ html, body {
 
 body {
 	background-color: rgba(99, 102, 106, .05);
-	/*overflow-y: hidden;*/
-}
-
-/*technically the bottom section*/
-#middle {
-	/* so that the bottom section is on it's own line*/
-	clear: both;
-}
-
-/*for each of the 4 boxes*/
-.currentYear {
-	float: left;
-	width: 47%;
-	height: 47.7%;
-	padding: 1%;
-	background-color: #ffffff;
-	border-radius: .25vw;
-
-	-moz-box-shadow: 0 0 3px #ccc;
-	-webkit-box-shadow: 0 0 3px #ccc;
-	box-shadow: 0 0 3px #ccc;
-}
-
-/*positioning styling for 4 boxes*/
-#topLeft { 
-	margin-bottom: .8vw;
-	margin-right: .8vw;
-}
-
-#bottomRight {
-	margin-left: .8vw;
-}
-
-#bottom {
-	clear: both;
-}
-
-#top .currentYear, #bottom .currentYear {
-	float: left;
-	/*min-height: 150px;
-	max-height: 200px;*/
-}
-/* styling for each box, border and padding */
-.section, .progressSection {
-	/* maybe just change back to padding*/
-	padding-top: .4vw;
-	padding-right: .4vw;
-	padding-left: .4vw;
-	margin-left: 1vw;
-	margin-top: 1vw;
-	background-color: #ffffff;
-	border-radius: .25vw;
-
-	-moz-box-shadow: 0 0 3px #ccc;
-	-webkit-box-shadow: 0 0 3px #ccc;
-	box-shadow: 0 0 3px #ccc;
-}
-
-/*progress chart*/
-.progressSection {
-	/*don't touch*/
-	width: 53vw;
-	height: 22.65vw;
-	float: left;
-	
-}
-
-/*each section is for the bottom 3 charts*/
-.section {
-	width: 30.7vw;
-	height: 19vw;
-	float: left;
-}
-
-/* top right 4 squares total area*/
-#full {
-	/*don't touch*/
-	height: 21.75vw;
-	width: 41.6vw;
-	float: left;
-	/*don't touch. this is for the top right section size/positioning overall*/
-	margin-left: 1vw; 
-	margin-top: 1vw;
-	/*margin-right: 1vw;*/
 }
 
 h1 {
@@ -102,7 +18,7 @@ h1 {
 }
 
 h2 {
-	font-size: 1vw;
+	font-size: .9vw;
 	color: #63666A;
 	margin-left: .5vw;
 	margin-top: 0px;
@@ -112,23 +28,40 @@ h2 {
 	
 }
 
-h3 {
-	font-size: 12px;
-	margin: 1px;
-	font-family: "Open Sans Condensed", sans-serif;
+/*technically the bottom section*/
+#middle {
+	/* so that the bottom section is on it's own line*/
+	clear: both;
+}
+
+.section, .progressSection {
+	padding-top: .4vw;
+	padding-right: .4vw;
+	padding-left: .4vw;
+	margin-left: 1vw;
+	margin-top: 1vw;
+	background-color: #ffffff;
+	border-radius: .25vw;
+
+	box-shadow: 0 0 .5vw #ccc;
+}
+
+.progressSection {
+	width: 53vw;
+	height: 22.8vw;
+	float: left;
+	
+}
+
+.section {
+	width: 30.7vw;
+	height: 19vw;
+	float: left;
 }
 
 .axis text, text {
     font-family: Lato, sans-serif;
 }
-
-#full p {
-	text-align: center;
-	font-size: 2vw;
-	margin-top: 1vw;
-	margin-bottom: 0px;
-}
-
 
 .svg-container { 
 	display: inline-block;
@@ -145,7 +78,6 @@ h3 {
 	top: 0;
 	left: 0;
 }
-
 
 div.tooltip {	
     position: absolute;			

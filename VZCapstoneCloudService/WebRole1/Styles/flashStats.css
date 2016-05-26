@@ -1,0 +1,48 @@
+#bottom {
+	clear: both;
+}
+
+#bottomRight {
+	margin-left: .8vw;
+}
+
+/*for each of the 4 boxes*/
+.currentYear {
+	float: left;
+	width: 47%;
+	height: 47.7%;
+	padding: 1%;
+	background-color: #ffffff;
+	border-radius: .25vw;
+
+	box-shadow: 0 0 .5vw #ccc;
+}
+
+/* top right 4 squares total area*/
+#full {
+	/*don't touch*/
+	height: 21.75vw;
+	width: 41.6vw;
+	float: left;
+	/*this is for the top right section size/positioning overall*/
+	margin-left: 1vw; 
+	margin-top: 1vw;
+}
+
+/* styling for the actual stat */
+#full p {
+	text-align: center;
+	font-size: 2vw;
+	margin-top: .9vw;
+	margin-bottom: .5vw;
+}
+
+#top .currentYear, #bottom .currentYear {
+	float: left;
+}
+
+/*positioning styling for 4 boxes*/
+#topLeft { 
+	margin-bottom: .8vw;
+	margin-right: .8vw;
+}

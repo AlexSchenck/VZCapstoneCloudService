@@ -1,14 +1,20 @@
 <html>
 	<head>
 		<title>Vision Zero Capstone</title>
-		<link rel=”shortcut icon” href="/Images/favicon.ico" type="image/x-icon" />
-		<script src="Scripts/dashboard.js"></script>
+		<!-- Authors:
+			Joy Zhang - project manager
+			Alex Schenck - Design lead and Data guy
+			Harrison McDonough - developer (map)
+			Madison Ikeda - developer (dashboard)
+		 -->
+		<link rel="shortcut icon" href="./Images/favicon.ico" type="image/x-icon" />
 		<script src="Packages/d3/d3.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="Styles/stackedBarChartStyle.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/bulletSpark.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/dashboard.css"/>
 		<link rel="stylesheet" type="text/css" href="Styles/header.css"/>
-		<script src="Packages/d3/bullet.js"></script>
+		<link rel="stylesheet" type="text/css" href="Styles/flashStats.css"/>
+		<script src="./Packages/d3/bullet.js"></script>
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
 	</head>
@@ -59,9 +65,9 @@
 		<div class="progressSection">
 			<h1>Vision Zero Seattle Progress</h1>
 			<h2>Total number of fatalities and serious injuries.</h2>
-			<!-- <div id="progressContainer" class="svg-container-progress"> -->
-				<div id="progress" class="svg-container-progress-sub"></div>
-			<!-- </div> -->
+			<div id="progressContainer">
+				<div id="progress" class="svg-container-progress"></div>
+			</div>
 		</div>
 	
 		<div id="middle">
@@ -77,7 +83,7 @@
 					<div id="age4" class="svg-container-bullet"></div>
 					<div id="ageAxis" class="svg-container-bullet"></div>
 				</div>
-			    <div id="ageSparkId" class="svg-container-spark-block">
+			    <div id="ageSparkId">
 					<div id="ageSparkTitle" class="svg-container-title"></div>
 					<div id="ageSpark1" class="svg-container-spark"></div>
 					<div id="ageSpark2" class="svg-container-spark"></div>
@@ -105,7 +111,7 @@
 					<div id="contributingFactors4" class="svg-container-bullet"></div>
 					<div id="contributingFactorsAxis" class="svg-container-bullet"></div>
 				</div>
-			    <div id="contributingFactorsSparkId" class="svg-container-spark-block">
+			    <div id="contributingFactorsSparkId">
 					<div id="contributingFactorsSparkTitle" class="svg-container-title"></div>
 					<div id="contributingFactorsSpark1" class="svg-container-spark"></div>
 					<div id="contributingFactorsSpark2" class="svg-container-spark"></div>
@@ -115,10 +121,10 @@
 				</div>
 			</div>
 		</div>
-	
+
+		<script src="Scripts/survival.js"></script>
 		<script src="Scripts/stackedBarChart.js"></script>
 		<script src="Scripts/bulletSpark.js"></script>
-		<script src="Scripts/survival.js"></script>
 		<script src="Scripts/progress.js"></script>
 	</body>
 </html>
