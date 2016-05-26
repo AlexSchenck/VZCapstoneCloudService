@@ -16,7 +16,7 @@ var xAxis = d3.svg.axis()
 			    .tickFormat(d3.format("d"));	
 
 var svgWidth = widthProgress;
-var svgHeight = heightProgress + paddingProgress.top;
+var svgHeight = heightProgress + paddingProgress.top + 20;
 
 var svg = d3.select("#progress")
 			.append("svg")

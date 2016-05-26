@@ -1,7 +1,7 @@
 var padding = {top: 40, right: 40, bottom: 60, left:40};
 
 var w = outerW / 3 - 60;       
-var h = outerH / 3 - 95;     
+var h = outerH / 3 - 80;     
 var previousBarColor;
 
 //Set up stack method
