@@ -38,22 +38,9 @@ html, body {
 #filters button {
     float: left;
     background-color: #fff;
-
-    color: #3f3f3f;
-/*    height: 2.5vw;
-*/    
+    color: #3f3f3f;    
     background-color: #fff;
-    /*padding-bottom: .5vw;
-    padding-top: .5vw;
-    padding-left: .77vw;
-    padding-right: .77vw;*/
-    /*margin-bottom: 0;*/
-    /*font-size: 1vw;*/
-    /*font-weight: 600;*/
-    /*text-align: center;*/
-    /*white-space: nowrap;
-    vertical-align: middle;
-    */border: 2px solid #a8a8a8;
+    border: 2px solid #a8a8a8;
     border-radius: 3px;
 }
 
