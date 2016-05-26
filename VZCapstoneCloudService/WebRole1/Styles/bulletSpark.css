@@ -13,11 +13,15 @@
 
 #ageSparkId, #contributingFactorsSparkId {
   	float: right;
+	width: 24%;
 }
 
 #ageBullets, #contributingFactorsBullets {
-	padding-top: 2%;
 	margin-right: 3.05%;
+}
+
+#ageSparkId, #contributingFactorsSparkId, .svg-container-block {
+	padding-top: 2%;
 }
 
 .svg-container-bullet {
@@ -46,12 +50,6 @@
 
 .svg-container-block { 
 	width: 70%;
-	height: 70%;
-}
-
-.svg-container-spark-block { 
-	padding-top: 2%;
-	width: 24%;
 }
 
 .svg-container-spark { 
@@ -101,13 +99,9 @@
 
 .svg-container-progress {
 	width: 100%;
-	height: 85%;
+	padding-top: 39%;
 }
 
-.svg-container-progress-sub {
-	position: relative;
-	/*width: 100%;*/
-	padding-bottom: 40%; 
-	vertical-align: middle; 
-	overflow: hidden;
+#progressContainer {
+	width: 100%;
 }

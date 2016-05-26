@@ -1,45 +1,34 @@
-
-
-// var tooltip = d3.select('#top')            // NEW 
-//   .append('div')                             // NEW
-//   .attr('class', 'tooltip');                 // NEW
-
-// tooltip.append('div')                        // NEW
-//   .attr('class', 'label');                   // NEW
-
-// tooltip.append('div')                        // NEW
-//   .attr('class', 'count');                   // NEW
-
-// tooltip.append('div')                        // NEW
-//   .attr('class', 'percent');                 // NEW
-
-
-
+// various labels associated with age and contributing factors
+// each 0 index is age, each 1st index is contributing factor
 var names = ["age", "contributingFactors"];
 var titles = ["Age (Years)", "Contributing Factor"];
 var headers = ["Drivers", "Frequency"];
 var labels = ["drivers", "collisions involving fatatilies and serious injuries"];
-
-// alert(10vw + " " );
+var currentYear = 2015;
 
 var margin = {top: 5, right: 40, bottom: 5, left: 80};
 var widthFull = 300;
 var width = widthFull - margin.left - margin.right;
 var height = 30 + (((width + margin.left + margin.right) - 250) / 5) - margin.top - margin.bottom;
 
+// function for drawing bullet charts
 var chart = d3.bullet()
     .width(width)
     .height(height);
 
+// draws the keys in the collisions by age and 
+// contributing factors sections
 drawBulletKey();
 
+// draws each component of the collisions by age and
+// contributing factors section: bullet chart, titles and spark lines
 for (var i = 0; i < names.length; i++) {
 	drawBulletCharts(names[i], labels[i]);
 	drawTitles(names[i], titles[i], headers[i]);
 	drawSparkLines(names[i]);
 }
 
-// draws the title of the spark lines 
+// draws the title of the bullet charts spark lines 
 function drawTitles(name, title, header) {
     d3.select("#" + name + "BulletTitle").append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
@@ -92,7 +81,7 @@ function drawBulletKey() {
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
         .style("font-weight", "normal")
-        .text("2015");
+        .text("" + currentYear);
 
     key.append("line")
         .attr("transform", "translate(" + (margin.right + 66) + "," + (margin.top * 5 + 2) + ")")
@@ -108,15 +97,15 @@ function drawBulletKey() {
         .attr("y", heightOfKey)
         .style("font-size", fontSizeOfKey)
         .style("font-weight", "normal")
-        .text("2014");
+        .text((currentYear - 1) + "");
 }
 
+// draws the bullet charts for age and contributing factors
 function drawBulletCharts(name, label) {
-	// var name = "age";
 	d3.json("./Data/" + name + ".json", function(error, data) {
 		if (error) throw error;
 
-	    // draws all of the bullet charts manually so that they are able to scale
+	    // draws all of the bullet charts
 	    for (var i = 1; i <= data.length; i++) {
 	        //establishes svg size
 	    	var svg = d3.select("#" + name + i).selectAll("svg")
@@ -124,7 +113,7 @@ function drawBulletCharts(name, label) {
 	    	.enter().append("svg")
 	    	  	.attr("class", "bullet")
 	            .attr("preserveAspectRatio", "xMinYMin meet")
-	            .attr("viewBox", "0 0 " + (width + margin.left + margin.right + 5) + " " + (height + 10))
+	            .attr("viewBox", "0 0 " + (widthFull + 5) + " " + (height + 10))
 	            .classed("svg-content", true); 
 	    	
 	    	// adds the title to the left side of each bullet chart
@@ -149,7 +138,7 @@ function drawBulletCharts(name, label) {
 		            div.html(d.title);
 		        })					
 		        .on("mousemove", function(){
-					return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+					return div.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");})				
 				.on("mouseout", function(d) {		
 		            div.transition()		
 		                .duration(500)		
@@ -160,8 +149,6 @@ function drawBulletCharts(name, label) {
 		        svg.append("g")
 		            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")")
 		            .call(chart);
-
-		        var currentYear = 2015;
 
 		        // creates tooltip for each of the blue lines
 		        d3.selectAll("#" + name + "Bullets .bullet .measure.s0")
@@ -208,7 +195,7 @@ function drawBulletCharts(name, label) {
 	    // domain that the bullet charts are all scaled to
 	    var bulletScale = d3.scale.linear()
 	        .domain([0, range])
-	        .range([0, width]);
+	        .range([0, width - 1]);
 
 
 	    // adds the scale at the bottom with ticks 
@@ -217,7 +204,7 @@ function drawBulletCharts(name, label) {
 	            .attr("viewBox", "0 0 " + (width + margin.left + margin.right + 5) + " " + (height + 10))
 	            .classed("svg-content", true)
 	        .append("g")
-	        	.attr("transform", "translate(" + (margin.left + margin.right) + "," + 0 + ")")
+	        	.attr("transform", "translate(" + (margin.left + margin.right + 1) + "," + 0 + ")")
 	            .attr("class", "axis")
 	            .call(d3.svg.axis()
 	               .scale(bulletScale)
@@ -227,6 +214,7 @@ function drawBulletCharts(name, label) {
 	});
 }
 
+// draws the spark lines
 function drawSparkLines(name) {
 	// draws the spark lines
 	var widthOfSpark = 20;
@@ -238,11 +226,14 @@ function drawSparkLines(name) {
 	d3.json("./Data/" + name + "Spark.json", function(error, data) {
 	    if (error) throw error;
 
+	    // gets the start date and to coerce the read in values
+	    // to the correct height. 
 	    var startDate = data[0][0].date;
 
 
 	    // coercing each value to an integer for the date
 	    // and an integer for the y value
+	    // y values are flattened slightly to fit into the view of each box
 	    for (var i = 0; i < data.length; i++) {
 	        var maxHeight = 30;
 	        var max = d3.max(data[i], function(d) { return d.yValue; });
@@ -251,7 +242,7 @@ function drawSparkLines(name) {
 	            shift = 1;
 	        }
 	        data[i].forEach(function(d) {
-	            d.date = (widthOfSpark/ 3 * 2) * (+d.date - startDate);
+	            d.date = (widthOfSpark / 3 * 2) * (+d.date - startDate);
 	            currentValue[i] = d.yValue;  
 	            d.yValue = (maxHeight * shift - +d.yValue) / 2;   
 	            if (d.yValue < 2) {
@@ -278,7 +269,7 @@ function drawSparkLines(name) {
 		            div.html("Trend line of the last 5 years");
 		        })					
 		        .on("mousemove", function(){
-					return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+					return div.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");})				
 				.on("mouseout", function(d) {		
 		            div.transition()		
 		                .duration(500)		
@@ -289,10 +280,12 @@ function drawSparkLines(name) {
 
 	    // function for drawing a line. Linear is the style
 	    // of the line that's being drawn
+	    // keep it at linear or the circles will be off
 	    var lineFunction = d3.svg.line()
 	        .x(function(d) { return d.date; })
 	        .y(function(d) { return d.yValue; })
 	        .interpolate("linear");
+
 
 	    // for each container, add a spark line with 
 	    // the data associated with that index
@@ -309,6 +302,7 @@ function drawSparkLines(name) {
 	            .attr("fill", "none");
 			   
 	        svgContainer.append("circle")
+	        	// .attr("fill", "#00A3E0")
 	            .attr("cx", xCircle)
 	            .attr("cy", yCircle)
 	            .attr("r", 2);
@@ -320,9 +314,10 @@ function drawSparkLines(name) {
 	            .text(currentValue[i]);
 	    }
 
+	    // scale for spark lines axis
 	    var years = d3.time.scale()
 	        .domain([new Date(startDate, 0, 1), new Date(startDate + 4, 0, 1)])
-	        .rangeRound([0, width / 2]);
+	        .rangeRound([0, 105]);
 
 	    var svgContainer = d3.select("#" + name + "SparkKey").append("svg")
 	            .attr("preserveAspectRatio", "xMinYMin meet")

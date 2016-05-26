@@ -1,5 +1,5 @@
-var outerW = window.outerWidth;
-var outerH = window.outerHeight;
+// var outerW = window.outerWidth;
+// var outerH = window.outerHeight;
 
 var padding = {top: 40, right: 40, bottom: 60, left:40};
 var dataset;
