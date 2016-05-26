@@ -3,18 +3,13 @@ function sleepFor( sleepDuration ){
     while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
 
-
-// var outerW = window.outerWidth;
-// var outerH = window.outerHeight;
-// console.log(outerW * .4 + " " + outerH);
-
 var paddingProgress = {top: 40, right: 40, bottom: 60, left:50};
 var widthProgress = outerW * .45;
-var heightProgress = outerH * .25; // make this based off of the svg that it's in
+var heightProgress = outerH * .26; // make this based off of the svg that it's in
 
 var xScale = d3.scale.linear()
 	.domain([2004, 2030])
-	.range([0, widthProgress - paddingProgress.left - 10 - paddingProgress.right]);
+	.range([0, widthProgress - paddingProgress.left - paddingProgress.right]);
 
 var xAxis = d3.svg.axis()
 				.scale(xScale)
@@ -22,10 +17,6 @@ var xAxis = d3.svg.axis()
 
 var svgWidth = widthProgress;
 var svgHeight = heightProgress + paddingProgress.top;
-// // var svgWidth = d3.selectAll(".progressSection").attr("width");
-
-
-// console.log(svgWidth + " " + svgHeight);
 
 var svg = d3.select("#progress")
 			.append("svg")
@@ -36,15 +27,14 @@ var svg = d3.select("#progress")
 svg.append("g") 	
 	.attr("class","axis")
 	// adds x axis and moves to correct height
-	.attr("transform","translate(" + paddingProgress.left + "," + (heightProgress - paddingProgress.bottom) + ")")
+	.attr("transform","translate(" + paddingProgress.left + "," 
+		  + (heightProgress - paddingProgress.bottom) + ")")
 	.call(xAxis)
   .selectAll("text")
     .style("text-anchor", "middle");
 
 var start = 0;
 var yScale;
-
-var runningTotalSoFar = 0; 
 
 // Define the div for the tooltip
 var div = d3.select("body").append("div")	
@@ -59,9 +49,8 @@ d3.json("./Data/progress.json", function(error, data) {
 
 	// sets the running total of collisions in seattle. 
 	// Does not pertain to progress bar	
-	// var temp = data[0];
-	// console.log(temp[temp.length - 1].y);
-	runningTotalSoFar = data[data.length - 1].y;	
+
+	var runningTotalSoFar = data[data.length - 1].y;	
 	d3.select("#runningTotal").html(runningTotalSoFar);
 
 	start = data[0].y;
@@ -74,6 +63,8 @@ d3.json("./Data/progress.json", function(error, data) {
 		});
 	}
 
+	// find the max value and make the y axis tall enough
+	// multiples of 100
 	var max = d3.max(data, function(d) { return d.y; });
 	max = (Math.round(max / 100)) * 100
 	console.log(max);
@@ -90,7 +81,8 @@ d3.json("./Data/progress.json", function(error, data) {
 	// draws the y axis				 
 	svg.append("g")
 		.attr("class","y axis")
-		.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
+		.attr("transform","translate(" + paddingProgress.left + "," 
+			  + paddingProgress.top + ")")
 		.call(yAxis);
 
 	// line function for drawing the actual line
@@ -108,13 +100,13 @@ d3.json("./Data/progress.json", function(error, data) {
 	var targetLine = [{ "y": start, "year": 2004 },{ "y": 0, "year": 2030 }];
 
 
-
-	svg.append("g")
-	.append('path')
-	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
+	// draws the target line for vision zero for each year
+	svg.append('path')
+	  	.attr("transform","translate(" + paddingProgress.left + "," 
+	  		  + paddingProgress.top + ")")
 		.attr('d', line(targetLine))
 	  	.attr('stroke', 'grey')
-	  	.attr('stroke-width', 3)
+	  	.attr('stroke-width', 2.75)
 	  	.attr('fill', 'none')
 	  	.on("mouseover", function(d) {		
             div.transition()		
@@ -123,41 +115,35 @@ d3.json("./Data/progress.json", function(error, data) {
             div.html("Goal number of collisions");
         })					
         .on("mousemove", function(){
-			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+			return div.style("top", (event.pageY - 10) + "px")
+					.style("left", (event.pageX + 10) + "px");})				
 		.on("mouseout", function(d) {		
             div.transition()		
                 .duration(500)		
                 .style("opacity", 0);	
     	});
 
-	var colors = ["#006b94", "#87a96b"];
-
-
-
 	// draws actual trend line of progress
-	svg.append("g")
-	.append('path')
-	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
+	svg.append('path')
+	  	.attr("transform","translate(" + paddingProgress.left + ","
+	  		  + paddingProgress.top + ")")
 		.attr('d', line(data))
 	  	.attr('stroke', "#87a96b")
 	  	.attr('stroke-width', 3)
 	  	.attr('fill', 'none')
 	  	.style('opacity', .9);
 
-	drawFatalDots(data);
+	drawDots(data);
 	
 	// adding in titles and axis labels
-	svg.append("g")
-.append("text")
+	svg.append("text")
 		.attr("transform","rotate(-90)")
-		.attr("x", 0- svgHeight / 2 - 60)
+		.attr("x", 0 - svgHeight / 2 - 40)
 		.attr("y", -2)
 		.attr("dy","1em")
 		.text("Fatalities or Serious Injuries");
 
-	svg.append("g")
-.append("text")
-	   .attr("class","xtext")
+	svg.append("text")
 	   .attr("x", svgWidth / 2)
 	   .attr("y", svgHeight - paddingProgress.bottom)
 	   .attr("text-anchor","middle")
@@ -165,8 +151,8 @@ d3.json("./Data/progress.json", function(error, data) {
 
 	var visionZeroStartDate = [{"y":-20,"year":2015},{"y":20,"year":2015}]
 
-	svg.append("g")
-.append('path')
+	// draws the vision zero start date
+	svg.append('path')
 	  	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")
 		.attr('d', line(visionZeroStartDate))
 	  	.attr('stroke',  "#00A3E0")
@@ -181,27 +167,30 @@ d3.json("./Data/progress.json", function(error, data) {
             	.style("top", yScale(0));	
             })					
 	  	.on("mousemove", function(){
-			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
-			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
-        .on("mouseout", function(d) {		
+			return div.style("top", (event.pageY - 10) + "px")
+					.style("left", (event.pageX + 10) + "px");})			
+		.on("mouseout", function(d) {		
             div.transition()		
                 .duration(500)		
                 .style("opacity", 0);	
     	});	
 })
 
-function drawFatalDots(data) {
+// draws the dots over the trend line so that
+// you know where to hover for the tool tip
+function drawDots(data) {
+	var radiusOfDot = 4;
 	// Add the dots
     svg.selectAll("dot")	
         .data(data)			
-    .enter()
-    	.append("g")
-.append("circle")
-    	.attr("transform","translate(" + paddingProgress.left + "," + paddingProgress.top + ")")					
-        .attr("r", 4)		
+    .enter().append("circle")
+    	.attr("transform","translate(" + paddingProgress.left + "," 
+    		  + paddingProgress.top + ")")					
+        .attr("r", radiusOfDot)		
         .attr("cx", function(d) { return xScale(d.year); })		 
         .attr("cy", function(d) { return yScale(d.y); })
         .attr("fill", "#63666A")
+        .attr("fill-opacity", .8)
         .on("mouseover", function(d) {		
         	var duration = 200; 
             div.transition()		
@@ -210,85 +199,24 @@ function drawFatalDots(data) {
             div.html("" + d.y + " fatalities and serious injuries in " + d.year)
             	.style("left", xScale(d.year))
             	.style("top", yScale(d.y));	
-            var circleEnlarge = d3.select(this).transition().duration(duration).attr("r", 6);
+
+            var circleEnlarge = d3.select(this)
+		            .transition()
+		            .duration(duration)
+		            .attr("r", radiusOfDot + 2);
             })	
 		.on("mousemove", function(){
-			// console.log(xScale(2006) + " " + event.pageX + " " + event.pageY);
-			return div.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})				
+			return div.style("top", (event.pageY - 10) + "px")
+					.style("left", (event.pageX + 10) + "px");})				
         .on("mouseout", function(d) {
         	var duration = 500;		
             div.transition()		
                 .duration(duration)		
                 .style("opacity", 0);	
-    		var circleShrink = d3.select(this).transition().duration(duration).attr("r", 4);
+
+    		var circleShrink = d3.select(this)
+    			.transition()
+    			.duration(duration)
+    			.attr("r", radiusOfDot);
 		});	
 }
-
-
-
-
-
-
-
-
-
-
-// // var tooltip = d3.select('#top')            // NEW 
-// //   .append('div')                             // NEW
-// //   .attr('class', 'tooltip');                 // NEW
-
-// // tooltip.append('div')                        // NEW
-// //   .attr('class', 'label');                   // NEW
-
-// // tooltip.append('div')                        // NEW
-// //   .attr('class', 'count');                   // NEW
-
-// // tooltip.append('div')                        // NEW
-// //   .attr('class', 'percent');                 // NEW
-
-
-// // var mouseOver = function() {
-// // 	var curr = d3.select(this).attr("stroke", "blue");
-// // 	console.log(d3.select(this));
-// // }
-
-// // var mouseOut = function() {
-// // 	var curr = d3.select(this).attr("stroke", "#00A3E0");
-// // 	console.log(curr);
-// // }
-
-
-// // // Detect if the browser is IE or not.
-// // // If it is not IE, we assume that the browser is NS.
-// // var IE = document.all?true:false
-
-// // // If NS -- that is, !IE -- then set up for mouse capture
-// // if (!IE) document.captureEvents(Event.MOUSEMOVE)
-
-// // // Set-up to use getMouseXY function onMouseMove
-// // document.onmousemove = getMouseXY;
-
-// // // Temporary variables to hold mouse x-y pos.s
-// // var tempX = 0
-// // var tempY = 0
-
-// // // Main function to retrieve mouse x-y pos.s
-
-// // function getMouseXY(e) {
-// //   if (IE) { // grab the x-y pos.s if browser is IE
-// //     tempX = event.clientX + document.body.scrollLeft
-// //     tempY = event.clientY + document.body.scrollTop
-// //   } else {  // grab the x-y pos.s if browser is NS
-// //     tempX = e.pageX
-// //     tempY = e.pageY
-// //   }  
-// //   // catch possible negative values in NS4
-// //   if (tempX < 0){tempX = 0}
-// //   if (tempY < 0){tempY = 0}  
-// //   return true
-// // }
-
-
-
-
-

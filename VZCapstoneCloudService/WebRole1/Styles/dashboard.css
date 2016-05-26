@@ -34,9 +34,7 @@ h2 {
 	clear: both;
 }
 
-/* styling for each box, border and padding */
 .section, .progressSection {
-	/* maybe just change back to padding*/
 	padding-top: .4vw;
 	padding-right: .4vw;
 	padding-left: .4vw;
@@ -45,21 +43,16 @@ h2 {
 	background-color: #ffffff;
 	border-radius: .25vw;
 
-	-moz-box-shadow: 0 0 .5vw #ccc;
-	-webkit-box-shadow: 0 0 .5vw #ccc;
 	box-shadow: 0 0 .5vw #ccc;
 }
 
-/*progress chart*/
 .progressSection {
-	/*don't touch*/
 	width: 53vw;
 	height: 22.65vw;
 	float: left;
 	
 }
 
-/*each section is for the bottom 3 charts*/
 .section {
 	width: 30.7vw;
 	height: 19vw;
