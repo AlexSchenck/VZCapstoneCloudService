@@ -23,14 +23,16 @@ html, body {
 #search {
     position: absolute;
     z-index: 3;
-    top: 120px;
+    /* top: 120px; */
+    top: 9vw;
     right: 25px;
 }
 
 #filters {
     position: absolute;
     z-index: 2;
-    top: 170px;
+    /*top: 170px; */
+    top: calc(9vw + 40px);
     right: 25px;
     width: 283px;
 }
