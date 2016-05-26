@@ -12,8 +12,7 @@ html, body {
 #mapid {
 	bottom: 0px;
 	position: absolute;
-    height: 88%;
-    top: 12%;
+    top: 7vw;
     width: 100%; 
 } 
 
@@ -39,6 +38,10 @@ html, body {
 #filters button {
     float: left;
     background-color: #fff;
+    color: #3f3f3f;    
+    background-color: #fff;
+    border: 2px solid #a8a8a8;
+    border-radius: 3px;
 }
 
 #filters button p {
@@ -49,7 +52,7 @@ html, body {
 }
 
 .activeButton {
-    border: 2px solid #188FD1;
+    border: 2px solid #188FD1 !important;
 }
 
 #vehicle, #bike, #ped {
@@ -140,24 +143,32 @@ h6 {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 170px;
-    top: 45px;
-    left: 50%; 
-    margin-left: -85px;
-    background-color: white;
-    color: black;
-    font-family: Lato, sans-serif;     
-    border: 1px solid black;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
- 
+/*    
+*//*   
+    
+ */
     position: absolute;
     z-index: 9;
+    top: 45px;
+    left: 50%; 
+    margin-left: -65px;
+    width: 120px;
+    font-family: Lato, sans-serif;     
+    text-align: center;         
+    padding: .5vw;              
+    color: white;
+    background: #63666A;    
+    border: .1vw solid white;       
+    border-radius: .25vw;           
+    pointer-events: none;
+    z-index: 100;   
+    display: inline-block;
+/*    top: 0;
+    left: 0;*/
 }
 
 #ped .tooltiptext {
-    margin-left: -125px;
+    margin-left: -110px;
 }
 
 button:focus {
@@ -177,4 +188,8 @@ button:focus {
     background: none;
     margin: 0;
     color: #188FD1;
+}
+
+#mapid_graphics_layer path {
+    display: none !important;
 }
