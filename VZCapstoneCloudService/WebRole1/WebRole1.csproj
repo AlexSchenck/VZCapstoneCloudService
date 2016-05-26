@@ -140,14 +140,13 @@
     <Content Include="Packages\jquery-ui-1.11.4\jquery-ui.structure.min.css" />
     <Content Include="Packages\jquery-ui-1.11.4\jquery-ui.theme.css" />
     <Content Include="Packages\jquery-ui-1.11.4\jquery-ui.theme.min.css" />
-    <Content Include="Scripts\ajax.js" />
     <Content Include="Scripts\bulletSpark.js" />
-    <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\map.js" />
     <Content Include="Scripts\progress.js" />
     <Content Include="Scripts\stackedBarChart.js" />
     <Content Include="Scripts\survival.js" />
     <Content Include="Styles\bulletSpark.css" />
+    <Content Include="Styles\flashStats.css" />
     <Content Include="WebService.asmx" />
     <Content Include="Data\injuryRates.json" />
     <None Include="Properties\PublishProfiles\SeattleVisionZero.pubxml" />
@@ -162,7 +161,6 @@
     <Content Include="Packages\d3\d3.js" />
     <Content Include="Packages\d3\d3.min.js" />
     <Content Include="Packages\jQuery\jquery-2.2.2.min.js" />
-    <Content Include="Styles\contributingFactors.css" />
     <Content Include="Styles\dashboard.css" />
     <Content Include="Styles\header.css" />
     <Content Include="Styles\map.css" />
